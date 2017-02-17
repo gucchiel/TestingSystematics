@@ -209,10 +209,12 @@ class CutAlg(pyframe.core.Algorithm):
           if "HR" in s: pdgId_sampl += [lep_dict[s.replace("HR","")[-2:]],lep_dict[s.replace("HR","")[:2]]]
         
         pdgId_branch = []
-        for pdgId in self.chain.HLpp_Daughters: pdgId_branch += [pdgId]
-        for pdgId in self.chain.HLmm_Daughters: pdgId_branch += [pdgId]
-        for pdgId in self.chain.HRpp_Daughters: pdgId_branch += [pdgId]
-        for pdgId in self.chain.HRmm_Daughters: pdgId_branch += [pdgId]
+        if "HL" in self.samplename:
+          for pdgId in self.chain.HLpp_Daughters: pdgId_branch += [pdgId]
+          for pdgId in self.chain.HLmm_Daughters: pdgId_branch += [pdgId]
+        if "HR" in self.samplename:
+          for pdgId in self.chain.HRpp_Daughters: pdgId_branch += [pdgId]
+          for pdgId in self.chain.HRmm_Daughters: pdgId_branch += [pdgId]
         
         pdgId_branch = filter(lambda pdgId: pdgId != 0, pdgId_branch) 
         
