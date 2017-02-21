@@ -160,6 +160,13 @@ class CutAlg(pyframe.core.Algorithm):
       return True
     
     #__________________________________________________________________________
+    def cut_AllMuPt22(self):
+      muons = self.store['muons']
+      passed = True
+      for m in muons:
+        passed = passed and m.tlv.Pt()>=22.0*GeV
+      return passed
+    #__________________________________________________________________________
     def cut_AllMuPt25(self):
       muons = self.store['muons']
       passed = True
