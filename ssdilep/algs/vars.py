@@ -53,7 +53,7 @@ class BuildTrigConfig(pyframe.core.Algorithm):
         for trig,presc in zip(self.chain.passedTriggers,self.chain.triggerPrescales):
           self.store["passTrig"][trig] = presc
 
-      dGeV = GeV / 1.03
+      mGeV = GeV * 1.03
 
       #Adding to the store the electron trigger
       
@@ -81,14 +81,14 @@ class BuildTrigConfig(pyframe.core.Algorithm):
         for trig in self.store["reqTrig"]:
           for thr in trig.split("_"):
             if thr.startswith("mu"): 
-              muons_thr.append( float( thr.replace("mu","") ) * dGeV )  
+              muons_thr.append( float( thr.replace("mu","") ) * mGeV )  
         muons_thr.sort() 
         
         for ithr in xrange(len(muons_thr) - 1):
           for trig in self.store["SingleMuTrigIndex"].keys():
             for thr in trig.split("_"):
               if thr.startswith("mu"):
-                trig_thr = float( thr.replace("mu","") ) * GeV
+                trig_thr = float( thr.replace("mu","") ) * mGeV
                 if trig_thr>= muons_thr[ithr] and trig_thr < muons_thr[ithr+1]:
                   self.store["SingleMuTrigSlice"][trig] = (muons_thr[ithr],muons_thr[ithr+1])
       
