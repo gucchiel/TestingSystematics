@@ -154,16 +154,6 @@ class Particle(pyframe.core.ParticleProxy):
       return self.isTruthMatchedToMuon and matchtype
 
     #__________________________________________________________________________
-    def isTrueIsoElectron(self):
-      matchtype = self.truthType in [2]
-      return matchtype
-
-    #__________________________________________________________________________
-    def isTrueNonIsoElectron(self):
-      matchtype = self.truthType in [1,3,4]
-      return matchtype
-    
-    #__________________________________________________________________________
     def electronType(self):
       trueCharge = -self.firstEgMotherPdgId/11.
       chargeEval = abs(self.trkcharge - trueCharge)
@@ -180,6 +170,25 @@ class Particle(pyframe.core.ParticleProxy):
       else :
         return 6
 
+    #__________________________________________________________________________
+    def isTrueIsoElectron(self):
+      trueCharge = -self.firstEgMotherPdgId/11.
+      chargeEval = abs(self.trkcharge - trueCharge)
+      
+      if   self.truthType==2 and self.truthOrigin in [12,13,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==0 :
+        return True
+      elif self.truthType==2 and self.truthOrigin in [12,13,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
+        return True
+      elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
+        return True
+
+      return False
+
+    #__________________________________________________________________________
+    def isTrueNonIsoElectron(self):
+      matchtype = self.truthType in [1,3,4]
+      return matchtype
+    
     #__________________________________________________________________________
     def electronTypeSimple(self):
       if   self.truthType==2 and self.truthOrigin in [12,13,43] :

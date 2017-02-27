@@ -1013,7 +1013,7 @@ class CutAlg(pyframe.core.Algorithm):
         return self.chain.nel == 1
     #__________________________________________________________________________
     def cut_TwoElectrons(self):
-        return self.chain.nel == 2
+        return len(self.store['electrons_loose']) == 2
     #__________________________________________________________________________
     def cut_ThreeElectrons(self):
         return self.chain.nel == 3

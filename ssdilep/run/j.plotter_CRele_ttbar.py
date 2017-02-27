@@ -111,6 +111,10 @@ def analyze(config):
     loop += ssdilep.algs.EvWeights.MCEventWeight(cutflow='presel',key='weight_mc_event')
     loop += ssdilep.algs.EvWeights.LPXKfactor(cutflow='presel',key='weight_kfactor')
     loop += ssdilep.algs.EvWeights.Pileup(cutflow='presel',key='weight_pileup')
+
+    ## initialize and/or decorate objects
+    ## ---------------------------------------
+    loop += ssdilep.algs.vars.DiEleVars(key_electrons='electrons_loose')   
    
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
@@ -128,10 +132,6 @@ def analyze(config):
             key='OneOrTwoBjetsSF',
             )    
 
-    ## initialize and/or decorate objects
-    ## ---------------------------------------
-    loop += ssdilep.algs.vars.DiEleVars(key_electrons='electrons_loose')   
-
     ## weights configuration
     ## ---------------------------------------
     ## event
@@ -146,14 +146,12 @@ def analyze(config):
             key       = "EleTrigSF",
             scale     = None,
             )
-    """
+
     loop += ssdilep.algs.EvWeights.ChargeFlipEleSF(
             key='ChargeFlipEleSF',
             config_file=os.path.join(main_path,'ssdilep/data/chargeFlipRates-12-01-2017.root'),
             chargeFlipSF=True,
             )
-    """
-    
     
     ## objects
     ## +++++++++++++++++++++++++++++++++++++++
@@ -214,7 +212,7 @@ def analyze(config):
             scale         = None,
             )
     #implementation of electron fake factors
-    """
+
     loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
             config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-09-01-2017.root'),
             ele_index=0,
@@ -239,7 +237,6 @@ def analyze(config):
             key='Ele3FF',
             sys=None,
             )
-    """
 
     ## configure histograms
     ## ---------------------------------------
@@ -276,8 +273,7 @@ def analyze(config):
                            ['DiElePass',['EleTrigSF']],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
                            ['TwoElectrons',None],
-                           ['EleTL',['Ele0AllSF','Ele1RecoSF']],
-                           #['EleTL',['Ele0AllSF','Ele1RecoSF','Ele1FF']],
+                           ['EleTL',['Ele0AllSF','Ele1RecoSF','Ele1FF']],
                            ['Mass130GeV',None],
                            ],
             )
@@ -290,8 +286,7 @@ def analyze(config):
                            ['DiElePass',['EleTrigSF']],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
                            ['TwoElectrons',None],
-                           ['EleLT',['Ele0RecoSF','Ele1AllSF']],
-                           #['EleLT',['Ele0RecoSF','Ele1AllSF','Ele0FF']],
+                           ['EleLT',['Ele0RecoSF','Ele1AllSF','Ele0FF']],
                            ['Mass130GeV',None],
                            ],
             )
@@ -304,8 +299,7 @@ def analyze(config):
                            ['DiElePass',['EleTrigSF']],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
                            ['TwoElectrons',None],
-                           ['EleLL',['Ele0RecoSF','Ele1RecoSF']],
-                           #['EleLL',['Ele0RecoSF','Ele1RecoSF','Ele0FF','Ele1FF']],
+                           ['EleLL',['Ele0RecoSF','Ele1RecoSF','Ele0FF','Ele1FF']],
                            ['Mass130GeV',None],
                            ],
             )
