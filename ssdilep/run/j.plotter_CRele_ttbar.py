@@ -118,13 +118,13 @@ def analyze(config):
    
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OddOSElectrons') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllElePt30') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleLHLoose') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleEta247AndNotCrackRegion') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleZ0SinTheta05') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleTrkd0Sig5') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllJetPt25') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OddOSElectrons') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllElePt30') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleLHLoose') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleEta247AndNotCrackRegion') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleZ0SinTheta05') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleTrkd0Sig5') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllJetPt25') 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='TwoElectrons') 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
@@ -248,59 +248,118 @@ def analyze(config):
     ## make plots
     ##-------------------------------------------------------------------------
 
-    ## VR1
+    ## OS CR
     ## ---------------------------------------
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'CRttbar_TT',
+            region       = 'OSCRttbar_TT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['DiElePass',['EleTrigSF']],
+                           ['OddOSElectrons',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['TwoElectrons',None],
                            ['EleTT',['Ele0AllSF','Ele1AllSF']],
                            ['Mass130GeV',None],
                            ],
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'CRttbar_TL',
+            region       = 'OSCRttbar_TL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['DiElePass',['EleTrigSF']],
+                           ['OddOSElectrons',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['TwoElectrons',None],
                            ['EleTL',['Ele0AllSF','Ele1RecoSF','Ele1FF']],
                            ['Mass130GeV',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'CRttbar_LT',
+            region       = 'OSCRttbar_LT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['DiElePass',['EleTrigSF']],
+                           ['OddOSElectrons',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['TwoElectrons',None],
                            ['EleLT',['Ele0RecoSF','Ele1AllSF','Ele0FF']],
                            ['Mass130GeV',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'CRttbar_LL',
+            region       = 'OSCRttbar_LL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['DiElePass',['EleTrigSF']],
+                           ['OddOSElectrons',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['TwoElectrons',None],
                            ['EleLL',['Ele0RecoSF','Ele1RecoSF','Ele0FF','Ele1FF']],
                            ['Mass130GeV',None],
+                           ],
+            )
+    ## SS CR
+    ## ---------------------------------------
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'SSCRttbar_TT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['DiElePass',['EleTrigSF']],
+                           ['OddSSElectrons',None],
+                           ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
+                           ['EleTT',['Ele0AllSF','Ele1AllSF']],
+                           ['Mass130GeV',None],
+                           ['MassBelow200GeV',None],
+                           ],
+            )
+
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'SSCRttbar_TL',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['DiElePass',['EleTrigSF']],
+                           ['OddSSElectrons',None],
+                           ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
+                           ['EleTL',['Ele0AllSF','Ele1RecoSF','Ele1FF']],
+                           ['Mass130GeV',None],
+                           ['MassBelow200GeV',None],
+                           ],
+            )
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'SSCRttbar_LT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['DiElePass',['EleTrigSF']],
+                           ['OddSSElectrons',None],
+                           ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
+                           ['EleLT',['Ele0RecoSF','Ele1AllSF','Ele0FF']],
+                           ['Mass130GeV',None],
+                           ['MassBelow200GeV',None],
+                           ],
+            )
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'SSCRttbar_LL',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['DiElePass',['EleTrigSF']],
+                           ['OddSSElectrons',None],
+                           ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
+                           ['EleLL',['Ele0RecoSF','Ele1RecoSF','Ele0FF','Ele1FF']],
+                           ['Mass130GeV',None],
+                           ['MassBelow200GeV',None],
                            ],
             )
 
