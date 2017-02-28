@@ -938,7 +938,13 @@ class CutAlg(pyframe.core.Algorithm):
         for j in jets:
           if j.tlv.Pt() < 45 * GeV: return False
       return True
-
+    #__________________________________________________________________________
+    def cut_BadJetVeto(self):
+        jets = self.store['jets']
+        for jet in jets:
+          if not jet.isClean:
+            return False
+        return True
     #__________________________________________________________________________
     def cut_OneOrTwoBjets(self):
         nbjets = 0
