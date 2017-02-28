@@ -171,7 +171,7 @@ h_electrons_dphi  = Hist1D( hname  = "h_electrons_dphi",
                               vexpr  = "self.store['electrons_dphi']",
                             )
 
-h_electrons_deta  = Hist1D( hname  = "h_electrons_delta",
+h_electrons_deta  = Hist1D( hname  = "h_electrons_deta",
                               xtitle = "#Delta#eta(e_{lead},e_{sublead})",
                               ytitle = "Events", 
                               nbins  = 50,
@@ -233,7 +233,7 @@ h_elemu_dphi  = Hist1D( hname  = "h_elemu_dphi",
                               vexpr  = "self.store['elemu_dphi']",
                             )
 
-h_elemu_deta  = Hist1D( hname  = "h_elemu_delta",
+h_elemu_deta  = Hist1D( hname  = "h_elemu_deta",
                               xtitle = "#Delta#eta(l_{lead},l_{sublead})",
                               ytitle = "Events", 
                               nbins  = 50,
