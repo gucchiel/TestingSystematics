@@ -125,7 +125,8 @@ def analyze(config):
     #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleZ0SinTheta05') 
     #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleTrkd0Sig5') 
     #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllJetPt25') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='TwoElectrons') 
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='TwoElectrons')
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
     loop += ssdilep.algs.EvWeights.OneOrTwoBjetsSF(
@@ -314,7 +315,7 @@ def analyze(config):
                            ['DiElePass',['EleTrigSF']],
                            ['OddSSElectrons',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleTT',['Ele0AllSF','Ele1AllSF']],
+                           ['EleTT',['Ele0AllSF','Ele1AllSF','ChargeFlipEleSF']],
                            ['Mass130GeV',None],
                            ['MassBelow200GeV',None],
                            ],
