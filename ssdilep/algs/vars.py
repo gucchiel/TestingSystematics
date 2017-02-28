@@ -636,7 +636,7 @@ class EleMuVars(pyframe.core.Algorithm):
     def __init__(self, 
                  name      = 'EleMuVars',
                  key_electrons = 'electrons_loose',
-                 key_muons = 'muons'
+                 key_muons = 'muons',
                  key_met   = 'met_clus',
                  ):
         pyframe.core.Algorithm.__init__(self, name)
@@ -720,19 +720,18 @@ class EleMuVars(pyframe.core.Algorithm):
         # puts additional leptons in the store
         if ss_pairs: 
            if len(electrons)>=2:
-           i = 2
-           for e in electrons:
-             if e==self.store['lep1'] or e==self.store['lep2']: continue
-             i = i + 1
-             self.store['lep%d'%i] = e 
-          if len(muons)>=2:
-            j = 2
-            for m in muons:
-              if m==self.store['lep1'] or m==self.store['lep2']: continue
-              j = j + 1
-              self.store['lep%d'%j] = m
-
-     return True
+               i = 2
+               for e in electrons:
+                   if e==self.store['lep1'] or e==self.store['lep2']: continue
+                   i = i + 1
+                   self.store['lep%d'%i] = e 
+           if len(muons)>=2:
+               j = 2
+               for m in muons:
+                   if m==self.store['lep1'] or m==self.store['lep2']: continue
+                   j = j + 1
+                   self.store['lep%d'%j] = m
+        return True
 
 
 
