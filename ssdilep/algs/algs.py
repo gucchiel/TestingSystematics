@@ -1598,6 +1598,13 @@ class CutAlg(pyframe.core.Algorithm):
         if (electrons[0].tlv + electrons[1].tlv).M() > 130*GeV: return True
         return False
 
+  #__________________________________________________________________________
+    
+    def cut_MassBelow200GeV(self):
+        electrons = self.store['electrons_loose']
+        if (electrons[0].tlv + electrons[1].tlv).M() < 200*GeV: return True
+        return False
+
     #__________________________________________________________________________
 
     def cut_AllEleEta247AndNotCrackRegion(self):
