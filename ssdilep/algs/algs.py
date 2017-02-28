@@ -938,7 +938,13 @@ class CutAlg(pyframe.core.Algorithm):
         for j in jets:
           if j.tlv.Pt() < 45 * GeV: return False
       return True
-
+    #__________________________________________________________________________
+    def cut_BadJetVeto(self):
+        jets = self.store['jets']
+        for jet in jets:
+          if not jet.isClean:
+            return False
+        return True
     #__________________________________________________________________________
     def cut_OneOrTwoBjets(self):
         nbjets = 0
@@ -1596,6 +1602,13 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_Mass130GeV(self):
         electrons = self.store['electrons_loose']
         if (electrons[0].tlv + electrons[1].tlv).M() > 130*GeV: return True
+        return False
+
+  #__________________________________________________________________________
+    
+    def cut_MassBelow200GeV(self):
+        electrons = self.store['electrons_loose']
+        if (electrons[0].tlv + electrons[1].tlv).M() < 200*GeV: return True
         return False
 
     #__________________________________________________________________________

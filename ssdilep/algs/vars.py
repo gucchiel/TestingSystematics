@@ -241,7 +241,7 @@ class BuildLooseElectrons(pyframe.core.Algorithm):# Building a loose container f
         very_loose_ele = self.store[self.key_electrons]
         
         for ele in very_loose_ele:
-            if(ele.pt>30*GeV and ele.LHLoose and ele.trkd0sig<5.0 and abs(ele.trkz0sintheta)<0.5 and abs(ele.tlv.Eta())<2.47 and not(1.37<abs(ele.tlv.Eta())<1.52)):
+            if(ele.pt>30*GeV and ele.LHLoose and ele.trkd0sig<5.0 and abs(ele.trkz0sintheta)<0.5):
                electrons_loose += [ele]
         self.store['electrons_loose'] = electrons_loose
         return True       
