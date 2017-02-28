@@ -545,7 +545,7 @@ class DiMuVars(pyframe.core.Algorithm):
 #------------------------------------------------------------------------------
 class DiEleVars(pyframe.core.Algorithm):
     """
-    computes variables for the di-muon selection
+    computes variables for the di-electron selection
     """
     #__________________________________________________________________________
     def __init__(self, 
@@ -570,9 +570,9 @@ class DiEleVars(pyframe.core.Algorithm):
         electrons = self.store[self.key_electrons]
         met = self.store[self.key_met]
         
-        # ------------------
-        # at least two muons
-        # ------------------
+        # -----------------------
+        # at least two electrons
+        # -----------------------
         
         # dict containing pair 
         # and significance
@@ -607,7 +607,7 @@ class DiEleVars(pyframe.core.Algorithm):
           self.store['electrons_dphi']       = ele2.tlv.DeltaPhi(ele1.tlv)
           self.store['electrons_deta']       = ele2.tlv.Eta()-ele1.tlv.Eta()
          
-        # puts additional muons in the store
+        # puts additional electrons in the store
         if ss_pairs and len(electrons)>2:
            i = 2
            for e in electrons:
@@ -616,6 +616,115 @@ class DiEleVars(pyframe.core.Algorithm):
              self.store['ele%d'%i] = e
 
         return True
+
+
+#------------------------------------------------------------------------------
+class EleMuVars(pyframe.core.Algorithm):
+    """
+    computes variables for the mixed (electron-muon) selection
+    """
+    #__________________________________________________________________________
+    def __init__(self, 
+                 name      = 'EleMuVars',
+                 key_electrons = 'electrons_loose',
+                 key_muons = 'muons'
+                 key_met   = 'met_clus',
+                 ):
+        pyframe.core.Algorithm.__init__(self, name)
+        self.key_electrons = key_electrons
+        self.key_muons = key_muons
+        self.key_met   = key_met
+
+    #__________________________________________________________________________
+    def execute(self, weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        """
+        computes variables and puts them in the store
+        """
+
+        ## get objects from event candidate
+        ## --------------------------------------------------
+        assert self.store.has_key(self.key_electrons), "electrons key: %s not found in store!" % (self.key_electrons)
+        assert self.store.has_key(self.key_muons), "muons key: %s not found in store!" % (self.key_muons)
+        electrons = self.store[self.key_electrons]
+        muons = self.store[self.key_muons]
+        met = self.store[self.key_met]
+        
+        # -------------------------------
+        # at least 1 electron and 1 muon
+        # -------------------------------
+        
+        # dict containing pair 
+        # and significance
+        ss_pairs = {} 
+        if len(electrons)==1 and len(muons)==1:
+          
+          for p in combinations((electrons+muons),2): 
+            ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
+          
+          max_sig  = 1000.
+          for pair,sig in ss_pairs.iteritems():
+            if sig < max_sig: 
+              if pair[0].tlv.Pt() > pair[1].tlv.Pt():
+                self.store['lep1'] = pair[0] # leading
+                self.store['lep2'] = pair[1] # subleading
+              else: 
+                self.store['lep1'] = pair[1] # subleading
+                self.store['lep2'] = pair[0] # leading
+              max_sig = sig 
+        
+        if ss_pairs:
+          lep1 = self.store['lep1'] # leading
+          lep2 = self.store['lep2'] # subleading
+          lep1T = ROOT.TLorentzVector()
+          lep1T.SetPtEtaPhiM( lep1.tlv.Pt(), 0., lep1.tlv.Phi(), lep1.tlv.M() )
+          lep2T = ROOT.TLorentzVector()
+          lep2T.SetPtEtaPhiM( lep2.tlv.Pt(), 0., lep2.tlv.Phi(), lep2.tlv.M() )
+        
+          self.store['charge_product'] = lep2.trkcharge*lep1.trkcharge
+          self.store['mVis']           = (lep2.tlv+lep1.tlv).M()
+          self.store['mTtot']          = (lep1T + lep2T + met.tlv).M()  
+          self.store['elemu_dphi']       = lep2.tlv.DeltaPhi(lep1.tlv)
+          self.store['elemu_deta']       = lep2.tlv.Eta()-lep1.tlv.Eta()
+          
+          # leading and subleading pt variables
+          '''
+          self.store['leplead_pt'] = lep1.tlv.Pt()
+          self.store['leplead_eta'] = lep1.tlv.Eta()
+          self.store['leplead_phi'] = lep1.tlv.Phi()
+          self.store['leplead_trkd0'] = lep1.trkd0
+          self.store['leplead_trkd0sig'] = lep1.trkd0sig
+          self.store['leplead_trkz0'] = lep1.trkz0
+          self.store['leplead_trkz0sintheta'] = lep1.trkz0sintheta
+          self.store['leplead_ptvarcone30'] = lep1.ptvarcone30 / lep1.tlv.Pt()
+         
+          self.store['lepsublead_pt'] = lep2.tlv.Pt()
+          self.store['lepsublead_eta'] = lep2.tlv.Eta()
+          self.store['lepsublead_phi'] = lep2.tlv.Phi()
+          self.store['lepsublead_trkd0'] = lep2.trkd0
+          self.store['lepsublead_trkd0sig'] = lep2.trkd0sig
+          self.store['lepsublead_trkz0'] = lep2.trkz0
+          self.store['lepsublead_trkz0sintheta'] = lep2.trkz0sintheta
+          self.store['lepsublead_ptvarcone30'] = lep2.ptvarcone30 / lep2.tlv.Pt()
+          '''
+
+        # puts additional leptons in the store
+        if ss_pairs: 
+           if len(electrons)>=2:
+           i = 2
+           for e in electrons:
+             if e==self.store['lep1'] or e==self.store['lep2']: continue
+             i = i + 1
+             self.store['lep%d'%i] = e 
+          if len(muons)>=2:
+            j = 2
+            for m in muons:
+              if m==self.store['lep1'] or m==self.store['lep2']: continue
+              j = j + 1
+              self.store['lep%d'%j] = m
+
+     return True
+
 
 
 #------------------------------------------------------------------------------

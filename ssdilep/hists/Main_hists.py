@@ -24,6 +24,11 @@ hist_list.append(h_electrons_dphi)
 hist_list.append(h_electrons_deta)
 hist_list.append(h_electrons_mVis)
 hist_list.append(h_electrons_mTtot)
+hist_list.append(h_elemu_chargeprod)
+hist_list.append(h_elemu_dphi)
+hist_list.append(h_elemu_deta)
+hist_list.append(h_elemu_mVis)
+hist_list.append(h_elemu_mTtot)
 
 
 # -------
@@ -75,6 +80,30 @@ hist_list.append(h_elesublead_trkz0)
 hist_list.append(h_elesublead_trkz0sintheta)
 hist_list.append(h_elesublead_ptvarcone30)
 
+# -------------
+# mixed channel
+# -------------
+
+# leading lepton
+hist_list.append(h_leplead_pt)
+hist_list.append(h_leplead_eta)
+hist_list.append(h_leplead_phi)
+hist_list.append(h_leplead_trkd0)
+hist_list.append(h_leplead_trkd0sig)
+hist_list.append(h_leplead_trkz0)
+hist_list.append(h_leplead_trkz0sintheta)
+hist_list.append(h_leplead_ptvarcone30)
+
+# leading lepton
+hist_list.append(h_lepsublead_pt)
+hist_list.append(h_lepsublead_eta)
+hist_list.append(h_lepsublead_phi)
+hist_list.append(h_lepsublead_trkd0)
+hist_list.append(h_lepsublead_trkd0sig)
+hist_list.append(h_lepsublead_trkz0)
+hist_list.append(h_lepsublead_trkz0sintheta)
+hist_list.append(h_lepsublead_ptvarcone30)
+
 # -------
 # MET
 # -------
@@ -87,9 +116,3 @@ hist_list.append(h_met_trk_sumet)
 
 
 # EOF
-
-
-
-
-
-
