@@ -220,7 +220,49 @@ class ParticlesBuilder(pyframe.core.Algorithm):
     def execute(self,weight):
         self.store[self.key] = [Particle(copy(l)) for l in self.store[self.key]]
 
+#------------------------------------------------------------------------------
+class SR2ChannelFlavour(pyframe.core.Algorithm):# Class for channel categorization in SR2
+    #__________________________________________________________________________
+    def __init__(self,name="FlavourTagging" ):
+        pyframe.core.Algorithm.__init__(self, name = name)
+    #__________________________________________________________________________
+    def initialize(self):
+        log.info('Trying to identify SR2 flavour channel')
+    #__________________________________________________________________________
+    def execute(self,weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        #Legend: 1 eeee, 2 mmmm, 3 emem, 4 eemm, 5 eeem, 6 mmem
+        electrons = self.store['electrons_loose']
+        muons     = self.store['muons']
+        elecoupleSS = False
+        mucoupleSS  = False
+        leptons = electrons + muons
+        totalCharge=0
 
+        CF=-1
+        self.store["ChannelFlavour"]={}
+
+        if(len(leptons)==4):
+            for i in leptons:
+                totalCharge = totalCharge + i.trkcharge
+
+        if(len(electrons)==2):
+            if((electrons[0].trkcharge * electrons[1].trkcharge)>0):
+                elecoupleSS
+        if(len(muons)==2):
+            if((muons[0].trkcharge * muons[1].trkcharge)>0):
+                mucoupleSS 
+
+        if   (len(electrons)==4 and len(muons)==0 and totalCharge==0): CF = 0
+        elif (len(electrons)==0 and len(muons)==4 and totalCharge==0): CF = 1
+        elif (len(electrons)==2 and len(muons)==2 and elecoupleSS==False and mucoupleSS==False and totalCharge==0): CF = 2
+        elif (len(electrons)==2 and len(muons)==2 and elecoupleSS and mucoupleSS and totalCharge==0): CF = 3
+        elif (len(electrons)==3 and len(muons)==1 and totalCharge==0): CF = 4
+        elif (len(electrons)==1 and len(muons)==3 and totalCharge==0): CF = 5
+        
+        self.store["ChannelFlavour"]=CF
+        
+        return True
 
 #------------------------------------------------------------------------------
 class BuildLooseElectrons(pyframe.core.Algorithm):# Building a loose container for electrons (cutting away not loose electrons from ntuples)
@@ -636,7 +678,7 @@ class EleMuVars(pyframe.core.Algorithm):
     def __init__(self, 
                  name      = 'EleMuVars',
                  key_electrons = 'electrons_loose',
-                 key_muons = 'muons'
+                 key_muons = 'muons',
                  key_met   = 'met_clus',
                  ):
         pyframe.core.Algorithm.__init__(self, name)
@@ -720,19 +762,19 @@ class EleMuVars(pyframe.core.Algorithm):
         # puts additional leptons in the store
         if ss_pairs: 
            if len(electrons)>=2:
-           i = 2
-           for e in electrons:
-             if e==self.store['lep1'] or e==self.store['lep2']: continue
-             i = i + 1
-             self.store['lep%d'%i] = e 
-          if len(muons)>=2:
-            j = 2
-            for m in muons:
-              if m==self.store['lep1'] or m==self.store['lep2']: continue
-              j = j + 1
-              self.store['lep%d'%j] = m
-
-     return True
+               i = 2
+               for e in electrons:
+                   if e==self.store['lep1'] or e==self.store['lep2']: continue
+                   i = i + 1
+                   self.store['lep%d'%i] = e 
+           if len(muons)>=2:
+               j = 2
+               for m in muons:
+                   if m==self.store['lep1'] or m==self.store['lep2']: continue
+                   j = j + 1
+                   self.store['lep%d'%j] = m
+                   
+        return True
 
 
 
