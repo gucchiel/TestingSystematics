@@ -1576,7 +1576,7 @@ class CutAlg(pyframe.core.Algorithm):
 
     #___________________________________________________________________________
 
-    def cut_OddOSSElectronMuon(self):
+    def cut_OddOSElectronMuon(self):
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       os_pairs = []

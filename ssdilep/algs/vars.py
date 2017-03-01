@@ -773,7 +773,10 @@ class EleMuVars(pyframe.core.Algorithm):
                    if m==self.store['lep1'] or m==self.store['lep2']: continue
                    j = j + 1
                    self.store['lep%d'%j] = m
+<<<<<<< HEAD
                    
+=======
+>>>>>>> 81a53445bf8c34fcf78833575d620a85f74e49ff
         return True
 
 
