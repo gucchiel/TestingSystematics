@@ -62,37 +62,6 @@ class CutAlg(pyframe.core.Algorithm):
         assert hasattr(self,cut_function),"cut %s doesnt exist!'"%(cutname)
         self.store[cutname] = result = getattr(self,cut_function)()
         return result
-    
-    #__________________________________________________________________________
-    def SR2CF(self, weight):
-        #Legend: 1 eeee, 2 mmmm, 3 emem, 4 eemm, 5 eeem, 6 mmem
-        electrons = self.store['electrons_loose']
-        muons     = self.store['muons']
-        elecoupleSS = False
-        mucoupleSS  = False
-        leptons = electrons + muons
-        totalCharge=0
-
-        if(len(leptons)==4):
-            for i in leptons:
-                totalCharge = totalCharge + leptons[i].trkcharge
-
-        if(len(electrons)==2):
-            if((electrons[0].trkcharge * electrons[1].trkcharge)>0):
-                elecoupleSS
-        if(len(muons)==2):
-            if((muons[0].trkcharge * muons[1].trkcharge)>0):
-                mucoupleSS 
-
-        if   (len(electrons)==4 and len(muons)==0 and totalCharge==0): return 1
-        elif (len(electrons)==0 and len(muons)==4 and totalCharge==0): return 2
-        elif (len(electrons)==2 and len(muons)==2 and elecoupleSS==False and mucoupleSS==False and totalCharge==0): return 3
-        elif (len(electrons)==2 and len(muons)==2 and elecoupleSS and mucoupleSS and totalCharge==0): return 4
-        elif (len(electrons)==3 and len(muons)==1 and totalCharge==0): return 5
-        elif (len(electrons)==1 and len(muons)==3 and totalCharge==0): return 6
-        
-        else: return 0
-
     #__________________________________________________________________________
     def cut_AtLeastTwoMuons(self):
       return self.chain.nmuon > 1
@@ -1545,6 +1514,7 @@ class CutAlg(pyframe.core.Algorithm):
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
+      print len(leptons)
       if len(leptons) >= 2:
         for p in combinations(leptons,2):
           if p[0].trkcharge * p[1].trkcharge > 0.0: ss_pairs.append(p)
@@ -1552,14 +1522,59 @@ class CutAlg(pyframe.core.Algorithm):
       return False
     #___________________________________________________________________________
 
-    def cut_TwoSSElectronMuonPairs(self):
+    def cut_TwoSSElectronMuonPairsEEMM(self):
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
-      if len(leptons) == 4:
+
+      if len(electrons) == 2 and len(muons)== 2:
+        ss_electrons = electrons[0].trkcharge * electrons[1].trkcharge
+        ss_muons     = muons[0].trkcharge * muons[1].trkcharge
         for p in combinations(leptons,4):
-          if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge  > 0.0:  return True
+          if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge and (ss_electrons > 0.0 and ss_muons > 0.0) > 0.0:  return True
+      return False
+
+    #___________________________________________________________________________
+
+    def cut_TwoSSElectronMuonPairsEMEM(self):
+      electrons = self.store['electrons_loose']
+      muons     = self.store['muons']
+      ss_pairs = []
+      leptons = electrons + muons
+
+      if len(electrons) == 2 and len(muons)==2:
+        for p in combinations(leptons,4):
+          ss_elemu = (electrons[0].trkcharge * muons[0].trkcharge > 0.0)or(electrons[0].trkcharge * muons[1].trkcharge > 0.0)or(electrons[1].trkcharge * muons[0].trkcharge > 0.0)
+          if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge  and (ss_elemu) > 0.0:  return True
+      return False
+    #___________________________________________________________________________
+
+    def cut_TwoSSElectronMuonPairsEEEM(self):
+      electrons = self.store['electrons_loose']
+      muons     = self.store['muons']
+      ss_pairs = []
+      leptons = electrons + muons
+
+      if len(electrons) == 3 and len(muons)== 1:
+        ss_electrons = (electrons[0].trkcharge*electrons[1].trkcharge>0.0)or(electrons[0].trkcharge*electrons[2].trkcharge>0.0)or(electrons[1].trkcharge*electrons[2].trkcharge>0.0)
+        ss_elemu     = (muons[0].trkcharge*electrons[0].trkcharge>0.0)or(muons[0].trkcharge*electrons[1].trkcharge>0.0)or(muons[0].trkcharge*electrons[2].trkcharge>0.0)
+        for p in combinations(leptons,4):
+          if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge and (ss_electrons and ss_elemu) > 0.0:  return True
+      return False
+    #___________________________________________________________________________
+
+    def cut_TwoSSElectronMuonPairsMMEM(self):
+      electrons = self.store['electrons_loose']
+      muons     = self.store['muons']
+      ss_pairs = []
+      leptons = electrons + muons
+
+      if len(electrons) == 1 and len(muons)== 3:
+        ss_muons = (muons[0].trkcharge*muons[1].trkcharge>0.0)or(muons[0].trkcharge*muons[2].trkcharge>0.0)or(muons[1].trkcharge*muons[2].trkcharge>0.0)
+        ss_elemu     = (muons[0].trkcharge*electrons[0].trkcharge>0.0)or(muons[1].trkcharge*electrons[0].trkcharge>0.0)or(muons[2].trkcharge*electrons[0].trkcharge>0.0)
+        for p in combinations(leptons,4):
+          if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge and (ss_muons and ss_elemu) > 0.0:  return True
       return False
     #___________________________________________________________________________
 
