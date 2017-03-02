@@ -137,7 +137,6 @@ class Particle(pyframe.core.ParticleProxy):
              prefix     = particle.prefix)   
         self.particle = particle
         self.__dict__ = particle.__dict__.copy() 
-    
     #__________________________________________________________________________
     def isMatchedToTrigChain(self):
       return self.isTrigMatched
@@ -146,12 +145,16 @@ class Particle(pyframe.core.ParticleProxy):
     # https://twiki.cern.ch/twiki/bin/view/AtlasProtected/MCTruthClassifier 
     #__________________________________________________________________________
     def isTrueNonIsoMuon(self):
-      matchtype = self.truthType in [5,7,8]
-      return self.isTruthMatchedToMuon and matchtype
+        if IsSignal(): return True
+        else:
+            matchtype = self.truthType in [5,7,8]
+            return self.isTruthMatchedToMuon and matchtype
     #__________________________________________________________________________
-    def isTrueIsoMuon(self):
-      matchtype = self.truthType in [6]
-      return self.isTruthMatchedToMuon and matchtype
+    def isTrueIsoMuon(self):   
+        if IsSignal(): return True
+        else: 
+            matchtype = self.truthType in [6]
+            return self.isTruthMatchedToMuon and matchtype
 
     #__________________________________________________________________________
     def electronType(self):
@@ -181,13 +184,17 @@ class Particle(pyframe.core.ParticleProxy):
         return True
       elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
         return True
+      elif IsSignal(): 
+        return True  
 
       return False
 
     #__________________________________________________________________________
     def isTrueNonIsoElectron(self):
-      matchtype = self.truthType in [1,3,4]
-      return matchtype
+        if IsSignal(): return True
+        else:
+            matchtype = self.truthType in [1,3,4]
+            return matchtype
     
     #__________________________________________________________________________
     def electronTypeSimple(self):
@@ -205,8 +212,6 @@ class Particle(pyframe.core.ParticleProxy):
       else :
         return 0
 
-
-
 #------------------------------------------------------------------------------
 class ParticlesBuilder(pyframe.core.Algorithm):
     #__________________________________________________________________________
@@ -221,6 +226,63 @@ class ParticlesBuilder(pyframe.core.Algorithm):
         self.store[self.key] = [Particle(copy(l)) for l in self.store[self.key]]
 
 
+#------------------------------------------------------------------------------
+class IsSignal(pyframe.core.Algorithm):# simple class to return true if the MC sample running on is DCH
+    #__________________________________________________________________________
+    def __init__(self,name="IsSignalSample" ):
+        pyframe.core.Algorithm.__init__(self, name = name)
+    #__________________________________________________________________________
+    def initialize(self):
+        log.info('Trying to identify SR2 flavour channel')
+    #__________________________________________________________________________
+    def execute(self,weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        if ("mc" in self.sampletype) and self.chain.mcChannelNumber in [302449,302450,302451,302452,302453,302454,302455,302456,302457,302458,302459]: return True
+        return False
+
+#------------------------------------------------------------------------------
+class SR2ChannelFlavour(pyframe.core.Algorithm):# Class for channel categorization in SR2
+    #__________________________________________________________________________
+    def __init__(self,name="FlavourTagging" ):
+        pyframe.core.Algorithm.__init__(self, name = name)
+    #__________________________________________________________________________
+    def initialize(self):
+        log.info('Trying to identify SR2 flavour channel')
+    #__________________________________________________________________________
+    def execute(self,weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        #Legend: 1 eeee, 2 mmmm, 3 emem, 4 eemm, 5 eeem, 6 mmem
+        electrons = self.store['electrons_loose']
+        muons     = self.store['muons']
+        elecoupleSS = False
+        mucoupleSS  = False
+        leptons = electrons + muons
+        totalCharge=0
+
+        CF=-1
+        self.store["ChannelFlavour"]={}
+
+        if(len(leptons)==4):
+            for i in leptons:
+                totalCharge = totalCharge + i.trkcharge
+
+        if(len(electrons)==2):
+            if((electrons[0].trkcharge * electrons[1].trkcharge)>0):
+                elecoupleSS
+        if(len(muons)==2):
+            if((muons[0].trkcharge * muons[1].trkcharge)>0):
+                mucoupleSS 
+
+        if   (len(electrons)==4 and len(muons)==0 and totalCharge==0): CF = 0
+        elif (len(electrons)==0 and len(muons)==4 and totalCharge==0): CF = 1
+        elif (len(electrons)==2 and len(muons)==2 and elecoupleSS==False and mucoupleSS==False and totalCharge==0): CF = 2
+        elif (len(electrons)==2 and len(muons)==2 and elecoupleSS and mucoupleSS and totalCharge==0): CF = 3
+        elif (len(electrons)==3 and len(muons)==1 and totalCharge==0): CF = 4
+        elif (len(electrons)==1 and len(muons)==3 and totalCharge==0): CF = 5
+        
+        self.store["ChannelFlavour"]=CF
+        
+        return True
 
 #------------------------------------------------------------------------------
 class BuildLooseElectrons(pyframe.core.Algorithm):# Building a loose container for electrons (cutting away not loose electrons from ntuples)
@@ -636,7 +698,7 @@ class EleMuVars(pyframe.core.Algorithm):
     def __init__(self, 
                  name      = 'EleMuVars',
                  key_electrons = 'electrons_loose',
-                 key_muons = 'muons'
+                 key_muons = 'muons',
                  key_met   = 'met_clus',
                  ):
         pyframe.core.Algorithm.__init__(self, name)
@@ -720,22 +782,18 @@ class EleMuVars(pyframe.core.Algorithm):
         # puts additional leptons in the store
         if ss_pairs: 
            if len(electrons)>=2:
-           i = 2
-           for e in electrons:
-             if e==self.store['lep1'] or e==self.store['lep2']: continue
-             i = i + 1
-             self.store['lep%d'%i] = e 
-          if len(muons)>=2:
-            j = 2
-            for m in muons:
-              if m==self.store['lep1'] or m==self.store['lep2']: continue
-              j = j + 1
-              self.store['lep%d'%j] = m
-
-     return True
-
-
-
+               i = 2
+               for e in electrons:
+                   if e==self.store['lep1'] or e==self.store['lep2']: continue
+                   i = i + 1
+                   self.store['lep%d'%i] = e 
+           if len(muons)>=2:
+               j = 2
+               for m in muons:
+                   if m==self.store['lep1'] or m==self.store['lep2']: continue
+                   j = j + 1
+                   self.store['lep%d'%j] = m
+        return True
 #------------------------------------------------------------------------------
 class MultiMuVars(pyframe.core.Algorithm):
     """
@@ -851,6 +909,129 @@ class MultiMuVars(pyframe.core.Algorithm):
           self.store['pairs_dphi']     = (muon3.tlv+muon4.tlv).DeltaPhi(muon1.tlv+muon2.tlv)
           self.store['pairs_deta']     = (muon3.tlv+muon4.tlv).Eta()-(muon1.tlv+muon2.tlv).Eta()
           self.store['pairs_dR']       = math.sqrt(self.store['pairs_dphi']**2 + self.store['pairs_deta']**2)
+
+        return True
+#------------------------------------------------------------------------------
+class MultiLeptonVars(pyframe.core.Algorithm):
+    """
+    computes variables for the 4lep selection
+    """
+    #__________________________________________________________________________
+    def __init__(self, 
+                 name          = 'MultiLeptonVars',
+                 key_muons     = 'muons',
+                 key_electrons = 'electrons_loose',
+                 key_met       = 'met_clus',
+                 ):
+        pyframe.core.Algorithm.__init__(self, name)
+        self.key_muons     = key_muons
+        self.key_electrons = key_electrons
+        self.key_met       = key_met
+
+    #__________________________________________________________________________
+    def execute(self, weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        """
+        computes variables and puts them in the store
+        """
+
+        ## get objects from event candidate
+        ## --------------------------------------------------
+        assert self.store.has_key(self.key_muons), "muons key: %s not found in store!" % (self.key_muons)
+        assert self.store.has_key(self.key_electrons), "electrons key: %s not found in store!" % (self.key_electrons)
+        muons     = self.store[self.key_muons]
+        electrons = self.store[self.key_electrons]
+        met = self.store[self.key_met]
+        leptons = electrons + muons                       
+        #--------------------
+        # two same-sign pairs
+        #--------------------
+                               
+        two_lep_pairs = {}
+        if len(leptons)>=4:
+          for q in combinations(leptons,4):
+            if q[0].trkcharge * q[1].trkcharge * q[2].trkcharge * q[3].trkcharge > 0.0:
+              two_lep_pairs[q] = q[0].trkd0sig + q[1].trkd0sig + q[2].trkd0sig + q[3].trkd0sig
+
+          max_sig  = 1000.
+          for quad,sig in two_lep_pairs.iteritems():
+
+            if sig < max_sig:
+              max_sig = sig 
+
+              #Case 1: total charge 0
+              if quad[0].trkcharge + quad[1].trkcharge + quad[2].trkcharge + quad[3].trkcharge == 0:
+                for p in combinations(quad,2):
+                  if (p[0].trkcharge + p[1].trkcharge) == 2:
+                    if p[0].tlv.Pt() > p[1].tlv.Pt():
+                      self.store['lep1'] = p[0]
+                      self.store['lep2'] = p[1]
+                    else:
+                      self.store['lep1'] = p[1]
+                      self.store['lep2'] = p[0]
+                  elif (p[0].trkcharge + p[1].trkcharge) == -2:
+                    if p[0].tlv.Pt() > p[1].tlv.Pt():
+                      self.store['lep3'] = p[0]
+                      self.store['lep4'] = p[1]
+                    else:
+                      self.store['lep3'] = p[1]
+                      self.store['lep4'] = p[0]
+
+              #Case 2: Total Charge = +/- 4
+              elif abs(quad[0].trkcharge + quad[1].trkcharge + quad[2].trkcharge + quad[3].trkcharge) == 4:
+                print("This event has charge 4!\n") #print for debugging purposes 
+                self.store['lep1'] = quad[0]
+                self.store['lep2'] = quad[1]
+                self.store['lep3'] = quad[2]
+                self.store['lep4'] = quad[3]
+
+              #Failsafe
+              else:
+                print("Error: Something has gone horribly wrong with this event!\n")
+                self.store['lep1'] = quad[0]
+                self.store['lep2'] = quad[1]
+                self.store['lep3'] = quad[2]
+                self.store['lep4'] = quad[3]
+
+        if two_lep_pairs:
+          lep1 = self.store['lep1']
+          lep2 = self.store['lep2']
+          lep1T = ROOT.TLorentzVector()
+          lep1T.SetPtEtaPhiM( lep1.tlv.Pt(), lep1.tlv.Eta(), lep1.tlv.Phi(), lep1.tlv.M() )
+          lep2T = ROOT.TLorentzVector()
+          lep2T.SetPtEtaPhiM( lep2.tlv.Pt(), lep2.tlv.Eta(), lep2.tlv.Phi(), lep2.tlv.M() )
+
+          self.store['charge_product1'] = lep2.trkcharge*lep1.trkcharge
+          self.store['charge_sum1']     = lep1.trkcharge + lep2.trkcharge
+          self.store['mVis1']           = (lep2.tlv+lep1.tlv).M()
+          self.store['leps_dphi1']     = lep2.tlv.DeltaPhi(lep1.tlv)
+          self.store['leps_deta1']     = lep2.tlv.Eta()-lep1.tlv.Eta()
+          self.store['pTH1']            = (lep2.tlv+lep1.tlv).Pt()
+          self.store['leps_dR1']       = lep2.tlv.DeltaR(lep1.tlv)
+
+          lep3 = self.store['lep3']
+          lep4 = self.store['lep4']
+          lep3T = ROOT.TLorentzVector()
+          lep3T.SetPtEtaPhiM( lep3.tlv.Pt(), lep3.tlv.Eta(), lep3.tlv.Phi(), lep3.tlv.M() )
+          lep4T = ROOT.TLorentzVector()
+          lep4T.SetPtEtaPhiM( lep4.tlv.Pt(), lep4.tlv.Eta(), lep4.tlv.Phi(), lep4.tlv.M() )
+
+          self.store['charge_product2'] = lep4.trkcharge*lep3.trkcharge
+          self.store['charge_sum2']     = lep3.trkcharge + lep4.trkcharge
+          self.store['mVis2']           = (lep4.tlv+lep3.tlv).M()
+          self.store['leps_dphi2']     = lep4.tlv.DeltaPhi(lep3.tlv)
+          self.store['leps_deta2']     = lep4.tlv.Eta()-lep3.tlv.Eta()
+          self.store['pTH2']            = (lep4.tlv+lep3.tlv).Pt()
+          self.store['leps_dR2']       = lep4.tlv.DeltaR(lep3.tlv)
+
+          self.store['charge_product'] = lep4.trkcharge * lep3.trkcharge * lep2.trkcharge * lep1.trkcharge
+          self.store['charge_sum']     = lep1.trkcharge + lep2.trkcharge + lep3.trkcharge + lep4.trkcharge
+          self.store['mTtot']          = (lep1T + lep2T + lep3T + lep4T + met.tlv).M()
+          self.store['mVis']           = (self.store['mVis1']+self.store['mVis2'])/2
+          self.store['dmVis']          = self.store['mVis1'] - self.store['mVis2']
+          self.store['pairs_dphi']     = (lep3.tlv+lep4.tlv).DeltaPhi(lep1.tlv+lep2.tlv)
+          self.store['pairs_deta']     = (lep3.tlv+lep4.tlv).Eta()-(lep1.tlv+lep2.tlv).Eta()
+          self.store['pairs_dR']       = (lep3.tlv+lep4.tlv).DeltaR(lep1.tlv+lep2.tlv)
 
         return True
 
