@@ -114,8 +114,8 @@ def analyze(config):
 
     ## initialize and/or decorate objects
     ## ---------------------------------------
-    loop += ssdilep.algs.vars.EleMuVars(key_electrons='electrons_loose', key_muons='muons')   
-   
+    loop += ssdilep.algs.vars.MultiLeptonVars(key_muons='muons', key_electrons='electrons_loose')   
+
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='FourLeptons')
@@ -124,6 +124,7 @@ def analyze(config):
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
     loop += ssdilep.algs.vars.SR2ChannelFlavour()
+    loop += ssdilep.algs.vars.IsSignal()
 
     ## weights configuration
     ## ---------------------------------------
@@ -213,7 +214,7 @@ def analyze(config):
     ## configure histograms
     ## ---------------------------------------
     hist_list = []
-    hist_list += ssdilep.hists.EleMain_hists.hist_list
+    hist_list += ssdilep.hists.SR2Variables_hists.hist_list
     #hist_list += ssdilep.hists.PtOnly_hists.hist_list
     
     ##-------------------------------------------------------------------------
@@ -256,7 +257,7 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSElectronMuonPairs',None],
+                           ['TwoSSElectronMuonPairsEEMM',None],
                            #['DiElePass',['EleTrigSF']],
                            ['EEMuMuTTTT',None],
                            ['IsSignalRegion2',None],
@@ -270,7 +271,7 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSElectronMuonPairs',None],
+                           ['TwoSSElectronMuonPairsEMEM',None],
                            #['DiElePass',['EleTrigSF']],
                            ['EEMuMuTTTT',None],
                            ['IsSignalRegion2',None],
@@ -284,8 +285,7 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['OddSSElectrons',None],
-                           ['OddSSElectronMuon',None],
+                           ['TwoSSElectronMuonPairsEEEM',None],
                            #['DiElePass',['EleTrigSF']],
                            ['EEEMuTTTT',None],
                            ['IsSignalRegion2',None],
@@ -299,8 +299,7 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['OddSSMuons',None],
-                           ['OddSSElectronMuon',None],
+                           ['TwoSSElectronMuonPairsMMEM',None],
                            #['DiElePass',['EleTrigSF']],
                            ['MuMuEMuTTTT',None],
                            ['IsSignalRegion2',None],
