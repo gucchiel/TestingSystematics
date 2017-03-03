@@ -10,6 +10,7 @@ from types import MethodType
 
 import pyframe
 import ROOT
+from array import array
 
 GeV = 1000.0
 
@@ -945,7 +946,9 @@ class MultiLeptonVars(pyframe.core.Algorithm):
         leptons = electrons + muons                       
         #--------------------
         # two same-sign pairs
-        #--------------------
+        alpha = array('d',[0.08, 0.004, 0.005, 0.004, 0.003, 0.004])
+        beta  = array('d',[0.78, 1.50,  1.41,  1.45,  1.41,  1.46 ])
+        flavour =self.store['ChannelFlavour']
                                
         two_lep_pairs = {}
         if len(leptons)>=4:
@@ -1028,11 +1031,13 @@ class MultiLeptonVars(pyframe.core.Algorithm):
           self.store['charge_sum']     = lep1.trkcharge + lep2.trkcharge + lep3.trkcharge + lep4.trkcharge
           self.store['mTtot']          = (lep1T + lep2T + lep3T + lep4T + met.tlv).M()
           self.store['mVis']           = (self.store['mVis1']+self.store['mVis2'])/2
+          self.store['FullMass']       = (self.store['mVis1']+self.store['mVis2'])
+          self.store['dmOverM']        = ((self.store['mVis1'] - self.store['mVis2'])/((self.store['mVis1']+self.store['mVis2'])/2))
+          self.store['dmOverAlphaMBeta']= ((self.store['mVis1']/GeV - self.store['mVis2']/GeV)/(alpha[flavour]*pow(self.store['mVis']/GeV,beta[flavour])))
           self.store['dmVis']          = self.store['mVis1'] - self.store['mVis2']
           self.store['pairs_dphi']     = (lep3.tlv+lep4.tlv).DeltaPhi(lep1.tlv+lep2.tlv)
           self.store['pairs_deta']     = (lep3.tlv+lep4.tlv).Eta()-(lep1.tlv+lep2.tlv).Eta()
           self.store['pairs_dR']       = (lep3.tlv+lep4.tlv).DeltaR(lep1.tlv+lep2.tlv)
-
         return True
 
 
