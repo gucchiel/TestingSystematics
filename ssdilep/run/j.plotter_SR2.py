@@ -112,10 +112,6 @@ def analyze(config):
     loop += ssdilep.algs.EvWeights.LPXKfactor(cutflow='presel',key='weight_kfactor')
     loop += ssdilep.algs.EvWeights.Pileup(cutflow='presel',key='weight_pileup')
 
-    ## initialize and/or decorate objects
-    ## ---------------------------------------
-    loop += ssdilep.algs.vars.MultiLeptonVars(key_muons='muons', key_electrons='electrons_loose')   
-
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='FourLeptons')
@@ -125,6 +121,10 @@ def analyze(config):
 
     loop += ssdilep.algs.vars.SR2ChannelFlavour()
     loop += ssdilep.algs.vars.IsSignal()
+
+    ## initialize and/or decorate objects
+    ## ---------------------------------------
+    loop += ssdilep.algs.vars.MultiLeptonVars(key_muons='muons', key_electrons='electrons_loose')   
 
     ## weights configuration
     ## ---------------------------------------
