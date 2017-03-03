@@ -50,9 +50,17 @@ hist_list.append(h_PosCouple_mVis)
 hist_list.append(h_NegCouple_mVis)
 hist_list.append(h_PosCouple_dR)
 hist_list.append(h_NegCouple_dR)
+hist_list.append(h_PosCouple_Pt)
+hist_list.append(h_NegCouple_Pt)
 hist_list.append(h_Couples_mVis)
-hist_list.append(h_Couples_mVis)
-
+hist_list.append(h_Couples_FullMass)
+hist_list.append(h_Couples_dR)
+hist_list.append(h_Couples_dM)
+hist_list.append(h_Couples_dEta)
+hist_list.append(h_Couples_dPhi)
+hist_list.append(h_Couples_dMOverM)
+hist_list.append(h_Couples_dMOverAlphaMBeta)
+hist_list.append(h_NegMassVsPosMass)
 
 # EOF
 
