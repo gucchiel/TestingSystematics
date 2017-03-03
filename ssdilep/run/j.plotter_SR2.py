@@ -186,7 +186,48 @@ def analyze(config):
             key           = "Ele0AllSF",
             scale         = None,
             )
-
+    loop += ssdilep.algs.ObjWeights.EleAllSF(
+            ele_index      = 1,
+            ele_iso        = "NotLoose",
+            ele_reco       = "LooseAndBLayerLLH",
+            key           = "Ele1RecoSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.EleAllSF(
+            ele_index      = 1,
+            ele_iso        = "isolLoose",
+            ele_reco       = "MediumLLH",
+            key           = "Ele1AllSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.EleAllSF(
+            ele_index      = 2,
+            ele_iso        = "NotLoose",
+            ele_reco       = "LooseAndBLayerLLH",
+            key           = "Ele2RecoSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.EleAllSF(
+            ele_index      = 2,
+            ele_iso        = "isolLoose",
+            ele_reco       = "MediumLLH",
+            key           = "Ele2AllSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.EleAllSF(
+            ele_index      = 3,
+            ele_iso        = "NotLoose",
+            ele_reco       = "LooseAndBLayerLLH",
+            key           = "Ele3RecoSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.EleAllSF(
+            ele_index      = 3,
+            ele_iso        = "isolLoose",
+            ele_reco       = "MediumLLH",
+            key           = "Ele3AllSF",
+            scale         = None,
+            )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 0,
             mu_iso        = "NotFixedCutTightTrackOnly",
@@ -199,6 +240,48 @@ def analyze(config):
             mu_iso        = "FixedCutTightTrackOnly",
             mu_reco       = "Loose",
             key           = "Mu0AllSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 1,
+            mu_iso        = "NotFixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu1RecoSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 1,
+            mu_iso        = "FixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu1AllSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 2,
+            mu_iso        = "NotFixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu2RecoSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 2,
+            mu_iso        = "FixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu2AllSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 3,
+            mu_iso        = "NotFixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu3RecoSF",
+            scale         = None,
+            )
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 3,
+            mu_iso        = "FixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu3AllSF",
             scale         = None,
             )
 
@@ -231,7 +314,7 @@ def analyze(config):
             cut_flow     = [
                            ['TwoSSElectronPairs',None],
                            #['DiElePass',['EleTrigSF']],
-                           ['EleTTTT',None],
+                           ['EleTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Ele3AllSF']],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -245,7 +328,7 @@ def analyze(config):
             cut_flow     = [
                            ['TwoSSMuonPairs',None],
                            #['DiElePass',['EleTrigSF']],
-                           ['MuMuMuMuTTTT',None],
+                           ['MuMuMuMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -259,7 +342,7 @@ def analyze(config):
             cut_flow     = [
                            ['TwoSSElectronMuonPairsEEMM',None],
                            #['DiElePass',['EleTrigSF']],
-                           ['EEMuMuTTTT',None],
+                           ['EEMuMuTTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF','Mu1AllSF']],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -273,7 +356,7 @@ def analyze(config):
             cut_flow     = [
                            ['TwoSSElectronMuonPairsEMEM',None],
                            #['DiElePass',['EleTrigSF']],
-                           ['EEMuMuTTTT',None],
+                           ['EEMuMuTTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF','Mu1AllSF']],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -287,7 +370,7 @@ def analyze(config):
             cut_flow     = [
                            ['TwoSSElectronMuonPairsEEEM',None],
                            #['DiElePass',['EleTrigSF']],
-                           ['EEEMuTTTT',None],
+                           ['EEEMuTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Mu0AllSF']],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -301,7 +384,7 @@ def analyze(config):
             cut_flow     = [
                            ['TwoSSElectronMuonPairsMMEM',None],
                            #['DiElePass',['EleTrigSF']],
-                           ['MuMuEMuTTTT',None],
+                           ['MuMuEMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Ele0AllSF']],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
