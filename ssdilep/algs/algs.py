@@ -655,17 +655,9 @@ class CutAlg(pyframe.core.Algorithm):
       required_triggers = self.store["reqTrig"]
       passed_triggers   = self.store["passTrig"].keys()
 
-      muons = self.store['muons']
-      electrons = self.store['electrons_loose']
-      
-      for lep in muons+electrons:
-        for trig in required_triggers:
-          if trig in self.store["SingleMuTrigIndex"].keys() + self.store["SingleEleTrigIndex"].keys():
-            lepton_is_matched  = bool( lep.isTrigMatchedToChain.at(self.store["SingleMuTrigIndex"][trig]) or lep.isTrigMatchedToChain.at(self.store["SingleEleTrigIndex"][trig]))
-            event_is_triggered = bool( trig in passed_triggers )
-            if lepton_is_matched and event_is_triggered: 
-              return True
-      return False 
+      for trig in required_triggers:
+          if trig in passed_triggers: return True
+      return False      
 
     #__________________________________________________________________________
     def cut_TagIsMatched(self):
@@ -1595,7 +1587,7 @@ class CutAlg(pyframe.core.Algorithm):
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       os_pairs = []
-      leptons = eletrons + muons
+      leptons = electrons + muons
       if len(leptons) >= 2:
         for p in combinations(leptons,2):
           if p[0].trkcharge * p[1].trkcharge < 0.0: os_pairs.append(p)
@@ -1631,7 +1623,9 @@ class CutAlg(pyframe.core.Algorithm):
     
     def cut_MassBelow200GeV(self):
         electrons = self.store['electrons_loose']
-        if (electrons[0].tlv + electrons[1].tlv).M() < 200*GeV: return True
+        muons     = self.store['muons']
+        leptons   = electrons + muons
+        if (leptons[0].tlv + leptons[1].tlv).M() < 200*GeV: return True
         return False
 
     #__________________________________________________________________________
