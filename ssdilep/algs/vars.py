@@ -64,6 +64,11 @@ class BuildTrigConfig(pyframe.core.Algorithm):
 
       """
       # -----
+      #mixed flavour triggers for e/mu selection
+      # -----
+      if self.key == "leptons_dilepton": return True
+
+      # -----
       # muons
       # -----
       if self.key == "muons" or self.key == "leptons":

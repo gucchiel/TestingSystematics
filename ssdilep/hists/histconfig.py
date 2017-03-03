@@ -904,7 +904,7 @@ h_leplead_pt = Hist1D( hname  = "h_leplead_pt",
                               xmin   = 0.0,
                               xmax   = 2000.0,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].tlv.Pt() / GeV",
+                              vexpr  = "self.store['lep1'].tlv.Pt() / GeV",
                             )
 
 h_leplead_eta = Hist1D( hname  = "h_leplead_eta",
@@ -914,7 +914,7 @@ h_leplead_eta = Hist1D( hname  = "h_leplead_eta",
                               xmin   = -2.5,
                               xmax   = 2.5,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].tlv.Eta()",
+                              vexpr  = "self.store['lep1'].tlv.Eta()",
                             )
 
 h_leplead_phi = Hist1D( hname  = "h_leplead_phi",
@@ -924,7 +924,7 @@ h_leplead_phi = Hist1D( hname  = "h_leplead_phi",
                               xmin   = -3.2,
                               xmax   = 3.2,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].tlv.Phi()",
+                              vexpr  = "self.store['lep1'].tlv.Phi()",
                             )
 
 h_leplead_trkd0 = Hist1D( hname  = "h_leplead_trkd0",
@@ -934,7 +934,7 @@ h_leplead_trkd0 = Hist1D( hname  = "h_leplead_trkd0",
                               xmin   = -0.4,
                               xmax   = 0.4,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].trkd0",
+                              vexpr  = "self.store['lep1'].trkd0",
                             )
 
 h_leplead_trkd0sig = Hist1D( hname  = "h_leplead_trkd0sig",
@@ -944,7 +944,7 @@ h_leplead_trkd0sig = Hist1D( hname  = "h_leplead_trkd0sig",
                               xmin   = 0.,
                               xmax   = 10.,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].trkd0sig",
+                              vexpr  = "self.store['lep1'].trkd0sig",
                             )
 
 h_leplead_trkz0 = Hist1D( hname  = "h_leplead_trkz0",
@@ -954,7 +954,7 @@ h_leplead_trkz0 = Hist1D( hname  = "h_leplead_trkz0",
                               xmin   = -2,
                               xmax   = 2,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].trkz0",
+                              vexpr  = "self.store['lep1'].trkz0",
                             )
 
 h_leplead_trkz0sintheta  = Hist1D( hname  = "h_leplead_trkz0sintheta",
@@ -964,7 +964,7 @@ h_leplead_trkz0sintheta  = Hist1D( hname  = "h_leplead_trkz0sintheta",
                               xmin   = -1,
                               xmax   = 1,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].trkz0sintheta",
+                              vexpr  = "self.store['lep1'].trkz0sintheta",
                             )
 
 h_leplead_ptvarcone30  = Hist1D( hname  = "h_leplead_ptvarcone30",
@@ -974,7 +974,7 @@ h_leplead_ptvarcone30  = Hist1D( hname  = "h_leplead_ptvarcone30",
                               xmin   = 0.,
                               xmax   = 10.,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep1'][0].ptvarcone30 / self.store['lep1'][0].tlv.Pt()",
+                              vexpr  = "self.store['lep1'].ptvarcone30 / self.store['lep1'].tlv.Pt()",
                             )
 
 # subleading lepton
@@ -986,7 +986,7 @@ h_lepsublead_pt = Hist1D( hname  = "h_lepsublead_pt",
                               xmin   = 0.0,
                               xmax   = 2000.0,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].tlv.Pt() / GeV",
+                              vexpr  = "self.store['lep2'].tlv.Pt() / GeV",
                             )
 
 h_lepsublead_eta = Hist1D( hname  = "h_lepsublead_eta",
@@ -996,7 +996,7 @@ h_lepsublead_eta = Hist1D( hname  = "h_lepsublead_eta",
                               xmin   = -2.5,
                               xmax   = 2.5,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].tlv.Eta()",
+                              vexpr  = "self.store['lep2'].tlv.Eta()",
                             )
 
 h_lepsublead_phi = Hist1D( hname  = "h_lepsublead_phi",
@@ -1006,7 +1006,7 @@ h_lepsublead_phi = Hist1D( hname  = "h_lepsublead_phi",
                               xmin   = -3.2,
                               xmax   = 3.2,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].tlv.Phi()",
+                              vexpr  = "self.store['lep2'].tlv.Phi()",
                             )
 
 h_lepsublead_trkd0 = Hist1D( hname  = "h_lepsublead_trkd0",
@@ -1016,7 +1016,7 @@ h_lepsublead_trkd0 = Hist1D( hname  = "h_lepsublead_trkd0",
                               xmin   = -0.4,
                               xmax   = 0.4,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].trkd0",
+                              vexpr  = "self.store['lep2'].trkd0",
                             )
 
 h_lepsublead_trkd0sig = Hist1D( hname  = "h_lepsublead_trkd0sig",
@@ -1026,7 +1026,7 @@ h_lepsublead_trkd0sig = Hist1D( hname  = "h_lepsublead_trkd0sig",
                               xmin   = 0.,
                               xmax   = 10.,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].trkd0sig",
+                              vexpr  = "self.store['lep2'].trkd0sig",
                             )
 
 h_lepsublead_trkz0 = Hist1D( hname  = "h_lepsublead_trkz0",
@@ -1036,7 +1036,7 @@ h_lepsublead_trkz0 = Hist1D( hname  = "h_lepsublead_trkz0",
                               xmin   = -2,
                               xmax   = 2,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].trkz0",
+                              vexpr  = "self.store['lep2'].trkz0",
                             )
 
 h_lepsublead_trkz0sintheta  = Hist1D( hname  = "h_lepsublead_trkz0sintheta",
@@ -1046,7 +1046,7 @@ h_lepsublead_trkz0sintheta  = Hist1D( hname  = "h_lepsublead_trkz0sintheta",
                               xmin   = -1,
                               xmax   = 1,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].trkz0sintheta",
+                              vexpr  = "self.store['lep2'].trkz0sintheta",
                             )
 
 h_lepsublead_ptvarcone30  = Hist1D( hname  = "h_lepsublead_ptvarcone30",
@@ -1056,7 +1056,7 @@ h_lepsublead_ptvarcone30  = Hist1D( hname  = "h_lepsublead_ptvarcone30",
                               xmin   = 0.,
                               xmax   = 10.,
                               dir    = "elemu",
-                              vexpr  = "self.store['lep2'][0].ptvarcone30 / self.store['lep1'][1].tlv.Pt()",
+                              vexpr  = "self.store['lep2'].ptvarcone30 / self.store['lep1'].tlv.Pt()",
                             )
 
 # ------------------------------
