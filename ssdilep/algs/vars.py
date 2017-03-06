@@ -151,13 +151,14 @@ class Particle(pyframe.core.ParticleProxy):
     # https://twiki.cern.ch/twiki/bin/view/AtlasProtected/MCTruthClassifier 
     #__________________________________________________________________________
     def isTrueNonIsoMuon(self):
-        if IsSignal(): return True
+        if (IsSignal()==True): return True
         else:
             matchtype = self.truthType in [5,7,8]
             return self.isTruthMatchedToMuon and matchtype
     #__________________________________________________________________________
     def isTrueIsoMuon(self):   
-        if IsSignal(): return True
+        if (IsSignal()==True): 
+            return True
         else: 
             matchtype = self.truthType in [6]
             return self.isTruthMatchedToMuon and matchtype
@@ -190,14 +191,14 @@ class Particle(pyframe.core.ParticleProxy):
         return True
       elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
         return True
-      elif IsSignal(): 
+      elif (IsSignal()==True): 
         return True  
 
       return False
 
     #__________________________________________________________________________
     def isTrueNonIsoElectron(self):
-        if IsSignal(): return True
+        if (IsSignal()==True): return True
         else:
             matchtype = self.truthType in [1,3,4]
             return matchtype
@@ -243,7 +244,7 @@ class IsSignal(pyframe.core.Algorithm):# simple class to return true if the MC s
     #__________________________________________________________________________
     def execute(self,weight):
         pyframe.core.Algorithm.execute(self, weight)
-        if ("mc" in self.sampletype) and self.chain.mcChannelNumber in [302449,302450,302451,302452,302453,302454,302455,302456,302457,302458,302459]: return True
+        if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in [302449,302450,302451,302452,302453,302454,302455,302456,302457,302458,302459])): return True
         return False
 
 #------------------------------------------------------------------------------
