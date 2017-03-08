@@ -68,8 +68,8 @@ def analyze(config):
     ## trig list to the store for later cutflow
     ## ---------------------------------------
     loop += ssdilep.algs.vars.BuildTrigConfig(
-        required_triggers = ["HLT_2e17_lhloose"],
-        key = 'electrons',
+        required_triggers = ["HLT_e17_lhloose_nod0_mu14"],
+        key = 'leptons_dilepton',
         )
     
     ## build and pt-sort objects
@@ -114,18 +114,11 @@ def analyze(config):
 
     ## initialize and/or decorate objects
     ## ---------------------------------------
-    loop += ssdilep.algs.vars.DiEleVars(key_electrons='electrons_loose')   
+    loop += ssdilep.algs.vars.EleMuVars(key_electrons='electrons_loose',key_muons='muons')   
    
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
-    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OddOSElectrons') 
-    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllElePt30') 
-    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleLHLoose') 
-    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleEta247AndNotCrackRegion') 
-    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleZ0SinTheta05') 
-    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllEleTrkd0Sig5') 
-    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllJetPt25') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='TwoElectrons')
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OneElectronOneMuon')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
@@ -143,7 +136,7 @@ def analyze(config):
     #        key       = "DataUnPrescAvg",
     #        )
     loop +=  ssdilep.algs.EvWeights.EleTrigSF(
-            trig_list =  ["HLT_2e17_lhloose"],
+            trig_list =  ["HLT_e17_lhloose_nod0_mu14"],
             key       = "EleTrigSF",
             scale     = None,
             )
@@ -154,6 +147,29 @@ def analyze(config):
             chargeFlipSF=True,
             )
     
+    #Muon trigger efficiency implementation
+    """
+    loop += ssdilep.algs.EvWeights.EffCorrPair(
+            config_file=os.path.join(main_path,'ssdilep/data/g_corr_eff.root'),
+            mu_lead_type    = "Tight",
+            mu_sublead_type = "Loose",
+            key             = "EffCorrTL",
+            scale           = None,
+            )
+    loop += ssdilep.algs.EvWeights.EffCorrPair(
+            config_file=os.path.join(main_path,'ssdilep/data/g_corr_eff.root'),
+            mu_lead_type    = "Loose",
+            mu_sublead_type = "Tight",
+            key             = "EffCorrLT",
+            scale           = None,
+            )
+    loop += ssdilep.algs.EvWeights.EffCorrPair(
+            config_file=os.path.join(main_path,'ssdilep/data/g_corr_eff.root'),
+            mu_lead_type    = "Loose",
+            mu_sublead_type = "Loose",
+            key             = "EffCorrLL",
+            scale           = None,
+    """
     ## objects
     ## +++++++++++++++++++++++++++++++++++++++
     loop += ssdilep.algs.ObjWeights.EleAllSF(
@@ -170,48 +186,22 @@ def analyze(config):
             key           = "Ele0AllSF",
             scale         = None,
             )
-    loop += ssdilep.algs.ObjWeights.EleAllSF(
-            ele_index      = 1,
-            ele_iso        = "NotLoose",
-            ele_reco       = "LooseAndBLayerLLH",
-            key           = "Ele1RecoSF",
+
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 0,
+            mu_iso        = "NotFixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu0RecoSF",
             scale         = None,
             )
-    loop += ssdilep.algs.ObjWeights.EleAllSF(
-            ele_index      = 1,
-            ele_iso        = "isolLoose",
-            ele_reco       = "MediumLLH",
-            key           = "Ele1AllSF",
+    loop += ssdilep.algs.ObjWeights.MuAllSF(
+            mu_index      = 0,
+            mu_iso        = "FixedCutTightTrackOnly",
+            mu_reco       = "Loose",
+            key           = "Mu0AllSF",
             scale         = None,
             )
-    loop += ssdilep.algs.ObjWeights.EleAllSF(
-            ele_index      = 2,
-            ele_iso        = "NotLoose",
-            ele_reco       = "LooseAndBLayerLLH",
-            key           = "Ele2RecoSF",
-            scale         = None,
-            )
-    loop += ssdilep.algs.ObjWeights.EleAllSF(
-            ele_index      = 2,
-            ele_iso        = "isolLoose",
-            ele_reco       = "MediumLLH",
-            key           = "Ele2AllSF",
-            scale         = None,
-            )
-    loop += ssdilep.algs.ObjWeights.EleAllSF(
-            ele_index      = 3,
-            ele_iso        = "NotLoose",
-            ele_reco       = "LooseAndBLayerLLH",
-            key           = "Ele3RecoSF",
-            scale         = None,
-            )
-    loop += ssdilep.algs.ObjWeights.EleAllSF(
-            ele_index      = 3,
-            ele_iso        = "isolLoose",
-            ele_reco       = "MediumLLH",
-            key           = "Ele3AllSF",
-            scale         = None,
-            )
+
     #implementation of electron fake factors
 
     loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
@@ -220,30 +210,17 @@ def analyze(config):
             key='Ele0FF',
             sys=None,
             )
-    loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-09-01-2017.root'),
-            ele_index=1,
-            key='Ele1FF',
-            sys=None,
-            )
-    loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-09-01-2017.root'),
-            ele_index=2,
-            key='Ele2FF',
-            sys=None,
-            )
-    loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-09-01-2017.root'),
-            ele_index=3,
-            key='Ele3FF',
-            sys=None,
+    loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
+            config_file=os.path.join(main_path,'ssdilep/data/g_reducedthr_ff.root'),
+            mu_index=0,
+            key='Mu0FF',
+            scale=sys_ff,
             )
 
     ## configure histograms
     ## ---------------------------------------
     hist_list = []
-    hist_list += ssdilep.hists.EleMain_hists.hist_list
-    #hist_list += ssdilep.hists.PtOnly_hists.hist_list
+    hist_list += ssdilep.hists.EleMuMain_hists.hist_list
     
     ##-------------------------------------------------------------------------
     ## make plots
@@ -257,11 +234,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddOSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddOSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleTT',['Ele0AllSF','Ele1AllSF']],
-                           ['Mass130GeV',None],
+                           ['EleMuTT',['Ele0AllSF','Mu0AllSF']],
                            ],
             )
 
@@ -271,11 +247,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddOSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddOSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleTL',['Ele0AllSF','Ele1RecoSF','Ele1FF']],
-                           ['Mass130GeV',None],
+                           ['EleMuTL',['Ele0AllSF','Mu0RecoSF','Mu0FF']],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -284,11 +259,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddOSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddOSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleLT',['Ele0RecoSF','Ele1AllSF','Ele0FF']],
-                           ['Mass130GeV',None],
+                           ['EleMuLT',['Ele0RecoSF','Mu0AllSF','Ele0FF']],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -297,11 +271,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddOSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddOSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleLL',['Ele0RecoSF','Ele1RecoSF','Ele0FF','Ele1FF']],
-                           ['Mass130GeV',None],
+                           ['EleMuLL',['Ele0RecoSF','Mu0RecoSF','Ele0FF','Mu0FF']],
                            ],
             )
     ## SS CR
@@ -312,11 +285,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddSSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddSSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleTT',['Ele0AllSF','Ele1AllSF','ChargeFlipEleSF']],
-                           ['Mass130GeV',None],
+                           ['EleMuTT',['Ele0AllSF','Mu0AllSF','ChargeFlipEleSF']],
                            ['MassBelow200GeV',None],
                            ],
             )
@@ -327,11 +299,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddSSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddSSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleTL',['Ele0AllSF','Ele1RecoSF','Ele1FF']],
-                           ['Mass130GeV',None],
+                           ['EleMuTL',['Ele0AllSF','Mu0RecoSF','Mu0FF']],
                            ['MassBelow200GeV',None],
                            ],
             )
@@ -341,11 +312,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddSSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddSSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleLT',['Ele0RecoSF','Ele1AllSF','Ele0FF']],
-                           ['Mass130GeV',None],
+                           ['EleMuLT',['Ele0RecoSF','Mu0AllSF','Ele0FF']],
                            ['MassBelow200GeV',None],
                            ],
             )
@@ -355,11 +325,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['DiElePass',['EleTrigSF']],
-                           ['OddSSElectrons',None],
+                           ['PassMixed',None],
+                           ['OddSSElectronMuon',None],
                            ['OneOrTwoBjets',['OneOrTwoBjetsSF']],
-                           ['EleLL',['Ele0RecoSF','Ele1RecoSF','Ele0FF','Ele1FF']],
-                           ['Mass130GeV',None],
+                           ['EleMuLL',['Ele0RecoSF','Mu0RecoSF','Ele0FF','Mu0FF']],
                            ['MassBelow200GeV',None],
                            ],
             )

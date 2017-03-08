@@ -191,6 +191,16 @@ h_electrons_mVis  = Hist1D( hname  = "h_electrons_mVis",
                               vexpr  = "self.store['mVis']/GeV",
                             )
 
+h_electrons_mTtot  = Hist1D( hname  = "h_electrons_mTtot",
+                              xtitle = "m^{tot}_{T}(e_{lead},e_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mTtot']/GeV",
+                            )
+
 h_ejet_dphi  = Hist1D( hname  = "h_ejet_dphi",
                               xtitle = "#Delta#phi(e_{lead},jet_{lead})",
                               ytitle = "Events", 
@@ -199,8 +209,59 @@ h_ejet_dphi  = Hist1D( hname  = "h_ejet_dphi",
                               xmax   = 3.2,
                               dir    = "event",
                               vexpr  = "self.store['ejet_dphi']",
-)
+                            )
 
+# mixed channel:
+
+h_elemu_chargeprod  = Hist1D( hname  = "h_elemu_chargeprod",
+                              xtitle = "q(l_{lead}) #timesq (l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 4,
+                              xmin   = -2,
+                              xmax   = 2,
+                              dir    = "event",
+                              vexpr  = "self.store['charge_product']",
+                            )
+
+h_elemu_dphi  = Hist1D( hname  = "h_elemu_dphi",
+                              xtitle = "#Delta#phi(l_{lead},l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "event",
+                              vexpr  = "self.store['elemu_dphi']",
+                            )
+
+h_elemu_deta  = Hist1D( hname  = "h_elemu_deta",
+                              xtitle = "#Delta#eta(l_{lead},l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['elemu_deta']",
+                            )
+
+h_elemu_mVis  = Hist1D( hname  = "h_elemu_mVis",
+                              xtitle = "m_{vis}(l_{lead},l_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mVis']/GeV",
+                            )
+
+h_elemu_mTtot  = Hist1D( hname  = "h_elemu_mTtot",
+                              xtitle = "m^{tot}_{T}(l_{lead},l_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mTtot']/GeV",
+                            )
 
 # -------
 # jets
@@ -384,9 +445,9 @@ h_musublead_ptvarcone30  = Hist1D( hname  = "h_musublead_ptvarcone30",
                               vexpr  = "self.store['muons'][1].ptvarcone30 / self.store['muons'][1].tlv.Pt()",
                             )
 
-# -------------
-# tag and probe
-# -------------
+# ------------------
+# Muon tag and probe
+# ------------------
 h_tag_pt = Hist1D( hname  = "h_tag_pt",
                               xtitle = "p_{T}(#mu_{tag}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
@@ -510,9 +571,9 @@ h_met_trk_sumet  = Hist1D( hname  = "h_met_trk_sumet",
                           )
 
 
-# --------
-# 2D hists
-# --------
+# -------------
+# Muon 2D hists
+# -------------
 h_mulead_ptiso_jetlead_pt  = Hist2D( hname      = "h_mulead_ptiso_jetlead_pt",
                               xtitle  = "p_{T}(#mu_{lead}) + ptvarcone30 [GeV]",
                               ytitle  = "p_{T}(jet_{lead}) [GeV]", 
@@ -557,65 +618,7 @@ h_mulead_pt_jetlead_pt  = Hist2D( hname      = "h_mulead_pt_jetlead_pt",
 # electrons
 #-----------
 
-h_electrons_chargeprod  = Hist1D( hname  = "h_electrons_chargeprod",
-                              xtitle = "q(e_{lead}) #timesq (e_{sublead})",
-                              ytitle = "Events", 
-                              nbins  = 4,
-                              xmin   = -2,
-                              xmax   = 2,
-                              dir    = "event",
-                              vexpr  = "self.store['charge_product']",
-                            )
 
-h_electrons_dphi  = Hist1D( hname  = "h_electrons_dphi",
-                              xtitle = "#Delta#phi(e_{lead},e_{sublead})",
-                              ytitle = "Events", 
-                              nbins  = 64,
-                              xmin   = -3.2,
-                              xmax   = 3.2,
-                              dir    = "event",
-                              vexpr  = "self.store['electrons_dphi']",
-                            )
-
-h_electrons_deta  = Hist1D( hname  = "h_electrons_delta",
-                              xtitle = "#Delta#eta(e_{lead},e_{sublead})",
-                              ytitle = "Events", 
-                              nbins  = 50,
-                              xmin   = -2.5,
-                              xmax   = 2.5,
-                              dir    = "event",
-                              vexpr  = "self.store['electrons_deta']",
-                            )
-
-h_electrons_mVis  = Hist1D( hname  = "h_electrons_mVis",
-                              xtitle = "m_{vis}(e_{lead},e_{sublead}) [GeV]",
-                              ytitle = "Events / (1 GeV)", 
-                              nbins  = 2000,
-                              xmin   = 0.0,
-                              xmax   = 2000.,
-                              dir    = "event",
-                              vexpr  = "self.store['mVis']/GeV",
-                            )
-
-h_electrons_mTtot  = Hist1D( hname  = "h_electrons_mTtot",
-                              xtitle = "m^{tot}_{T}(e_{lead},e_{sublead}) [GeV]",
-                              ytitle = "Events / (1 GeV)", 
-                              nbins  = 2000,
-                              xmin   = 0.0,
-                              xmax   = 2000.,
-                              dir    = "event",
-                              vexpr  = "self.store['mTtot']/GeV",
-                            )
-
-h_ejet_dphi  = Hist1D( hname  = "h_ejet_dphi",
-                              xtitle = "#Delta#phi(e_{lead},jet_{lead})",
-                              ytitle = "Events", 
-                              nbins  = 64,
-                              xmin   = -3.2,
-                              xmax   = 3.2,
-                              dir    = "event",
-                              vexpr  = "self.store['ejet_dphi']",
-)
 
 # ele lead
 # ------
@@ -887,4 +890,436 @@ h_elelead_pt_jetlead_pt  = Hist2D( hname      = "h_elelead_pt_jetlead_pt",
 
                           )
 
+
+# ------------------------------
+# mixed channel: leading lepton
+# ------------------------------
+
+# leading lepton
+# ---------------
+h_leplead_pt = Hist1D( hname  = "h_leplead_pt",
+                              xtitle = "p_{T}(#mu_{lead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.0,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].tlv.Pt() / GeV",
+                            )
+
+h_leplead_eta = Hist1D( hname  = "h_leplead_eta",
+                              xtitle = "#eta(#mu_{lead})",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].tlv.Eta()",
+                            )
+
+h_leplead_phi = Hist1D( hname  = "h_leplead_phi",
+                              xtitle = "#phi(#mu_{lead})",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].tlv.Phi()",
+                            )
+
+h_leplead_trkd0 = Hist1D( hname  = "h_leplead_trkd0",
+                              xtitle = "d^{trk}_{0}(#mu_{lead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 80,
+                              xmin   = -0.4,
+                              xmax   = 0.4,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].trkd0",
+                            )
+
+h_leplead_trkd0sig = Hist1D( hname  = "h_leplead_trkd0sig",
+                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (#mu_{lead})",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 100,
+                              xmin   = 0.,
+                              xmax   = 10.,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].trkd0sig",
+                            )
+
+h_leplead_trkz0 = Hist1D( hname  = "h_leplead_trkz0",
+                              xtitle = "z^{trk}_{0}(#mu_{lead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 40,
+                              xmin   = -2,
+                              xmax   = 2,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].trkz0",
+                            )
+
+h_leplead_trkz0sintheta  = Hist1D( hname  = "h_leplead_trkz0sintheta",
+                              xtitle = "z^{trk}_{0}sin#theta(#mu_{lead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 200,
+                              xmin   = -1,
+                              xmax   = 1,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].trkz0sintheta",
+                            )
+
+h_leplead_ptvarcone30  = Hist1D( hname  = "h_leplead_ptvarcone30",
+                              xtitle = "ptvarcone30/p_{T}(#mu_{lead})",
+                              ytitle = "Events / (0.001)", 
+                              nbins  = 10000,
+                              xmin   = 0.,
+                              xmax   = 10.,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep1'].ptvarcone30 / self.store['lep1'].tlv.Pt()",
+                            )
+
+# subleading lepton
+# ------------------
+h_lepsublead_pt = Hist1D( hname  = "h_lepsublead_pt",
+                              xtitle = "p_{T}(#mu_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.0,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].tlv.Pt() / GeV",
+                            )
+
+h_lepsublead_eta = Hist1D( hname  = "h_lepsublead_eta",
+                              xtitle = "#eta(#mu_{sublead})",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].tlv.Eta()",
+                            )
+
+h_lepsublead_phi = Hist1D( hname  = "h_lepsublead_phi",
+                              xtitle = "#phi(#mu_{sublead})",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].tlv.Phi()",
+                            )
+
+h_lepsublead_trkd0 = Hist1D( hname  = "h_lepsublead_trkd0",
+                              xtitle = "d^{trk}_{0}(#mu_{sublead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 80,
+                              xmin   = -0.4,
+                              xmax   = 0.4,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].trkd0",
+                            )
+
+h_lepsublead_trkd0sig = Hist1D( hname  = "h_lepsublead_trkd0sig",
+                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (#mu_{sublead})",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 100,
+                              xmin   = 0.,
+                              xmax   = 10.,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].trkd0sig",
+                            )
+
+h_lepsublead_trkz0 = Hist1D( hname  = "h_lepsublead_trkz0",
+                              xtitle = "z^{trk}_{0}(#mu_{sublead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 40,
+                              xmin   = -2,
+                              xmax   = 2,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].trkz0",
+                            )
+
+h_lepsublead_trkz0sintheta  = Hist1D( hname  = "h_lepsublead_trkz0sintheta",
+                              xtitle = "z^{trk}_{0}sin#theta(#mu_{sublead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 200,
+                              xmin   = -1,
+                              xmax   = 1,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].trkz0sintheta",
+                            )
+
+h_lepsublead_ptvarcone30  = Hist1D( hname  = "h_lepsublead_ptvarcone30",
+                              xtitle = "ptvarcone30/p_{T}(#mu_{sublead})",
+                              ytitle = "Events / (0.001)", 
+                              nbins  = 10000,
+                              xmin   = 0.,
+                              xmax   = 10.,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep2'].ptvarcone30 / self.store['lep1'].tlv.Pt()",
+                            )
+
+# ------------------------------
+# SR2: 4 leptons
+# ------------------------------
+
+# lepton variables
+# ---------------
+h_lep1_pt = Hist1D( hname  = "h_lep1_pt",
+                              xtitle = "p_{T}(lep1) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.0,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep1'].tlv.Pt() / GeV",
+                            )
+
+h_lep1_eta = Hist1D( hname  = "h_lep1_eta",
+                              xtitle = "#eta(lep1)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep1'].tlv.Eta()",
+                            )
+h_lep1_phi = Hist1D( hname  = "h_lep1_phi",
+                              xtitle = "#phi(lep1)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep1'].tlv.Phi()",
+                            )
+h_lep2_pt = Hist1D( hname  = "h_lep2_pt",
+                              xtitle = "p_{T}(lep2) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.0,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep2'].tlv.Pt() / GeV",
+                            )
+h_lep2_eta = Hist1D( hname  = "h_lep2_eta",
+                              xtitle = "#eta(lep2)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep2'].tlv.Eta()",
+                            )
+h_lep2_phi = Hist1D( hname  = "h_lep2_phi",
+                              xtitle = "#phi(lep2)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep2'].tlv.Phi()",
+                            )
+
+h_lep3_pt = Hist1D( hname  = "h_lep3_pt",
+                              xtitle = "p_{T}(lep3) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.0,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep3'].tlv.Pt() / GeV",
+                            )
+
+h_lep3_eta = Hist1D( hname  = "h_lep3_eta",
+                              xtitle = "#eta(lep3)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep3'].tlv.Eta()",
+                            )
+h_lep3_phi = Hist1D( hname  = "h_lep3_phi",
+                              xtitle = "#phi(lep3)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep3'].tlv.Phi()",
+                            )
+
+h_lep4_pt = Hist1D( hname  = "h_lep4_pt",
+                              xtitle = "p_{T}(lep4) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.0,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep4'].tlv.Pt() / GeV",
+                            )
+
+h_lep4_eta = Hist1D( hname  = "h_lep4_eta",
+                              xtitle = "#eta(lep4)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep4'].tlv.Eta()",
+                            )
+h_lep4_phi = Hist1D( hname  = "h_lep4_phi",
+                              xtitle = "#phi(lep4)",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "leptons",
+                              vexpr  = "self.store['lep4'].tlv.Phi()",
+                            )
+
+
+
+# couple variables
+# ---------------
+h_PosCouple_mVis  = Hist1D( hname  = "h_PosCouple_mVis",
+                              xtitle = "m_{vis}(++) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mVis1']/GeV",
+                            )
+h_NegCouple_mVis  = Hist1D( hname  = "h_NegCouple_mVis",
+                              xtitle = "m_{vis}(--) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mVis2']/GeV",
+                            )
+h_PosCouple_dR  = Hist1D( hname  = "h_PosCouple_dR",
+                              xtitle = "#DeltaR_{vis}(++) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 20,
+                              xmin   = 0,
+                              xmax   = 5,
+                              dir    = "event",
+                              vexpr  = "self.store['leps_dR1']/GeV",
+                            )
+h_PosCouple_Pt  = Hist1D( hname  = "h_PosCouple_Pt",
+                              xtitle = "#p_T(++) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0,
+                              xmax   = 2000,
+                              dir    = "event",
+                              vexpr  = "self.store['pTH1']/GeV",
+                            )
+h_NegCouple_dR  = Hist1D( hname  = "h_NegCouple_dR",
+                              xtitle = "#DeltaR_{vis}(--) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 20,
+                              xmin   = 0,
+                              xmax   = 5,
+                              dir    = "event",
+                              vexpr  = "self.store['leps_dR2']/GeV",
+                            )
+h_NegCouple_Pt  = Hist1D( hname  = "h_NegCouple_Pt",
+                              xtitle = "#p_T(--) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0,
+                              xmax   = 2000,
+                              dir    = "event",
+                              vexpr  = "self.store['pTH2']/GeV",
+                            )
+
+h_Couples_mVis  = Hist1D( hname  = "h_Couples_mVis",
+                              xtitle = "(m_{vis}(++) + m_{vis}(--))/2 [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mVis']/GeV",
+                            )
+h_Couples_FullMass  = Hist1D( hname  = "h_Couples_FullMass",
+                              xtitle = "m_{vis}(++) + m_{vis}(--) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['FullMass']/GeV",
+                            )
+h_Couples_dR  = Hist1D( hname  = "h_Couples_dR",
+                              xtitle = "#DeltaR_{vis} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 20,
+                              xmin   = 0,
+                              xmax   = 5,
+                              dir    = "event",
+                              vexpr  = "self.store['pairs_dR']/GeV",
+                            )
+h_Couples_dEta  = Hist1D( hname  = "h_Couples_dEta",
+                              xtitle = "#Delta#eta_{vis} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 100,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['pairs_deta']/GeV",
+                            )
+h_Couples_dPhi  = Hist1D( hname  = "h_Couples_dPhi",
+                              xtitle = "#Delta#phi_{vis} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 100,
+                              xmin   = -3.5,
+                              xmax   = 3.5,
+                              dir    = "event",
+                              vexpr  = "self.store['pairs_dphi']/GeV",
+                            )
+h_Couples_dM  = Hist1D( hname  = "h_Couples_dM",
+                              xtitle = "#DeltaM(pair_{++}-pair_{--}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 400,
+                              xmin   = -400,
+                              xmax   = 400,
+                              dir    = "event",
+                              vexpr  = "self.store['dmVis']/GeV",
+                            )
+h_Couples_dMOverM  = Hist1D( hname  = "h_Couples_dMOverM",
+                              xtitle = "#DeltaM(pair_{++}-pair_{--})/M [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 1000,
+                              xmin   = -1.5,
+                              xmax   = 1.5,
+                              dir    = "event",
+                              vexpr  = "self.store['dmOverM']",
+                            )
+h_Couples_dMOverAlphaMBeta  = Hist1D( hname  = "h_Couples_dMOverAlphaMBeta",
+                              xtitle = "#DeltaM/ #alpha M^{#beta} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 7000,
+                              xmin   = -7,
+                              xmax   = 7,
+                              dir    = "event",
+                              vexpr  = "self.store['dmOverAlphaMBeta']",
+                            )
+h_NegMassVsPosMass  = Hist2D( hname      = "h_NegMassVsPosMass",
+                              xtitle  = "m_{++} [GeV]",
+                              ytitle  = "m_{--} [GeV]",
+                              nbinsx  = 2000,
+                              xmin    = 0.,
+                              xmax    = 2000.,
+                              nbinsy  = 2000,
+                              ymin    = 0.,
+                              ymax    = 2000.,
+                              dir     = "event",
+                              vexpr   = "self.store['mVis1']/GeV , self.store['mVis2']/GeV",
+                          )
 # EOF

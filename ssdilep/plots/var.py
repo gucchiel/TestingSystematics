@@ -24,6 +24,7 @@ class Var(object):
             xmin  = None,
             xmax  = None,
             log   = None,
+            logx  = None,
             ):
         self.name = name
         if not title: title = name
@@ -37,6 +38,7 @@ class Var(object):
         self.xmin  = xmin
         self.xmax  = xmax
         self.log   = log
+        self.logx  = logx
 
 
 
