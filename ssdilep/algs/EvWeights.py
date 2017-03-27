@@ -141,11 +141,13 @@ class LPXKfactor(pyframe.core.Algorithm):
         self.key = key
     #__________________________________________________________________________
     def execute(self, weight):
-        if "mc" in self.sampletype: 
-            wkf = self.chain.LPXKfactor
+        if "mc" in self.sampletype:
+            wkf = self.chain.LPXKfactorVec.at(0)
             if self.key: self.store[self.key] = wkf
             self.set_weight(wkf*weight)
         return True
+
+
 #------------------------------------------------------------------------------                                                                                                   
 class OneOrTwoBjetsSF(pyframe.core.Algorithm):
     """                                                                                                                                                                            
