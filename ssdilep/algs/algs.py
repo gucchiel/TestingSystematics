@@ -3158,7 +3158,12 @@ class PlotAlg(pyframe.algs.CutFlowAlg,CutAlg):
             
             if h.get_name() == "Hist1D":
               var = -999.
-              exec( "var = %s" % h.vexpr ) # so dirty !!!
+              
+              # this all part gives me the shivers. But is just temporary. Don't panic
+              if hasattr(self.chain,"njets") and "njets" in h.vexpr: exec( "var = self.chain.njets" ) 
+              elif: hasattr(self.chain,"njet") and "njet" in h.vexpr: exec( "var = self.chain.njet" ) 
+              else: exec( "var = %s" % h.vexpr ) # so dirty !!!
+              
               if h.instance and var!=-999.: h.fill(var, weight)
             
             elif h.get_name() == "Hist2D":
