@@ -160,7 +160,9 @@ class CutAlg(pyframe.core.Algorithm):
     
     #__________________________________________________________________________
     def cut_OneJet(self):
-        return self.chain.njets == 1
+      if hasattr(self.chain,"njets"): return self.chain.njets == 1
+      if hasattr(self.chain,"njet"):  return self.chain.njet == 1
+    
     #__________________________________________________________________________
     def cut_JetCleaning(self):
       for j in self.store['jets']:
@@ -3065,7 +3067,6 @@ class CutAlg(pyframe.core.Algorithm):
     #____________________________________________________________________________
 
     def cut_PASS(self):
-      #print self.chain.njets
       return True
 
 
