@@ -13,7 +13,7 @@ hist_list.append(h_actualIntPerXing)
 hist_list.append(h_NPV)
 hist_list.append(h_nmuons)
 hist_list.append(h_nelectrons)
-hist_list.append(h_njets)
+#hist_list.append(h_njets)           #commented for now
 hist_list.append(h_muons_chargeprod)
 hist_list.append(h_muons_dphi)
 hist_list.append(h_muons_deta)
