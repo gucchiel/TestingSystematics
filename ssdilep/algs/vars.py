@@ -167,13 +167,13 @@ class Particle(pyframe.core.ParticleProxy):
     def electronType(self):
       trueCharge = -self.firstEgMotherPdgId/11.
       chargeEval = abs(self.trkcharge - trueCharge)
-      if   self.truthType==2 and self.truthOrigin in [12,13,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==0 :
+      if   self.truthType==2 and self.truthOrigin in [10,12,13,14,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==0 :
         return 1
-      elif self.truthType==2 and self.truthOrigin in [12,13,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
+      elif self.truthType==2 and self.truthOrigin in [10,12,13,14,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==2 :
         return 2
-      elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
+      elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==2 :
         return 3
-      elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==0 :
+      elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==0 :
         return 4
       elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType==15 and self.firstEgMotherTruthOrigin==40 :
         return 5
@@ -185,11 +185,11 @@ class Particle(pyframe.core.ParticleProxy):
       trueCharge = -self.firstEgMotherPdgId/11.
       chargeEval = abs(self.trkcharge - trueCharge)
       
-      if   self.truthType==2 and self.truthOrigin in [12,13,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==0 :
+      if   self.truthType==2 and self.truthOrigin in [10,12,13,14,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==0 :
         return True
-      elif self.truthType==2 and self.truthOrigin in [12,13,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
+      elif self.truthType==2 and self.truthOrigin in [10,12,13,14,43] and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==2 :
         return True
-      elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [12,13,43] and chargeEval==2 :
+      elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==2 :
         return True
       elif (IsSignal()==True): 
         return True  
@@ -205,14 +205,14 @@ class Particle(pyframe.core.ParticleProxy):
     
     #__________________________________________________________________________
     def electronTypeSimple(self):
-      if   self.truthType==2 and self.truthOrigin in [12,13,43] :
+      if   self.truthType==2 and self.truthOrigin in [10,12,13,14,43] :
         return 1
       else :
         return 2
 
     #__________________________________________________________________________
     def electronTypeNew(self):
-      if   self.firstEgMotherTruthType==2 and self.firstEgMotherTruthOrigin in [12,13,43] :
+      if   self.firstEgMotherTruthType==2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] :
         return 1
       elif self.firstEgMotherTruthOrigin in [25,26] :
         return 2
