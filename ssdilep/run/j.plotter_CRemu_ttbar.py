@@ -190,14 +190,14 @@ def analyze(config):
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 0,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu0RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 0,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu0AllSF",
             scale         = None,
             )
@@ -211,7 +211,7 @@ def analyze(config):
             sys=None,
             )
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/g_reducedthr_ff.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
             mu_index=0,
             key='Mu0FF',
             scale=sys_ff,
@@ -279,6 +279,7 @@ def analyze(config):
             )
     ## SS CR
     ## ---------------------------------------
+    """
     loop += ssdilep.algs.algs.PlotAlg(
             region       = 'SSCRttbar_TT',
             plot_all     = False,
@@ -332,7 +333,7 @@ def analyze(config):
                            ['MassBelow200GeV',None],
                            ],
             )
-
+    """        
     loop += pyframe.algs.HistCopyAlg()
 
     ##-------------------------------------------------------------------------
