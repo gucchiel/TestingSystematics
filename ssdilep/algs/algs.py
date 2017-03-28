@@ -160,7 +160,9 @@ class CutAlg(pyframe.core.Algorithm):
     
     #__________________________________________________________________________
     def cut_OneJet(self):
-        return self.chain.njets == 1
+      if hasattr(self.chain,"njets"): return self.chain.njets == 1
+      if hasattr(self.chain,"njet"):  return self.chain.njet == 1
+    
     #__________________________________________________________________________
     def cut_JetCleaning(self):
       for j in self.store['jets']:
@@ -3065,7 +3067,6 @@ class CutAlg(pyframe.core.Algorithm):
     #____________________________________________________________________________
 
     def cut_PASS(self):
-      #print self.chain.njets
       return True
 
 
@@ -3157,7 +3158,12 @@ class PlotAlg(pyframe.algs.CutFlowAlg,CutAlg):
             
             if h.get_name() == "Hist1D":
               var = -999.
-              exec( "var = %s" % h.vexpr ) # so dirty !!!
+              
+              # this all part gives me the shivers. But is just temporary. Don't panic
+              if hasattr(self.chain,"njets") and "njets" in h.vexpr: exec( "var = self.chain.njets" ) 
+              elif hasattr(self.chain,"njet") and "njet" in h.vexpr: exec( "var = self.chain.njet" ) 
+              else: exec( "var = %s" % h.vexpr ) # so dirty !!!
+              
               if h.instance and var!=-999.: h.fill(var, weight)
             
             elif h.get_name() == "Hist2D":

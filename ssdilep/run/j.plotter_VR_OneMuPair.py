@@ -111,16 +111,15 @@ def analyze(config):
    
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OddSSMuons') 
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OddSSMuons') 
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='TwoMuons') 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllPairsM20') 
-    ####loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='EleVeto') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllMuLoose') 
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllMuMedium') 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllMuEta247') 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllMuZ0SinTheta05') 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllMuIsoBound15') 
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='AllJetPt25') 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
-    ####loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='JetCleaning') 
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='JetCleaning') 
     
 
     
@@ -140,12 +139,12 @@ def analyze(config):
     #        )
     loop += ssdilep.algs.EvWeights.MuTrigSF(
             trig_list     = ["HLT_mu26_imedium_OR_HLT_mu50"],
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             mu_iso        = "FixedCutTightTrackOnly",
-            key           = "MuTrigSFRecoLoose",
+            key           = "MuTrigSFRecoMedium",
             scale         = None,
             )
-    
+    """ 
     loop += ssdilep.algs.EvWeights.EffCorrPair(
             config_file=os.path.join(main_path,'ssdilep/data/g_corr_eff.root'),
             mu_lead_type    = "Tight",
@@ -167,67 +166,69 @@ def analyze(config):
             key             = "EffCorrLL",
             scale           = None,
             )
-    
+    """
+
     ## objects
     ## +++++++++++++++++++++++++++++++++++++++
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 0,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu0RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 0,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu0AllSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 1,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu1RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 1,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu1AllSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 2,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu2RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 2,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu2AllSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 3,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu3RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 3,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu3AllSF",
             scale         = None,
             )
     
     # reweighted fake-factors 
+    """
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
             config_file=os.path.join(main_path,'ssdilep/data/g_30Jan_ff.root'),
             mu_index=0,
@@ -252,28 +253,37 @@ def analyze(config):
             key='Mu3WFF',
             scale=sys_ff,
             )
-    
+    """
+
     # unweighted fake-factors 
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_medium.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
             mu_index=0,
             key='Mu0FF',
             scale=sys_ff,
             )
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_medium.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
             mu_index=1,
             key='Mu1FF',
             scale=sys_ff,
             )
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_medium.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
             mu_index=2,
             key='Mu2FF',
             scale=sys_ff,
             )
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/g_21Jan_ff.root'),
+            #config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_medium.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
             mu_index=3,
             key='Mu3FF',
             scale=sys_ff,
@@ -299,9 +309,9 @@ def analyze(config):
             hist_list    = hist_list,
             cut_flow     = [
               ['AllMuPt25',None],
-              ['TwoMuons',None],
+              ['OddSSMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['AtLeastOneMuPt28',None],
               ['MuTT',['Mu0AllSF','Mu1AllSF']],
               ],
@@ -313,11 +323,12 @@ def analyze(config):
             hist_list    = hist_list,
             cut_flow     = [
               ['AllMuPt25',None],
-              ['TwoMuons',None],
+              ['OddSSMuons',None],
               ['Mlow200',None],
-              ['SubLeadIsMatched',['MuTrigSFRecoLoose']],
+              ['SubLeadIsMatched',['MuTrigSFRecoMedium']],
               ['SubLeadMuPt28',None],
-              ['MuLT',['Mu0RecoSF','Mu1AllSF','Mu0WFF','EffCorrLT']],
+              #['MuLT',['Mu0RecoSF','Mu1AllSF','Mu0FF','EffCorrLT']],
+              ['MuLT',['Mu0RecoSF','Mu1AllSF','Mu0FF']],
               ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -327,11 +338,12 @@ def analyze(config):
             hist_list    = hist_list,
             cut_flow     = [
               ['AllMuPt25',None],
-              ['TwoMuons',None],
+              ['OddSSMuons',None],
               ['Mlow200',None],
-              ['LeadIsMatched',['MuTrigSFRecoLoose']],
+              ['LeadIsMatched',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
-              ['MuTL',['Mu0AllSF','Mu1RecoSF','Mu1WFF','EffCorrTL']],
+              #['MuTL',['Mu0AllSF','Mu1RecoSF','Mu1FF','EffCorrTL']],
+              ['MuTL',['Mu0AllSF','Mu1RecoSF','Mu1FF']],
               ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -341,13 +353,78 @@ def analyze(config):
             hist_list    = hist_list,
             cut_flow     = [
               ['AllMuPt25',None],
-              ['TwoMuons',None],
+              ['OddSSMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['AtLeastOneMuPt28',None],
-              ['MuLL',['Mu0RecoSF','Mu1RecoSF','Mu0WFF','Mu1WFF','EffCorrLL']],
+              #['MuLL',['Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF','EffCorrLL']],
+              ['MuLL',['Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF']],
               ],
             )
+    
+    
+    ## VR2
+    ## ---------------------------------------
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'FAKESVR2_TT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+              ['AllMuPt25',None],
+              ['OddSSMuons',None],
+              ['METhigh30',None],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
+              ['AtLeastOneMuPt28',None],
+              ['MuTT',['Mu0AllSF','Mu1AllSF']],
+              ],
+            )
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'FAKESVR2_LT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+              ['AllMuPt25',None],
+              ['OddSSMuons',None],
+              ['METhigh30',None],
+              ['SubLeadIsMatched',['MuTrigSFRecoMedium']],
+              ['SubLeadMuPt28',None],
+              #['MuLT',['Mu0RecoSF','Mu1AllSF','Mu0FF','EffCorrLT']],
+              ['MuLT',['Mu0RecoSF','Mu1AllSF','Mu0FF']],
+              ],
+            )
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'FAKESVR2_TL',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+              ['AllMuPt25',None],
+              ['OddSSMuons',None],
+              ['METhigh30',None],
+              ['LeadIsMatched',['MuTrigSFRecoMedium']],
+              ['LeadMuPt28',None],
+              #['MuTL',['Mu0AllSF','Mu1RecoSF','Mu1FF','EffCorrTL']],
+              ['MuTL',['Mu0AllSF','Mu1RecoSF','Mu1FF']],
+              ],
+            )
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'FAKESVR2_LL',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+              ['AllMuPt25',None],
+              ['OddSSMuons',None],
+              ['METhigh30',None],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
+              ['AtLeastOneMuPt28',None],
+              #['MuLL',['Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF','EffCorrLL']],
+              ['MuLL',['Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF']],
+              ],
+            )
+   
     """ 
     ## VR2
     ## ---------------------------------------
@@ -360,7 +437,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['TwoMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['AtLeastOneMuPt28',None],
               ['MuTT',['Mu0AllSF','Mu1AllSF']],
               ],
@@ -374,7 +451,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['TwoMuons',None],
               ['Mlow200',None],
-              ['SubLeadIsMatched',['MuTrigSFRecoLoose']],
+              ['SubLeadIsMatched',['MuTrigSFRecoMedium']],
               ['SubLeadMuPt28',None],
               ['MuLT',['Mu0RecoSF','Mu1AllSF','Mu0FF','EffCorrLT']],
               ],
@@ -388,7 +465,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['TwoMuons',None],
               ['Mlow200',None],
-              ['LeadIsMatched',['MuTrigSFRecoLoose']],
+              ['LeadIsMatched',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTL',['Mu0AllSF','Mu1RecoSF','Mu1FF','EffCorrTL']],
               ],
@@ -402,7 +479,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['TwoMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['AtLeastOneMuPt28',None],
               ['MuLL',['Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF','EffCorrLL']],
               ],
@@ -419,7 +496,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF']],
               ],
@@ -433,7 +510,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTTL',['Mu0AllSF','Mu1AllSF','Mu2RecoSF','Mu2FF']],
               ],
@@ -447,7 +524,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTLT',['Mu0AllSF','Mu2AllSF','Mu1RecoSF','Mu1FF']],
               ],
@@ -461,7 +538,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuLTT',['Mu1AllSF','Mu2AllSF','Mu0RecoSF','Mu0FF']],
               ],
@@ -475,7 +552,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuLLT',['Mu2AllSF','Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF']],
               ],
@@ -489,7 +566,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuLTL',['Mu1AllSF','Mu0RecoSF','Mu2RecoSF','Mu0FF','Mu2FF']],
               ],
@@ -503,7 +580,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTLL',['Mu0AllSF','Mu1RecoSF','Mu2RecoSF','Mu1FF','Mu2FF']],
               ],
@@ -517,7 +594,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['ThreeMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuLLL',['Mu0RecoSF','Mu1RecoSF','Mu2RecoSF','Mu0FF','Mu1FF','Mu2FF']],
               ],
@@ -534,7 +611,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['FourMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
               ],
@@ -548,7 +625,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['FourMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTTTL',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3RecoSF','Mu3FF']],
               ],
@@ -562,7 +639,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['FourMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTTLT',['Mu0AllSF','Mu1AllSF','Mu3AllSF','Mu2RecoSF','Mu2FF']],
               ],
@@ -576,7 +653,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['FourMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuTLTT',['Mu0AllSF','Mu2AllSF','Mu3AllSF','Mu1RecoSF','Mu1FF']],
               ],
@@ -590,7 +667,7 @@ def analyze(config):
               ['AllMuPt25',None],
               ['FourMuons',None],
               ['Mlow200',None],
-              ['PassAndMatch',['MuTrigSFRecoLoose']],
+              ['PassAndMatch',['MuTrigSFRecoMedium']],
               ['LeadMuPt28',None],
               ['MuLTTT',['Mu1AllSF','Mu2AllSF','Mu3AllSF','Mu0RecoSF','Mu0FF']],
               ],
@@ -601,7 +678,12 @@ def analyze(config):
     ##-------------------------------------------------------------------------
     ## run the job
     ##-------------------------------------------------------------------------
-    loop.run(chain, 0, config['events'],
+    min_entry = int(config.get('min_entry') if ('min_entry' in config.keys()) else  0)
+    max_entry = int(config.get('max_entry') if ('max_entry' in config.keys()) else -1)
+    print min_entry," ",max_entry
+    loop.run(chain, 
+            min_entry = min_entry,
+            max_entry = max_entry,
             branches_on_file = config.get('branches_on_file'),
             do_var_log = config.get('do_var_log'),
             )

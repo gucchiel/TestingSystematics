@@ -60,6 +60,8 @@ class Hist1D(object):
           #return  "bool(len(self.store['%s'])>=1)" % var 
         if "chain" in self.vexpr:
           pref,mid,var = self.vexpr.split(".")
+          if "njet" in var: # disgusting hack!!!
+            return "bool(hasattr(self.chain, 'njet')) or bool(hasattr(self.chain, 'njets'))"
           return "bool(hasattr(self.chain, '%s'))" % var 
 
 
