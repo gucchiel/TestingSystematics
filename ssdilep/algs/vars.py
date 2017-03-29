@@ -151,17 +151,12 @@ class Particle(pyframe.core.ParticleProxy):
     # https://twiki.cern.ch/twiki/bin/view/AtlasProtected/MCTruthClassifier 
     #__________________________________________________________________________
     def isTrueNonIsoMuon(self):
-        if (IsSignal()==True): return True
-        else:
-            matchtype = self.truthType in [5,7,8]
-            return self.isTruthMatchedToMuon and matchtype
+        matchtype = self.truthType in [5,7,8]
+        return self.isTruthMatchedToMuon and matchtype
     #__________________________________________________________________________
     def isTrueIsoMuon(self):   
-        if (IsSignal()==True): 
-            return True
-        else: 
-            matchtype = self.truthType in [6]
-            return self.isTruthMatchedToMuon and matchtype
+        matchtype = self.truthType in [6]
+        return self.isTruthMatchedToMuon and matchtype
 
     #__________________________________________________________________________
     def electronType(self):
@@ -191,17 +186,13 @@ class Particle(pyframe.core.ParticleProxy):
         return True
       elif self.truthType==4 and self.truthOrigin== 5 and self.firstEgMotherTruthType== 2 and self.firstEgMotherTruthOrigin in [10,12,13,14,43] and chargeEval==2 :
         return True
-      elif (IsSignal()==True): 
-        return True  
 
       return False
 
     #__________________________________________________________________________
     def isTrueNonIsoElectron(self):
-        if (IsSignal()==True): return True
-        else:
-            matchtype = self.truthType in [1,3,4]
-            return matchtype
+        matchtype = self.truthType in [1,3,4]
+        return matchtype
     
     #__________________________________________________________________________
     def electronTypeSimple(self):
@@ -231,21 +222,6 @@ class ParticlesBuilder(pyframe.core.Algorithm):
     #__________________________________________________________________________
     def execute(self,weight):
         self.store[self.key] = [Particle(copy(l)) for l in self.store[self.key]]
-
-
-#------------------------------------------------------------------------------
-class IsSignal(pyframe.core.Algorithm):# simple class to return true if the MC sample running on is DCH
-    #__________________________________________________________________________
-    def __init__(self,name="IsSignalSample" ):
-        pyframe.core.Algorithm.__init__(self, name = name)
-    #__________________________________________________________________________
-    def initialize(self):
-        log.info('Trying to identify SR2 flavour channel')
-    #__________________________________________________________________________
-    def execute(self,weight):
-        pyframe.core.Algorithm.execute(self, weight)
-        if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in [302449,302450,302451,302452,302453,302454,302455,302456,302457,302458,302459])): return True
-        return False
 
 #------------------------------------------------------------------------------
 class SR2ChannelFlavour(pyframe.core.Algorithm):# Class for channel categorization in SR2
