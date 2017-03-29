@@ -86,6 +86,85 @@ class TrigPresc(pyframe.core.Algorithm):
         self.set_weight(trigpresc*weight)
         return True
 
+#------------------------------------------------------------------------------                                                                                                   
+class SignalReWeighting(pyframe.core.Algorithm):
+    """                                                                                                                                                                            
+    SignalReWeighting
+
+    """
+    #__________________________________________________________________________                                                                                                    
+    def __init__(self, name="SignalReWeighting",
+                 BR_index=None,
+                 key=None,
+                 sys=None,
+                 ):
+
+        pyframe.core.Algorithm.__init__(self, name=name)
+        self.BR_index          = BR_index
+        self.key               = key
+
+        assert key, "Must provide key for applying Signal Reweighting"
+    #_________________________________________________________________________                                                                                                     
+    def initialize(self):
+      pass
+    #_________________________________________________________________________                                                                                                     
+    def execute(self, weight):
+      sf=1.0
+      if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in range(306538,306560))):
+          sf=0
+          #now we want to select normalization accordingly to the BR we want to set
+          # 0 BR: 100% to electrons  --> pdgID branch 44
+          # 1 BR: 100% BR to muons   -->              52
+          # 2 BR: 50% ee 50% mm      -->              48
+          # 3 BR: 50% em 50% em      -->              48
+          # 4 BR: 50% ee 50% em      -->              46
+          # 5 BR: 50% mm 50% em      -->              50
+          if((self.chain.HLpp_Daughters.size()==2 and self.chain.HLmm_Daughters.size()==2) or (self.chain.HRpp_Daughters.size()==2 and self.chain.HRmm_Daughters.size()==2)):
+
+              pdgId_branchL = []
+              pdgId_branchR = []
+              
+              for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_branchL += [abs(pdgId_Lpp)]
+              for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_branchL += [abs(pdgId_Lmm)]
+              for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_branchR += [abs(pdgId_Rpp)]
+              for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_branchR += [abs(pdgId_Rmm)]
+
+              channel_flavour = array('d',[44,52,48,48,46,50])
+              BR = array('d',[16,16,8,4,4,4])
+
+              #additional check for the ambiguous channel
+              if(len(pdgId_branchL)==4):
+                  print "The Channel is"
+                  print pdgId_branchL[0]
+                  print pdgId_branchL[1]
+                  print pdgId_branchL[2]
+                  print pdgId_branchL[3]
+                  print pdgId_branchL[0]+pdgId_branchL[1]+pdgId_branchL[2]+pdgId_branchL[3]
+                  print channel_flavour[self.BR_index]
+                  print "BR_index "
+                  print self.BR_index
+                  print BR[self.BR_index]
+                  if(pdgId_branchL[0]+pdgId_branchL[1]+pdgId_branchL[2]+pdgId_branchL[3] == channel_flavour[self.BR_index]):
+                      if(self.BR_index == 2 and (pdgId_branchL[0]+pdgId_branchL[1] == 22)):  sf=BR[self.BR_index]
+                      if(self.BR_index == 3 and (pdgId_branchL[0]+pdgId_branchL[1] == 24)):  sf=BR[self.BR_index]
+                      else:  sf=BR[self.BR_index]
+              if(len(pdgId_branchR)==4):
+                  if(pdgId_branchR[0]+pdgId_branchR[1]+pdgId_branchR[2]+pdgId_branchR[3] == channel_flavour[self.BR_index]):
+                      if(self.BR_index == 2 and (pdgId_branchR[0]+pdgId_branchR[1] == 22)):  sf=BR[self.BR_index]
+                      if(self.BR_index == 3 and (pdgId_branchR[0]+pdgId_branchR[1] == 24)):  sf=BR[self.BR_index]
+                      else:  sf=BR[self.BR_index]
+
+              else: sf=0
+
+          else: print "SignalReWeighting: Something strange with this event, no daughters from DCH!"
+          
+      if self.key:
+        self.store[self.key] = sf
+        print "sf value " 
+        print sf
+      return True
+
+
 #------------------------------------------------------------------------------
 class Pileup(pyframe.core.Algorithm):
     """
