@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -90,10 +92,16 @@ class CutAlg(pyframe.core.Algorithm):
       return False
     #__________________________________________________________________________
     def cut_TwoSSMuonPairs(self):
-      print " Two SS Muon Pairs"
+      pdgId_L=0
+      pdgId_R=0
+      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+
       muons = self.store['muons']
       ss_pairs = []
-      if self.chain.nmuon == 4:
+      if (self.chain.nmuon == 4 and (pdgId_L==52 or pdgId_R==52)):
         for p in combinations(muons,4):
           if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge > 0.0: return True
       return False
@@ -1485,10 +1493,16 @@ class CutAlg(pyframe.core.Algorithm):
     #___________________________________________________________________________
 
     def cut_TwoSSElectronPairs(self):
-      print " Two SSELEctron Pairs"
+      pdgId_L=0
+      pdgId_R=0
+      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)
+
       electrons = self.store['electrons_loose']
       ss_pairs = []
-      if len(electrons)==4:
+      if (len(electrons)==4 and (pdgId_L==44 or pdgId_R==44)):
         for p in combinations(electrons,4):
           if p[0].trkcharge * p[1].trkcharge * p[2].trkcharge * p[3].trkcharge > 0.0: return True
       return False
@@ -1519,12 +1533,19 @@ class CutAlg(pyframe.core.Algorithm):
     #___________________________________________________________________________
 
     def cut_TwoSSElectronMuonPairsEEMM(self):
+      pdgId_L=0
+      pdgId_R=0
+      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+        
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 2 and len(muons)== 2:
+      if len(electrons) == 2 and len(muons)== 2 and (pdgId_L==48 or pdgId_R==48):
         ss_electrons = electrons[0].trkcharge * electrons[1].trkcharge
         ss_muons     = muons[0].trkcharge * muons[1].trkcharge
         for p in combinations(leptons,4):
@@ -1534,12 +1555,19 @@ class CutAlg(pyframe.core.Algorithm):
     #___________________________________________________________________________
 
     def cut_TwoSSElectronMuonPairsEMEM(self):
+      pdgId_L=0
+      pdgId_R=0
+      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+  
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 2 and len(muons)==2:
+      if len(electrons) == 2 and len(muons)==2 and (pdgId_L==48 or pdgId_R==48):
         for p in combinations(leptons,4):
           ss_elemu = (electrons[0].trkcharge * muons[0].trkcharge > 0.0)or(electrons[0].trkcharge * muons[1].trkcharge > 0.0)or(electrons[1].trkcharge * muons[0].trkcharge > 0.0)
           if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge  and (ss_elemu) > 0.0:  return True
@@ -1547,12 +1575,19 @@ class CutAlg(pyframe.core.Algorithm):
     #___________________________________________________________________________
 
     def cut_TwoSSElectronMuonPairsEEEM(self):
+      pdgId_L=0
+      pdgId_R=0
+      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+        
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 3 and len(muons)== 1:
+      if len(electrons) == 3 and len(muons)== 1 and (pdgId_L==46 or pdgId_R==46):
         ss_electrons = (electrons[0].trkcharge*electrons[1].trkcharge>0.0)or(electrons[0].trkcharge*electrons[2].trkcharge>0.0)or(electrons[1].trkcharge*electrons[2].trkcharge>0.0)
         ss_elemu     = (muons[0].trkcharge*electrons[0].trkcharge>0.0)or(muons[0].trkcharge*electrons[1].trkcharge>0.0)or(muons[0].trkcharge*electrons[2].trkcharge>0.0)
         for p in combinations(leptons,4):
@@ -1561,12 +1596,19 @@ class CutAlg(pyframe.core.Algorithm):
     #___________________________________________________________________________
 
     def cut_TwoSSElectronMuonPairsMMEM(self):
+      pdgId_L=0
+      pdgId_R=0
+      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 1 and len(muons)== 3:
+      if len(electrons) == 1 and len(muons)== 3 and (pdgId_L==50 or pdgId_R==50):
         ss_muons = (muons[0].trkcharge*muons[1].trkcharge>0.0)or(muons[0].trkcharge*muons[2].trkcharge>0.0)or(muons[1].trkcharge*muons[2].trkcharge>0.0)
         ss_elemu     = (muons[0].trkcharge*electrons[0].trkcharge>0.0)or(muons[1].trkcharge*electrons[0].trkcharge>0.0)or(muons[2].trkcharge*electrons[0].trkcharge>0.0)
         for p in combinations(leptons,4):
