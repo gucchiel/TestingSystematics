@@ -134,34 +134,30 @@ class SignalReWeighting(pyframe.core.Algorithm):
 
               #additional check for the ambiguous channel
               if(len(pdgId_branchL)==4):
-                  print "The Channel is"
-                  print pdgId_branchL[0]
-                  print pdgId_branchL[1]
-                  print pdgId_branchL[2]
-                  print pdgId_branchL[3]
-                  print pdgId_branchL[0]+pdgId_branchL[1]+pdgId_branchL[2]+pdgId_branchL[3]
-                  print channel_flavour[self.BR_index]
-                  print "BR_index "
-                  print self.BR_index
-                  print BR[self.BR_index]
                   if(pdgId_branchL[0]+pdgId_branchL[1]+pdgId_branchL[2]+pdgId_branchL[3] == channel_flavour[self.BR_index]):
-                      if(self.BR_index == 2 and (pdgId_branchL[0]+pdgId_branchL[1] == 22)):  sf=BR[self.BR_index]
-                      if(self.BR_index == 3 and (pdgId_branchL[0]+pdgId_branchL[1] == 24)):  sf=BR[self.BR_index]
-                      else:  sf=BR[self.BR_index]
-              if(len(pdgId_branchR)==4):
+                      if(self.BR_index == 2 and (pdgId_branchL[0]+pdgId_branchL[1] == 22)): 
+                          sf=BR[self.BR_index]
+                      if(self.BR_index == 3 and (pdgId_branchL[0]+pdgId_branchL[1] == 24)): 
+                          sf=BR[self.BR_index]
+                      else: 
+                          sf=BR[self.BR_index]
+                      if(self.BR_index==0 and sf!=16.0): print "NOOO"    
+                      #print self.BR_index
+                       #   print sf
+              elif(len(pdgId_branchR)==4):
                   if(pdgId_branchR[0]+pdgId_branchR[1]+pdgId_branchR[2]+pdgId_branchR[3] == channel_flavour[self.BR_index]):
                       if(self.BR_index == 2 and (pdgId_branchR[0]+pdgId_branchR[1] == 22)):  sf=BR[self.BR_index]
                       if(self.BR_index == 3 and (pdgId_branchR[0]+pdgId_branchR[1] == 24)):  sf=BR[self.BR_index]
                       else:  sf=BR[self.BR_index]
 
-              else: sf=0
+              else: 
+                  print "Warning, I'm putting this event weight to zero"
+                  sf=0
 
           else: print "SignalReWeighting: Something strange with this event, no daughters from DCH!"
           
       if self.key:
         self.store[self.key] = sf
-        print "sf value " 
-        print sf
       return True
 
 
