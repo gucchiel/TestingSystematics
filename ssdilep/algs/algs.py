@@ -959,9 +959,23 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_OneElectronOneMuon(self):
         if(len(self.store['electrons_loose'])==1 and len(self.store['muons'])==1):return True
         return False
+    #__________________________________________________________________________                                                                                                 
+    def cut_ThreeLeptons(self): 
+        if len(self.store['electrons_loose']+self.store['muons'])==3: return True
+        return False
     #__________________________________________________________________________
     def cut_TwoElectronsTwoMuons(self):
         return (len(self.store['electrons_loose'])==2 and len(self.store['muons'])==2)
+    #__________________________________________________________________________
+    def cut_OneTotalCharge(self):
+        electrons = self.store['electrons_loose']
+        muons     = self.store['muons']
+        leptons = electrons + muons
+        totalCharge=0.
+        for l in leptons:
+            totalCharge = totalCharge + l.trkcharge
+        if(abs(totalCharge)==1): return True
+        return False
     #__________________________________________________________________________
     def cut_ThreeElectronsOneMuon(self):
         return (len(self.store['electrons_loose'])==3 and len(self.store['muons'])==1)
@@ -1673,8 +1687,16 @@ class CutAlg(pyframe.core.Algorithm):
         leptons   = electrons + muons
         if (leptons[0].tlv + leptons[1].tlv).M() < 200*GeV: return True
         return False
-
-    #__________________________________________________________________________
+  #__________________________________________________________________________
+   def cut_SSMassBelow200(self):
+       electrons = self.store['electrons_loose']
+       muons = self.store['muons']
+       leptons = electrons+muons
+       if len(leptons)>=2:
+           for p in combinations(leptons,2):
+               if (p[0].trkcharge * p[1].trkcharge > 0.0 and (p[0].tlv+p[1].tlv).M() < 200*GeV): return True
+       return False
+   #__________________________________________________________________________
 
     def cut_AllEleEta247AndNotCrackRegion(self):
       electrons = self.store['electrons_loose']
@@ -1682,8 +1704,32 @@ class CutAlg(pyframe.core.Algorithm):
       for m in electrons:
         passed = passed and abs(m.tlv.Eta())<2.47 and not(1.37<abs(m.tlv.Eta())<1.52)
       return passed
-
-    #__________________________________________________________________________
+   #__________________________________________________________________________
+    def cut_OSPairInZWindow(self):
+        mZ = 91.1876*GeV
+        electrons = self.store['electrons_loose']
+        muons     = self.store['muons']
+ 
+        if(len(electrons)>=2):
+            for i in electrons:
+                 for j in electrons:
+                     if(i==j): continue
+                     else:
+                         charge = i.trkcharge * j.trkcharge
+                         mass   = (i.tlv + j.tlv).M()
+                         if(charge<0. and abs(mass - mZ) < 10*GeV):
+                             return True
+        if(len(muons)>=2):
+            for i in muons:
+                for j in muons:
+                     if(i==j): continue
+                     else:
+                         charge = i.trkcharge * j.trkcharge
+                         mass   = (i.tlv + j.tlv).M()
+                         if(charge<0. and abs(mass - mZ) < 10*GeV):
+                             return True
+        return False
+     #__________________________________________________________________________
 
     def cut_AllEleZ0SinTheta05(self):
       electrons = self.store['electrons_loose']
