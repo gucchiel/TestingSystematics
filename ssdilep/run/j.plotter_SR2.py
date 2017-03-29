@@ -108,19 +108,19 @@ def analyze(config):
     
     ## weights
     ## +++++++++++++++++++++++++++++++++++++++
-    loop += ssdilep.algs.EvWeights.MCEventWeight(cutflow='presel',key='weight_mc_event')
-    loop += ssdilep.algs.EvWeights.LPXKfactor(cutflow='presel',key='weight_kfactor')
-    loop += ssdilep.algs.EvWeights.Pileup(cutflow='presel',key='weight_pileup')
+    #loop += ssdilep.algs.EvWeights.MCEventWeight(cutflow='presel',key='weight_mc_event')
+    #loop += ssdilep.algs.EvWeights.LPXKfactor(cutflow='presel',key='weight_kfactor')
+    #loop += ssdilep.algs.EvWeights.Pileup(cutflow='presel',key='weight_pileup')
 
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='TwoTruthPairsFromDCH')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='FourLeptons')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='ZeroTotalCharge')
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
+    #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
     loop += ssdilep.algs.vars.SR2ChannelFlavour()
-    loop += ssdilep.algs.vars.IsSignal()
 
     ## initialize and/or decorate objects
     ## ---------------------------------------
@@ -135,12 +135,13 @@ def analyze(config):
     #        SKIP      = True,
     #        key       = "DataUnPrescAvg",
     #        )
+    """
     loop +=  ssdilep.algs.EvWeights.EleTrigSF(
             trig_list =  ["HLT_2e17_lhloose"],
             key       = "EleTrigSF",
             scale     = None,
             )
-
+    """         
     loop += ssdilep.algs.EvWeights.ChargeFlipEleSF(
             key='ChargeFlipEleSF',
             config_file=os.path.join(main_path,'ssdilep/data/chargeFlipRates-12-01-2017.root'),
@@ -169,6 +170,7 @@ def analyze(config):
             mu_sublead_type = "Loose",
             key             = "EffCorrLL",
             scale           = None,
+    """
     """
     ## objects
     ## +++++++++++++++++++++++++++++++++++++++
@@ -293,6 +295,38 @@ def analyze(config):
             key='Ele0FF',
             sys=None,
             )
+    """        
+    #Set Signal weight per couple: 
+    loop += ssdilep.algs.EvWeights.SignalReWeighting(
+        BR_index=0,
+        key='SRWeight0',
+        sys=None,
+        )
+    loop += ssdilep.algs.EvWeights.SignalReWeighting(
+        BR_index=1,
+        key='SRWeight1',
+        sys=None,
+        )
+    loop += ssdilep.algs.EvWeights.SignalReWeighting(
+        BR_index=2,
+        key='SRWeight2',
+        sys=None,
+        )
+    loop += ssdilep.algs.EvWeights.SignalReWeighting(
+        BR_index=3,
+        key='SRWeight3',
+        sys=None,
+        )
+    loop += ssdilep.algs.EvWeights.SignalReWeighting(
+        BR_index=4,
+        key='SRWeight4',
+        sys=None,
+        )
+    loop += ssdilep.algs.EvWeights.SignalReWeighting(
+        BR_index=5,
+        key='SRWeight5',
+        sys=None,
+        )
 
     ## configure histograms
     ## ---------------------------------------
@@ -312,23 +346,26 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSElectronPairs',None],
+                           ['TwoSSElectronPairs',['SRWeight0']],
                            #['DiElePass',['EleTrigSF']],
-                           ['EleTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Ele3AllSF']],
+                           #['EleTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Ele3AllSF']],
+                           ['EleTTTT',None],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
                            ],
             )
+
     loop += ssdilep.algs.algs.PlotAlg(
             region       = 'SR2_MMMM',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSMuonPairs',None],
+                           ['TwoSSMuonPairs',['SRWeight1']],
                            #['DiElePass',['EleTrigSF']],
-                           ['MuMuMuMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
+                           #['MuMuMuMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
+                           ['MuMuMuMuTTTT',None],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -340,9 +377,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSElectronMuonPairsEEMM',None],
+                           ['TwoSSElectronMuonPairsEEMM',['SRWeight2']],
                            #['DiElePass',['EleTrigSF']],
-                           ['EEMuMuTTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF','Mu1AllSF']],
+                           #['EEMuMuTTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF','Mu1AllSF']],
+                           ['EEMuMuTTTT',None],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -354,9 +392,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSElectronMuonPairsEMEM',None],
+                           ['TwoSSElectronMuonPairsEMEM',['SRWeight3']],
                            #['DiElePass',['EleTrigSF']],
-                           ['EEMuMuTTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF','Mu1AllSF']],
+                           #['EEMuMuTTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF','Mu1AllSF']],
+                           ['EEMuMuTTTT',None],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -368,9 +407,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSElectronMuonPairsEEEM',None],
+                           ['TwoSSElectronMuonPairsEEEM',['SRWeight4']],
                            #['DiElePass',['EleTrigSF']],
-                           ['EEEMuTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Mu0AllSF']],
+                           #['EEEMuTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Mu0AllSF']],
+                           ['EEEMuTTTT',None],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
@@ -382,9 +422,10 @@ def analyze(config):
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
-                           ['TwoSSElectronMuonPairsMMEM',None],
+                           ['TwoSSElectronMuonPairsMMEM',['SRWeight5']],
                            #['DiElePass',['EleTrigSF']],
-                           ['MuMuEMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Ele0AllSF']],
+                           #['MuMuEMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Ele0AllSF']],
+                           ['MuMuEMuTTTT',None],
                            ['IsSignalRegion2',None],
                            ['ZVeto',None],
                            ['DeltaMassOverMass',None],
