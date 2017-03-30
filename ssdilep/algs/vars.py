@@ -777,6 +777,107 @@ class EleMuVars(pyframe.core.Algorithm):
                    j = j + 1
                    self.store['lep%d'%j] = m
         return True
+
+#------------------------------------------------------------------------------
+class ThreeLepVars(pyframe.core.Algorithm):
+    """
+    computes variables for the mixed (electron-muon) selection
+    """
+    #__________________________________________________________________________
+    def __init__(self, 
+                 name      = 'ThreeLepVars',
+                 key_electrons = 'electrons_loose',
+                 key_muons = 'muons',
+                 key_met   = 'met_clus',
+                 ):
+        pyframe.core.Algorithm.__init__(self, name)
+        self.key_electrons = key_electrons
+        self.key_muons = key_muons
+        self.key_met   = key_met
+
+    #__________________________________________________________________________
+    def execute(self, weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        """
+        computes variables and puts them in the store
+        """
+
+        ## get objects from event candidate
+        ## --------------------------------------------------
+        assert self.store.has_key(self.key_electrons), "electrons key: %s not found in store!" % (self.key_electrons)
+        assert self.store.has_key(self.key_muons), "muons key: %s not found in store!" % (self.key_muons)
+        electrons = self.store[self.key_electrons]
+        muons = self.store[self.key_muons]
+        met = self.store[self.key_met]
+        
+        # -------------------------------
+        # at least 1 electron and 1 muon
+        # -------------------------------
+        
+        # dict containing pair 
+        # and significance
+        leptons = electrons + muons
+        if len(leptons)==3:
+          
+          for lep in combinations(leptons,3):
+              if (lep[0].trkcharge*lep[1].trkcharge > 0.0):   
+                   if lep[0].tlv.Pt() > lep[1].tlv.Pt():              
+                       self.store['lep1'] = lep[0] # leading
+                       self.store['lep2'] = lep[1] # subleading
+                       self.store['lep3'] = lep[2] # OS one
+                   else: 
+                       self.store['lep2'] = lep[0] # leading
+                       self.store['lep1'] = lep[1] # subleading
+                       self.store['lep3'] = lep[2] # OS one
+              elif(lep[1].trkcharge*lep[2].trkcharge > 0.0):         
+                   if lep[1].tlv.Pt() > lep[2].tlv.Pt():              
+                       self.store['lep1'] = lep[1] # leading
+                       self.store['lep2'] = lep[2] # subleading
+                       self.store['lep3'] = lep[0] # OS one
+                   else: 
+                       self.store['lep2'] = lep[1] # leading
+                       self.store['lep1'] = lep[2] # subleading
+                       self.store['lep3'] = lep[0] # OS one
+              elif(lep[0].trkcharge*lep[2].trkcharge > 0.0):         
+                   if lep[0].tlv.Pt() > lep[2].tlv.Pt():              
+                       self.store['lep1'] = lep[0] # leading
+                       self.store['lep2'] = lep[2] # subleading
+                       self.store['lep3'] = lep[1] # OS one
+                   else: 
+                       self.store['lep2'] = lep[2] # leading
+                       self.store['lep1'] = lep[0] # subleading
+                       self.store['lep3'] = lep[1] # OS one
+                
+        lep1 = self.store['lep1'] # leading
+        lep2 = self.store['lep2'] # subleading
+        lep3 = self.store['lep3'] # OS lep
+
+        lep1T = ROOT.TLorentzVector()
+        lep1T.SetPtEtaPhiM( lep1.tlv.Pt(), 0., lep1.tlv.Phi(), lep1.tlv.M() )
+        lep2T = ROOT.TLorentzVector()
+        lep2T.SetPtEtaPhiM( lep2.tlv.Pt(), 0., lep2.tlv.Phi(), lep2.tlv.M() )
+        lep3T = ROOT.TLorentzVector()
+        lep3T.SetPtEtaPhiM( lep3.tlv.Pt(), 0., lep3.tlv.Phi(), lep3.tlv.M() )
+        
+        self.store['charge_product'] = lep2.trkcharge*lep1.trkcharge
+        self.store['mVis']           = (lep2.tlv+lep1.tlv).M()
+        self.store['mTtot']          = (lep1T + lep2T + met.tlv).M()  
+        self.store['elemu_dphi']       = lep2.tlv.DeltaPhi(lep1.tlv)
+        self.store['elemu_deta']       = lep2.tlv.Eta()-lep1.tlv.Eta()
+          
+        #Variables for the two OS couples:
+        self.store['OSmVis1']           = (lep1.tlv+lep3.tlv).M()
+        self.store['OSmTtot1']          = (lep1T + lep3T + met.tlv).M()  
+        self.store['OSelemu_dphi1']       = lep1.tlv.DeltaPhi(lep3.tlv)
+        self.store['OSelemu_deta1']       = lep1.tlv.Eta()-lep3.tlv.Eta()
+
+        self.store['OSmVis2']           = (lep2.tlv+lep3.tlv).M()
+        self.store['OSmTtot2']          = (lep2T + lep3T + met.tlv).M()  
+        self.store['OSelemu_dphi2']       = lep2.tlv.DeltaPhi(lep3.tlv)
+        self.store['OSelemu_deta2']       = lep2.tlv.Eta()-lep3.tlv.Eta()
+
+        return True
+
 #------------------------------------------------------------------------------
 class MultiMuVars(pyframe.core.Algorithm):
     """
