@@ -848,33 +848,33 @@ class ThreeLepVars(pyframe.core.Algorithm):
                        self.store['lep1'] = lep[0] # subleading
                        self.store['lep3'] = lep[1] # OS one
                 
-        lep1 = self.store['lep1'] # leading
-        lep2 = self.store['lep2'] # subleading
-        lep3 = self.store['lep3'] # OS lep
-
-        lep1T = ROOT.TLorentzVector()
-        lep1T.SetPtEtaPhiM( lep1.tlv.Pt(), 0., lep1.tlv.Phi(), lep1.tlv.M() )
-        lep2T = ROOT.TLorentzVector()
-        lep2T.SetPtEtaPhiM( lep2.tlv.Pt(), 0., lep2.tlv.Phi(), lep2.tlv.M() )
-        lep3T = ROOT.TLorentzVector()
-        lep3T.SetPtEtaPhiM( lep3.tlv.Pt(), 0., lep3.tlv.Phi(), lep3.tlv.M() )
-        
-        self.store['charge_product'] = lep2.trkcharge*lep1.trkcharge
-        self.store['mVis']           = (lep2.tlv+lep1.tlv).M()
-        self.store['mTtot']          = (lep1T + lep2T + met.tlv).M()  
-        self.store['elemu_dphi']       = lep2.tlv.DeltaPhi(lep1.tlv)
-        self.store['elemu_deta']       = lep2.tlv.Eta()-lep1.tlv.Eta()
+          lep1 = self.store['lep1'] # leading
+          lep2 = self.store['lep2'] # subleading
+          lep3 = self.store['lep3'] # OS lep
           
-        #Variables for the two OS couples:
-        self.store['OSmVis1']           = (lep1.tlv+lep3.tlv).M()
-        self.store['OSmTtot1']          = (lep1T + lep3T + met.tlv).M()  
-        self.store['OSelemu_dphi1']       = lep1.tlv.DeltaPhi(lep3.tlv)
-        self.store['OSelemu_deta1']       = lep1.tlv.Eta()-lep3.tlv.Eta()
+          lep1T = ROOT.TLorentzVector()
+          lep1T.SetPtEtaPhiM( lep1.tlv.Pt(), 0., lep1.tlv.Phi(), lep1.tlv.M() )
+          lep2T = ROOT.TLorentzVector()
+          lep2T.SetPtEtaPhiM( lep2.tlv.Pt(), 0., lep2.tlv.Phi(), lep2.tlv.M() )
+          lep3T = ROOT.TLorentzVector()
+          lep3T.SetPtEtaPhiM( lep3.tlv.Pt(), 0., lep3.tlv.Phi(), lep3.tlv.M() )
+          
+          self.store['charge_product'] = lep2.trkcharge*lep1.trkcharge
+          self.store['mVis']           = (lep2.tlv+lep1.tlv).M()
+          self.store['mTtot']          = (lep1T + lep2T + met.tlv).M()  
+          self.store['elemu_dphi']       = lep2.tlv.DeltaPhi(lep1.tlv)
+          self.store['elemu_deta']       = lep2.tlv.Eta()-lep1.tlv.Eta()
+          
+          #Variables for the two OS couples:
+          self.store['OSmVis1']           = (lep1.tlv+lep3.tlv).M()
+          self.store['OSmTtot1']          = (lep1T + lep3T + met.tlv).M()  
+          self.store['OSelemu_dphi1']       = lep1.tlv.DeltaPhi(lep3.tlv)
+          self.store['OSelemu_deta1']       = lep1.tlv.Eta()-lep3.tlv.Eta()
 
-        self.store['OSmVis2']           = (lep2.tlv+lep3.tlv).M()
-        self.store['OSmTtot2']          = (lep2T + lep3T + met.tlv).M()  
-        self.store['OSelemu_dphi2']       = lep2.tlv.DeltaPhi(lep3.tlv)
-        self.store['OSelemu_deta2']       = lep2.tlv.Eta()-lep3.tlv.Eta()
+          self.store['OSmVis2']           = (lep2.tlv+lep3.tlv).M()
+          self.store['OSmTtot2']          = (lep2T + lep3T + met.tlv).M()  
+          self.store['OSelemu_dphi2']       = lep2.tlv.DeltaPhi(lep3.tlv)
+          self.store['OSelemu_deta2']       = lep2.tlv.Eta()-lep3.tlv.Eta()
 
         return True
 
