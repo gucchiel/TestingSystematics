@@ -262,7 +262,87 @@ h_elemu_mTtot  = Hist1D( hname  = "h_elemu_mTtot",
                               dir    = "event",
                               vexpr  = "self.store['mTtot']/GeV",
                             )
+#also adding OS variables for the three lepton case
 
+h_OSelemu_dphi1  = Hist1D( hname  = "h_OSelemu_dphi1",
+                              xtitle = "#Delta#phi(l_{lead},l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "event",
+                              vexpr  = "self.store['OSelemu_dphi1']",
+                            )
+
+h_OSelemu_deta1  = Hist1D( hname  = "h_OSelemu_deta",
+                              xtitle = "#Delta#eta(l_{lead},l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['OSelemu_deta1']",
+                            )
+
+h_OSelemu_mVis1  = Hist1D( hname  = "h_OSelemu_mVis1",
+                              xtitle = "m_{vis}(l_{lead},l_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['OSmVis1']/GeV",
+                            )
+
+h_OSelemu_mTtot1  = Hist1D( hname  = "h_OSelemu_mTtot1",
+                              xtitle = "m^{tot}_{T}(l_{lead},l_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['OSmTtot1']/GeV",
+                            )
+
+h_OSelemu_dphi2  = Hist1D( hname  = "h_OSelemu_dphi2",
+                              xtitle = "#Delta#phi(l_{lead},l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "event",
+                              vexpr  = "self.store['OSelemu_dphi2']",
+                            )
+
+h_OSelemu_deta2  = Hist1D( hname  = "h_OSelemu_deta",
+                              xtitle = "#Delta#eta(l_{lead},l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['OSelemu_deta2']",
+                            )
+
+h_OSelemu_mVis2  = Hist1D( hname  = "h_OSelemu_mVis2",
+                              xtitle = "m_{vis}(l_{lead},l_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['OSmVis2']/GeV",
+                            )
+
+h_OSelemu_mTtot2  = Hist1D( hname  = "h_OSelemu_mTtot2",
+                              xtitle = "m^{tot}_{T}(l_{lead},l_{sublead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['OSmTtot2']/GeV",
+                            )
 # -------
 # jets
 # -------
@@ -975,6 +1055,86 @@ h_leplead_ptvarcone30  = Hist1D( hname  = "h_leplead_ptvarcone30",
                               xmax   = 10.,
                               dir    = "elemu",
                               vexpr  = "self.store['lep1'].ptvarcone30 / self.store['lep1'].tlv.Pt()",
+                            )
+
+h_lep3_pt = Hist1D( hname  = "h_lep3_pt",
+                              xtitle = "p_{T}(#mu_{lead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.0,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].tlv.Pt() / GeV",
+                            )
+
+h_lep3_eta = Hist1D( hname  = "h_lep3_eta",
+                              xtitle = "#eta(#mu_{lead})",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].tlv.Eta()",
+                            )
+
+h_lep3_phi = Hist1D( hname  = "h_lep3_phi",
+                              xtitle = "#phi(#mu_{lead})",
+                              ytitle = "Events / (0.1)", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].tlv.Phi()",
+                            )
+
+h_lep3_trkd0 = Hist1D( hname  = "h_lep3_trkd0",
+                              xtitle = "d^{trk}_{0}(#mu_{lead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 80,
+                              xmin   = -0.4,
+                              xmax   = 0.4,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].trkd0",
+                            )
+
+h_lep3_trkd0sig = Hist1D( hname  = "h_lep3_trkd0sig",
+                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (#mu_{lead})",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 100,
+                              xmin   = 0.,
+                              xmax   = 10.,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].trkd0sig",
+                            )
+
+h_lep3_trkz0 = Hist1D( hname  = "h_lep3_trkz0",
+                              xtitle = "z^{trk}_{0}(#mu_{lead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 40,
+                              xmin   = -2,
+                              xmax   = 2,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].trkz0",
+                            )
+
+h_lep3_trkz0sintheta  = Hist1D( hname  = "h_lep3_trkz0sintheta",
+                              xtitle = "z^{trk}_{0}sin#theta(#mu_{lead}) [mm]",
+                              ytitle = "Events / (0.01)", 
+                              nbins  = 200,
+                              xmin   = -1,
+                              xmax   = 1,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].trkz0sintheta",
+                            )
+
+h_lep3_ptvarcone30  = Hist1D( hname  = "h_lep3_ptvarcone30",
+                              xtitle = "ptvarcone30/p_{T}(#mu_{lead})",
+                              ytitle = "Events / (0.001)", 
+                              nbins  = 10000,
+                              xmin   = 0.,
+                              xmax   = 10.,
+                              dir    = "elemu",
+                              vexpr  = "self.store['lep3'].ptvarcone30 / self.store['lep3'].tlv.Pt()",
                             )
 
 # subleading lepton
