@@ -143,7 +143,7 @@ def analyze(config):
 
     loop += ssdilep.algs.EvWeights.ChargeFlipEleSF(
             key='ChargeFlipEleSF',
-            config_file=os.path.join(main_path,'ssdilep/data/chargeFlipRates-12-01-2017.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/chargeFlipRates-28-03-2017.root'),
             chargeFlipSF=True,
             )
     
@@ -205,7 +205,7 @@ def analyze(config):
     #implementation of electron fake factors
 
     loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-09-01-2017.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-27-03-2017.root'),
             ele_index=0,
             key='Ele0FF',
             sys=None,
@@ -225,7 +225,7 @@ def analyze(config):
     ##-------------------------------------------------------------------------
     ## make plots
     ##-------------------------------------------------------------------------
-
+    """
     ## OS CR
     ## ---------------------------------------
     loop += ssdilep.algs.algs.PlotAlg(
@@ -333,7 +333,7 @@ def analyze(config):
                            ['MassBelow200GeV',None],
                            ],
             )
-    """        
+
     loop += pyframe.algs.HistCopyAlg()
 
     ##-------------------------------------------------------------------------
