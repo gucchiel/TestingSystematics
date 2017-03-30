@@ -980,7 +980,6 @@ class CutAlg(pyframe.core.Algorithm):
         totalCharge=0.
         for l in leptons:
             totalCharge = totalCharge + l.trkcharge
-        print "Total Charge is", totalCharge    
         if(abs(totalCharge)==1): return True
         return False
     #__________________________________________________________________________
@@ -1699,6 +1698,7 @@ class CutAlg(pyframe.core.Algorithm):
        electrons = self.store['electrons_loose']
        muons = self.store['muons']
        leptons = electrons+muons
+
        if len(leptons)>=2:
            for p in combinations(leptons,2):
                if (p[0].trkcharge * p[1].trkcharge > 0.0 and (p[0].tlv+p[1].tlv).M() < 200*GeV): return True
@@ -1716,7 +1716,6 @@ class CutAlg(pyframe.core.Algorithm):
         mZ = 91.1876*GeV
         mVis1 = self.store['OSmVis1']
         mVis2 = self.store['OSmVis2']
-        
         if(abs(mVis1 - mZ) < 10*GeV or abs(mVis2 - mZ) < 10*GeV): return True
         return False
 
@@ -2268,7 +2267,6 @@ class CutAlg(pyframe.core.Algorithm):
         muon0_is_real   = muons[0].isTrueIsoMuon()
         pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real    
 
-      print "  
       return ele0_is_tight and ele1_is_tight and muon0_is_tight and pass_mc_filter 
 
     #__________________________________________________________________________
