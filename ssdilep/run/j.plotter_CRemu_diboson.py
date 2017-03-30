@@ -112,6 +112,10 @@ def analyze(config):
     loop += ssdilep.algs.EvWeights.LPXKfactor(cutflow='presel',key='weight_kfactor')
     loop += ssdilep.algs.EvWeights.Pileup(cutflow='presel',key='weight_pileup')
 
+    ## initialize and/or decorate objects
+    ## ---------------------------------------
+    loop += ssdilep.algs.vars.ThreeLepVars(key_electrons='electrons_loose',key_muons='muons')   
+   
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
 
@@ -120,10 +124,6 @@ def analyze(config):
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
-    ## initialize and/or decorate objects
-    ## ---------------------------------------
-    loop += ssdilep.algs.vars.ThreeLepVars(key_electrons='electrons_loose',key_muons='muons')   
-   
 
     loop += ssdilep.algs.EvWeights.OneOrTwoBjetsSF(
             key='OneOrTwoBjetsSF',
@@ -297,7 +297,7 @@ def analyze(config):
     ## OS CR
     ## ---------------------------------------
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TTT',
+            region       = 'OSCRdibosonEEMu_TTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -306,13 +306,12 @@ def analyze(config):
                            ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
-                           # need to add a cut to select EEMu somewhere! same goes for all the regions here!
                            ['EEMuTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF']],
                            ],
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TTL',
+            region       = 'OSCRdibosonEEMu_TTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -326,7 +325,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TLL',
+            region       = 'OSCRdibosonEEMu_TLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -341,7 +340,7 @@ def analyze(config):
 
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LLL',
+            region       = 'OSCRdibosonEEMu_LLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -355,7 +354,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LTL',
+            region       = 'OSCRdibosonEEMu_LTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -369,7 +368,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LLT',
+            region       = 'OSCRdibosonEEMu_LLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -383,7 +382,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LTT',
+            region       = 'OSCRdibosonEEMu_LTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -396,7 +395,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TLT',
+            region       = 'OSCRdibosonEEMu_TLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -410,7 +409,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TTT',
+            region       = 'OSCRdibosonEMuMu_TTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -424,7 +423,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TTL',
+            region       = 'OSCRdibosonEMuMu_TTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -438,7 +437,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TLL',
+            region       = 'OSCRdibosonEMuMu_TLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -452,7 +451,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LLL',
+            region       = 'OSCRdibosonEMuMu_LLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -466,7 +465,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LTL',
+            region       = 'OSCRdibosonEMuMu_LTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -480,7 +479,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LLT',
+            region       = 'OSCRdibosonEMuMu_LLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -494,7 +493,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LTT',
+            region       = 'OSCRdibosonEMuMu_LTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -508,7 +507,7 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TLT',
+            region       = 'OSCRdibosonEMuMu_TLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
@@ -520,7 +519,6 @@ def analyze(config):
                            ['EMuMuTLT',['Ele0AllSF','Mu0RecoSF', 'Mu0FF','Mu1AllSF']],
                            ],
             )
-
 
     loop += pyframe.algs.HistCopyAlg()
 
