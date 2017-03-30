@@ -960,8 +960,8 @@ class CutAlg(pyframe.core.Algorithm):
         if(len(self.store['electrons_loose'])==1 and len(self.store['muons'])==1):return True
         return False
     #__________________________________________________________________________                                                                                                 
-    def cut_ThreeLeptons(self): 
-        if len(self.store['electrons_loose']+self.store['muons'])==3: return True
+    def cut_ThreeLeptons(self):
+        if (len(self.store['electrons_loose']+self.store['muons'])==3):return True
         return False
     #__________________________________________________________________________
     def cut_TwoElectronsTwoMuons(self):
@@ -2444,7 +2444,7 @@ class CutAlg(pyframe.core.Algorithm):
         muon0_is_real   = muons[0].isTrueIsoMuon()
         muon1_is_real   = muons[1].isTrueIsoMuon()
         pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
-
+        
       return ele0_is_tight and muon0_is_tight and muon1_is_tight and pass_mc_filter 
 
     #__________________________________________________________________________
