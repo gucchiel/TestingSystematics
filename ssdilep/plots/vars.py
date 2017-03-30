@@ -174,6 +174,13 @@ electrons_chargeprod = Var(name = 'electrons_chargeprod',
               log = False,
               )
 
+elemu_chargeprod = Var(name = 'elemu_chargeprod',
+              path    = 'event',
+              xmin    = -2,
+              xmax    = 2,
+              #rebin  = 10,
+              log = False,
+              )
 
 elemu_mVis = Var(name     = 'elemu_mVis',
               path    = 'event',
@@ -208,13 +215,72 @@ elemu_deta = Var(name = 'elemu_deta',
               log     = False,
               )
 
-elemu_chargeprod = Var(name = 'elemu_chargeprod',
+OSelemu_mVis1 = Var(name     = 'elemu_mVis1',
               path    = 'event',
-              xmin    = -2,
-              xmax    = 2,
-              #rebin  = 10,
-              log = False,
+              xmin    = 0.,
+              xmax    = 2000.,
+              rebin   = 4,
+              log     = True,
+              #logx    = False,
               )
+
+OSelemu_mTtot1 = Var(name = 'elemu_mTtot1',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 2000.,
+              rebin   = 1,
+              log     = True,
+              )
+
+OSelemu_dphi1 = Var(name = 'elemu_dphi1',
+              path    = 'event',
+              xmin    = -3.2,
+              xmax    = 3.2,
+              rebin   = 4,
+              log     = False,
+              )
+
+OSelemu_deta1 = Var(name = 'elemu_deta1',
+              path    = 'event',
+              xmin    = -2.5,
+              xmax    = 2.5,
+              rebin  = 4,
+              log     = False,
+              )
+
+OSelemu_mVis2 = Var(name     = 'elemu_mVis2',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 2000.,
+              rebin   = 4,
+              log     = True,
+              #logx    = False,
+              )
+
+OSelemu_mTtot2 = Var(name = 'elemu_mTtot2',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 2000.,
+              rebin   = 1,
+              log     = True,
+              )
+
+OSelemu_dphi2 = Var(name = 'elemu_dphi2',
+              path    = 'event',
+              xmin    = -3.2,
+              xmax    = 3.2,
+              rebin   = 4,
+              log     = False,
+              )
+
+OSelemu_deta2 = Var(name = 'elemu_deta2',
+              path    = 'event',
+              xmin    = -2.5,
+              xmax    = 2.5,
+              rebin  = 4,
+              log     = False,
+              )
+
 
 ## Single muon variables
 ## ---------------------------------------
@@ -764,7 +830,57 @@ lepsublead_trkz0sintheta = Var(name = 'lepsublead_trkz0sintheta',
               rebin   = 2,
               log     = False,
               )
-
+lep3_pt = Var(name = 'lep3_pt',
+              path   = 'leptons',
+              xmin   = 0.,
+              xmax   = 400.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 5,
+              log    = False,
+              )
+lep3_eta = Var(name = 'lep3_eta',
+              path    = 'leptons',
+              xmin    = -2.5,
+              xmax    = 2.5,
+              rebin   = 5,
+              log     = False,
+              )
+lep3_phi = Var(name = 'lep3_phi',
+              path    = 'leptons',
+              xmin    = -3.2,
+              xmax    = 3.2,
+              rebin   = 4,
+              log     = False,
+              )
+lep3_trkd0 = Var(name = 'lep3_trkd0',
+              path    = 'elemu',
+              xmin    = -0.2,
+              xmax    = 0.2,
+              rebin  = 1,
+              log     = False,
+              )
+lep3_trkd0sig = Var(name = 'lep3_trkd0sig',
+              path    = 'elemu',
+              xmin    = 0.,
+              xmax    = 10.,
+              rebin   = 3,
+              log     = False,
+              )
+lep3_trkz0 = Var(name = 'lep3_trkz0',
+              path    = 'elemu',
+              xmin    = -1.0,
+              xmax    = 1.0,
+              rebin   = 1,
+              log     = False,
+              )
+lep3_trkz0sintheta = Var(name = 'lep3_trkz0sintheta',
+              path    = 'elemu',
+              xmin    = -0.7,
+              xmax    = 0.7,
+              rebin   = 2,
+              log     = False,
+              )
 
 ## MET variables
 ## ---------------------------------------
@@ -923,6 +1039,16 @@ vars_list.append(elemu_dphi)
 vars_list.append(elemu_deta)
 vars_list.append(elemu_chargeprod)
 
+vars_list.append(OSelemu_mTtot1)
+vars_list.append(OSelemu_mVis1)
+vars_list.append(OSelemu_dphi1)
+vars_list.append(OSelemu_deta1)
+
+vars_list.append(OSelemu_mTtot2)
+vars_list.append(OSelemu_mVis2)
+vars_list.append(OSelemu_dphi2)
+vars_list.append(OSelemu_deta2)
+
 vars_list.append(leplead_pt)
 vars_list.append(leplead_eta)
 vars_list.append(leplead_phi)
@@ -930,7 +1056,6 @@ vars_list.append(leplead_trkd0)
 vars_list.append(leplead_trkd0sig)
 vars_list.append(leplead_trkz0)
 vars_list.append(leplead_trkz0sintheta)
-vars_list.append(leplead_ptvarcone30)
 
 vars_list.append(lepsublead_pt)
 vars_list.append(lepsublead_eta)
@@ -940,6 +1065,13 @@ vars_list.append(lepsublead_trkd0sig)
 vars_list.append(lepsublead_trkz0)
 vars_list.append(lepsublead_trkz0sintheta)
 
+vars_list.append(lep3_pt)
+vars_list.append(lep3_eta)
+vars_list.append(lep3_phi)
+vars_list.append(lep3_trkd0)
+vars_list.append(lep3_trkd0sig)
+vars_list.append(lep3_trkz0)
+vars_list.append(lep3_trkz0sintheta)
 # ---------------------
 # cutflows
 # ---------------------

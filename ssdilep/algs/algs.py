@@ -960,12 +960,18 @@ class CutAlg(pyframe.core.Algorithm):
         if(len(self.store['electrons_loose'])==1 and len(self.store['muons'])==1):return True
         return False
     #__________________________________________________________________________                                                                                                 
-    def cut_ThreeLeptons(self): 
-        if len(self.store['electrons_loose']+self.store['muons'])==3: return True
+    def cut_ThreeLeptons(self):
+        if (len(self.store['electrons_loose']+self.store['muons'])==3):return True
         return False
     #__________________________________________________________________________
     def cut_TwoElectronsTwoMuons(self):
         return (len(self.store['electrons_loose'])==2 and len(self.store['muons'])==2)
+    #__________________________________________________________________________
+    def cut_TwoElectronsOneMuon(self):
+        return (len(self.store['electrons_loose'])==2 and len(self.store['muons'])==1)
+    #__________________________________________________________________________
+    def cut_TwoMuonsOneElectron(self):
+        return (len(self.store['electrons_loose'])==1 and len(self.store['muons'])==2)
     #__________________________________________________________________________
     def cut_OneTotalCharge(self):
         electrons = self.store['electrons_loose']
@@ -1688,10 +1694,11 @@ class CutAlg(pyframe.core.Algorithm):
         if (leptons[0].tlv + leptons[1].tlv).M() < 200*GeV: return True
         return False
   #__________________________________________________________________________
-   def cut_SSMassBelow200(self):
+    def cut_SSMassBelow200(self):
        electrons = self.store['electrons_loose']
        muons = self.store['muons']
        leptons = electrons+muons
+
        if len(leptons)>=2:
            for p in combinations(leptons,2):
                if (p[0].trkcharge * p[1].trkcharge > 0.0 and (p[0].tlv+p[1].tlv).M() < 200*GeV): return True
@@ -1707,28 +1714,11 @@ class CutAlg(pyframe.core.Algorithm):
    #__________________________________________________________________________
     def cut_OSPairInZWindow(self):
         mZ = 91.1876*GeV
-        electrons = self.store['electrons_loose']
-        muons     = self.store['muons']
- 
-        if(len(electrons)>=2):
-            for i in electrons:
-                 for j in electrons:
-                     if(i==j): continue
-                     else:
-                         charge = i.trkcharge * j.trkcharge
-                         mass   = (i.tlv + j.tlv).M()
-                         if(charge<0. and abs(mass - mZ) < 10*GeV):
-                             return True
-        if(len(muons)>=2):
-            for i in muons:
-                for j in muons:
-                     if(i==j): continue
-                     else:
-                         charge = i.trkcharge * j.trkcharge
-                         mass   = (i.tlv + j.tlv).M()
-                         if(charge<0. and abs(mass - mZ) < 10*GeV):
-                             return True
+        mVis1 = self.store['OSmVis1']
+        mVis2 = self.store['OSmVis2']
+        if(abs(mVis1 - mZ) < 10*GeV or abs(mVis2 - mZ) < 10*GeV): return True
         return False
+
      #__________________________________________________________________________
 
     def cut_AllEleZ0SinTheta05(self):
@@ -2454,7 +2444,7 @@ class CutAlg(pyframe.core.Algorithm):
         muon0_is_real   = muons[0].isTrueIsoMuon()
         muon1_is_real   = muons[1].isTrueIsoMuon()
         pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
-
+        
       return ele0_is_tight and muon0_is_tight and muon1_is_tight and pass_mc_filter 
 
     #__________________________________________________________________________
@@ -2473,9 +2463,9 @@ class CutAlg(pyframe.core.Algorithm):
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
         ele0_is_real    = electrons[0].isTrueIsoElectron()
-        ele1_is_real    = electrons[1].isTrueIsoElectron()
         muon0_is_real   = muons[0].isTrueIsoMuon()
-        pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real
+        muon1_is_real   = muons[1].isTrueIsoMuon()
+        pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
 
       return ele0_is_tight and muon0_is_tight and muon1_is_loose and pass_mc_filter 
 
@@ -2495,9 +2485,9 @@ class CutAlg(pyframe.core.Algorithm):
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
         ele0_is_real    = electrons[0].isTrueIsoElectron()
-        ele1_is_real    = electrons[1].isTrueIsoElectron()
         muon0_is_real   = muons[0].isTrueIsoMuon()
-        pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real
+        muon1_is_real   = muons[1].isTrueIsoMuon()
+        pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
 
 
       return ele0_is_tight and muon0_is_loose and muon1_is_tight and pass_mc_filter 
@@ -2518,9 +2508,10 @@ class CutAlg(pyframe.core.Algorithm):
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
         ele0_is_real    = electrons[0].isTrueIsoElectron()
-        ele1_is_real    = electrons[1].isTrueIsoElectron()
         muon0_is_real   = muons[0].isTrueIsoMuon()
-        pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real
+        muon1_is_real   = muons[1].isTrueIsoMuon()
+
+        pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
 
 
       return ele0_is_loose and muon0_is_tight and muon1_is_tight and pass_mc_filter 
@@ -2541,9 +2532,9 @@ class CutAlg(pyframe.core.Algorithm):
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
         ele0_is_real    = electrons[0].isTrueIsoElectron()
-        ele1_is_real    = electrons[1].isTrueIsoElectron()
         muon0_is_real   = muons[0].isTrueIsoMuon()
-        pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real
+        muon1_is_real   = muons[1].isTrueIsoMuon()
+        pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
 
       return ele0_is_loose and muon0_is_loose and muon1_is_tight and pass_mc_filter 
 
@@ -2563,9 +2554,9 @@ class CutAlg(pyframe.core.Algorithm):
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
         ele0_is_real    = electrons[0].isTrueIsoElectron()
-        ele1_is_real    = electrons[1].isTrueIsoElectron()
         muon0_is_real   = muons[0].isTrueIsoMuon()
-        pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real
+        muon1_is_real   = muons[1].isTrueIsoMuon()
+        pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
 
       return ele0_is_loose and muon0_is_tight and muon1_is_loose and pass_mc_filter 
 
@@ -2585,9 +2576,9 @@ class CutAlg(pyframe.core.Algorithm):
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
         ele0_is_real    = electrons[0].isTrueIsoElectron()
-        ele1_is_real    = electrons[1].isTrueIsoElectron()
         muon0_is_real   = muons[0].isTrueIsoMuon()
-        pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real
+        muon1_is_real   = muons[1].isTrueIsoMuon()
+        pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
 
       return ele0_is_tight and muon0_is_loose and muon1_is_loose and pass_mc_filter 
 
@@ -2607,9 +2598,10 @@ class CutAlg(pyframe.core.Algorithm):
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
         ele0_is_real    = electrons[0].isTrueIsoElectron()
-        ele1_is_real    = electrons[1].isTrueIsoElectron()
         muon0_is_real   = muons[0].isTrueIsoMuon()
-        pass_mc_filter  = ele0_is_real and ele1_is_real and muon0_is_real
+        muon1_is_real   = muons[1].isTrueIsoMuon()
+        
+        pass_mc_filter  = ele0_is_real and muon0_is_real and muon1_is_real
 
       return ele0_is_loose and muon0_is_loose and muon1_is_loose and pass_mc_filter 
 

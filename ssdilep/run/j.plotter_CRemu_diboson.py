@@ -114,14 +114,16 @@ def analyze(config):
 
     ## initialize and/or decorate objects
     ## ---------------------------------------
-    loop += ssdilep.algs.vars.EleMuVars(key_electrons='electrons_loose',key_muons='muons')   
+    loop += ssdilep.algs.vars.ThreeLepVars(key_electrons='electrons_loose',key_muons='muons')   
    
     ## cuts
     ## +++++++++++++++++++++++++++++++++++++++
 
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='ThreeLeptons')
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OneTotalCharge')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
+
 
     loop += ssdilep.algs.EvWeights.OneOrTwoBjetsSF(
             key='OneOrTwoBjetsSF',
@@ -144,7 +146,7 @@ def analyze(config):
 
     loop += ssdilep.algs.EvWeights.ChargeFlipEleSF(
             key='ChargeFlipEleSF',
-            config_file=os.path.join(main_path,'ssdilep/data/chargeFlipRates-12-01-2017.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/chargeFlipRates-28-03-2017.root'),
             chargeFlipSF=True,
             )
     
@@ -242,19 +244,25 @@ def analyze(config):
     #implementation of electron fake factors
 
     loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-09-01-2017.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-27-03-2017.root'),
             ele_index=0,
             key='Ele0FF',
             sys=None,
             )
 
     loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-09-01-2017.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-27-03-2017.root'),
             ele_index=1,
             key='Ele1FF',
             sys=None,
             )
 
+    loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
+            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-27-03-2017.root'),
+            ele_index=2,
+            key='Ele2FF',
+            sys=None,
+            )
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
             config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
             mu_index=0,
@@ -276,20 +284,11 @@ def analyze(config):
             scale=sys_ff,
             )
 
-    loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
-            mu_index=3,
-            key='Mu3FF',
-            scale=sys_ff,
-            )
-
-
-
 
     ## configure histograms
     ## ---------------------------------------
     hist_list = []
-    hist_list += ssdilep.hists.EleMuMain_hists.hist_list
+    hist_list += ssdilep.hists.ThreeLepMain_hists.hist_list
     
     ##-------------------------------------------------------------------------
     ## make plots
@@ -298,26 +297,27 @@ def analyze(config):
     ## OS CR
     ## ---------------------------------------
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TTT',
+            region       = 'OSCRdibosonEEMu_TTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
-                           # need to add a cut to select EEMu somewhere! same goes for all the regions here!
                            ['EEMuTTT',['Ele0AllSF','Ele1AllSF','Mu0AllSF']],
                            ],
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TTL',
+            region       = 'OSCRdibosonEEMu_TTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EEMuTTL',['Ele0AllSF','Ele1AllSF','Mu0RecoSF','Mu0FF']],
@@ -325,12 +325,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TLL',
+            region       = 'OSCRdibosonEEMu_TLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EEMuTLL',['Ele0AllSF','Ele1RecoSF', 'Ele1FF','Mu0RecoSF', 'Mu0FF']],
@@ -339,12 +340,13 @@ def analyze(config):
 
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LLL',
+            region       = 'OSCRdibosonEEMu_LLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EEMuLLL',['Ele0RecoSF', 'Ele0FF','Ele1RecoSF', 'Ele1FF','Mu0RecoSF', 'Mu0FF']],
@@ -352,12 +354,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LTL',
+            region       = 'OSCRdibosonEEMu_LTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EEMuLTL',['Ele0RecoSF', 'Ele0FF', 'Ele1AllSF','Mu0RecoSF', 'Mu0FF']],
@@ -365,12 +368,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LLT',
+            region       = 'OSCRdibosonEEMu_LLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EEMuLLT',['Ele0RecoSF', 'Ele0FF','Ele1RecoSF', 'Ele1FF','Mu0AllSF']],
@@ -378,41 +382,40 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_LTT',
+            region       = 'OSCRdibosonEEMu_LTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
-                           ['EEMuLTT',['Ele0RecoSF', 'Ele0FF', 'Ele1AllSF', 'Mu0AllSF']],                                                                                                          
-                           ],
+                           ['EEMuLTT',['Ele0RecoSF', 'Ele0FF', 'Ele1AllSF', 'Mu0AllSF']],                                                                                                                    ],
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EEMu_TLT',
+            region       = 'OSCRdibosonEEMu_TLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoElectronsOneMuon',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EEMuTLT',['Ele0AllSF','Ele1RecoSF', 'Ele1FF','Mu0AllSF']], 
                            ],
             )
 
-
-
-
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TTT',
+            region       = 'OSCRdibosonEMuMu_TTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuTTT',['Ele0AllSF','Mu0AllSF','Mu1AllSF']],
@@ -420,12 +423,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TTL',
+            region       = 'OSCRdibosonEMuMu_TTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuTTL',['Ele0AllSF','Mu0AllSF','Mu1RecoSF', 'Mu1FF']],
@@ -433,12 +437,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TLL',
+            region       = 'OSCRdibosonEMuMu_TLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuTLL',['Ele0AllSF','Mu0RecoSF', 'Mu0FF', 'Mu1RecoSF', 'Mu1FF']],
@@ -446,12 +451,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LLL',
+            region       = 'OSCRdibosonEMuMu_LLL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuLLL',['Ele0RecoSF', 'Ele0FF', 'Mu0RecoSF', 'Mu0FF', 'Mu1RecoSF', 'Mu1FF']],
@@ -459,12 +465,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LTL',
+            region       = 'OSCRdibosonEMuMu_LTL',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuLTL',['Ele0RecoSF', 'Ele0FF','Mu0AllSF','Mu1RecoSF', 'Mu1FF']],
@@ -472,12 +479,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LLT',
+            region       = 'OSCRdibosonEMuMu_LLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuLLT',['Ele0RecoSF', 'Ele0FF', 'Mu0RecoSF', 'Mu0FF','Mu1AllSF']],
@@ -485,12 +493,13 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_LTT',
+            region       = 'OSCRdibosonEMuMu_LTT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuLTT',['Ele0RecoSF', 'Ele0FF','Mu0AllSF','Mu1AllSF']],
@@ -498,18 +507,18 @@ def analyze(config):
             )
 
     loop += ssdilep.algs.algs.PlotAlg(
-            region       = 'OSCRdiboson_EMuMu_TLT',
+            region       = 'OSCRdibosonEMuMu_TLT',
             plot_all     = False,
             do_var_check = True,
             hist_list    = hist_list,
             cut_flow     = [
                            ['PassMixed',None],
+                           ['TwoMuonsOneElectron',None],
                            ['OSPairInZWindow',None],
                            ['SSMassBelow200',None],
                            ['EMuMuTLT',['Ele0AllSF','Mu0RecoSF', 'Mu0FF','Mu1AllSF']],
                            ],
             )
-
 
     loop += pyframe.algs.HistCopyAlg()
 
