@@ -7,6 +7,7 @@ variables for all the channels
 
 ## modules
 from var import Var
+from funcs import generateLogBins
 
 ## Cutflows
 ## ---------------------------------------
@@ -19,7 +20,8 @@ cutflow_weighted_presel   = Var(name = 'cutflow_weighted_presel',log=False)
 cutflow_ZCR               = Var(name = 'cutflow_ZCR',log=False)
 cutflow_weighted_ZCR      = Var(name = 'cutflow_weighted_ZCR',log=False)
 
-
+bins_pt = generateLogBins(35,30,2000)
+bins_pt_2 = generateLogBins(20,30,1000)
 
 ## Event variables
 ## ---------------------------------------
@@ -185,8 +187,8 @@ elemu_chargeprod = Var(name = 'elemu_chargeprod',
 elemu_mVis = Var(name     = 'elemu_mVis',
               path    = 'event',
               xmin    = 0.,
-              xmax    = 2000.,
-              rebin   = 4,
+              xmax    = 210.,
+              rebin   = 20,
               log     = True,
               #logx    = False,
               )
@@ -215,16 +217,16 @@ elemu_deta = Var(name = 'elemu_deta',
               log     = False,
               )
 
-OSelemu_mVis1 = Var(name     = 'elemu_mVis1',
+OSelemu_mVis1 = Var(name     = 'OSelemu_mVis1',
               path    = 'event',
               xmin    = 0.,
-              xmax    = 2000.,
-              rebin   = 4,
+              xmax    = 210.,
+              rebin   = 20,
               log     = True,
               #logx    = False,
               )
 
-OSelemu_mTtot1 = Var(name = 'elemu_mTtot1',
+OSelemu_mTtot1 = Var(name = 'OSelemu_mTtot1',
               path    = 'event',
               xmin    = 0.,
               xmax    = 2000.,
@@ -232,7 +234,7 @@ OSelemu_mTtot1 = Var(name = 'elemu_mTtot1',
               log     = True,
               )
 
-OSelemu_dphi1 = Var(name = 'elemu_dphi1',
+OSelemu_dphi1 = Var(name = 'OSelemu_dphi1',
               path    = 'event',
               xmin    = -3.2,
               xmax    = 3.2,
@@ -240,7 +242,7 @@ OSelemu_dphi1 = Var(name = 'elemu_dphi1',
               log     = False,
               )
 
-OSelemu_deta1 = Var(name = 'elemu_deta1',
+OSelemu_deta1 = Var(name = 'OSelemu_deta1',
               path    = 'event',
               xmin    = -2.5,
               xmax    = 2.5,
@@ -248,16 +250,16 @@ OSelemu_deta1 = Var(name = 'elemu_deta1',
               log     = False,
               )
 
-OSelemu_mVis2 = Var(name     = 'elemu_mVis2',
+OSelemu_mVis2 = Var(name     = 'OSelemu_mVis2',
               path    = 'event',
               xmin    = 0.,
-              xmax    = 2000.,
-              rebin   = 4,
+              xmax    = 210.,
+              rebin   = 20,
               log     = True,
               #logx    = False,
               )
 
-OSelemu_mTtot2 = Var(name = 'elemu_mTtot2',
+OSelemu_mTtot2 = Var(name = 'OSelemu_mTtot2',
               path    = 'event',
               xmin    = 0.,
               xmax    = 2000.,
@@ -265,7 +267,7 @@ OSelemu_mTtot2 = Var(name = 'elemu_mTtot2',
               log     = True,
               )
 
-OSelemu_dphi2 = Var(name = 'elemu_dphi2',
+OSelemu_dphi2 = Var(name = 'OSelemu_dphi2',
               path    = 'event',
               xmin    = -3.2,
               xmax    = 3.2,
@@ -273,7 +275,7 @@ OSelemu_dphi2 = Var(name = 'elemu_dphi2',
               log     = False,
               )
 
-OSelemu_deta2 = Var(name = 'elemu_deta2',
+OSelemu_deta2 = Var(name = 'OSelemu_deta2',
               path    = 'event',
               xmin    = -2.5,
               xmax    = 2.5,
@@ -717,22 +719,26 @@ elelead_ptcone40 = Var(name = 'elelead_ptcone40',
 
 leplead_pt = Var(name = 'leplead_pt',
               path   = 'elemu',
-              xmin   = 0.,
+              xmin   = 30.,
               xmax   = 400.,
               #xmax   = 120.,
               #rebin  = 20,
-              rebin  = 5,
+              rebin  = 1,
+              rebinVar = bins_pt,   
               log    = False,
+              logx   = True,   
               )
 
 lepsublead_pt = Var(name = 'lepsublead_pt',
               path   = 'elemu',
-              xmin   = 0.,
-              xmax   = 400.,
+              xmin   = 30.,
+              xmax   = 300.,
               #xmax   = 120.,
-              rebin  = 20,
+              rebin  = 1,
+              rebinVar = bins_pt_2,   
               #rebin  = 5,
               log    = False,
+              logx   = True,   
               )
 
 leplead_eta = Var(name = 'leplead_eta',
@@ -832,12 +838,14 @@ lepsublead_trkz0sintheta = Var(name = 'lepsublead_trkz0sintheta',
               )
 lep3_pt = Var(name = 'lep3_pt',
               path   = 'leptons',
-              xmin   = 0.,
+              xmin   = 30.,
               xmax   = 400.,
               #xmax   = 120.,
               #rebin  = 20,
-              rebin  = 5,
+              rebin  = 1,
+              rebinVar = bins_pt_2,   
               log    = False,
+              logx   = True,   
               )
 lep3_eta = Var(name = 'lep3_eta',
               path    = 'leptons',

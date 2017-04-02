@@ -7,6 +7,7 @@ import os
 
 from ssdilep.samples import samples
 from ssdilep.plots   import vars_mumu
+from ssdilep.plots   import vars
 from systematics     import *
 
 from optparse import OptionParser
@@ -41,8 +42,8 @@ parser.add_option('-t', '--tag', dest='tag',
 #-----------------
 # Configuration
 #-----------------
-lumi =  18232.8
-#lumi =  33257.2 + 3212.96
+#lumi =  18232.8
+lumi =  33257.2 + 3212.96
 #lumi =  33257.2 #+ 3212.96
 
 # Control regions
@@ -95,15 +96,18 @@ reg_prefix, reg_suffix = funcs.get_pref_and_suff(options.region)
 
 if reg_suffix == "MAINREG":
   
-  fake_subtraction_regions = ["LL"]
+  #fake_subtraction_regions = ["LL"]
+  fake_subtraction_regions = ["LLL"]
   
   if options.fakest == "FullRegions":
     main_addition_regions = ["TT","TTT","TTTT"]
     fake_addition_regions = ["TL","LT","TTL","TLT","LTT","TTTL","TTLT","TLTT","LTTT"]
   
   if options.fakest == "ReducedRegions":
-    main_addition_regions = ["TT"]
-    fake_addition_regions = ["TL","LT"]
+    #main_addition_regions = ["TT"]
+    main_addition_regions = ["TTT"]
+    #fake_addition_regions = ["TL","LT"]
+    fake_addition_regions = ["TTL","LTT","TLT","TLL","LLT","LTL"]
 
 else:
   
@@ -144,7 +148,7 @@ mc_sys = [
 
 fakes.estimator.add_systematics(FF)
 
-mumu_vdict  = vars_mumu.vars_dict
+mumu_vdict  = vars.vars_dict
 
 #-----------------
 # Plotting 
@@ -167,11 +171,12 @@ if options.makeplot == "True":
     xmin          = mumu_vdict[options.vname]['xmin'],
     xmax          = mumu_vdict[options.vname]['xmax'],
     rebin         = mumu_vdict[options.vname]['rebin'],
+    rebinVar      = mumu_vdict[options.vname]['rebinVar'],
     log           = mumu_vdict[options.vname]['log'],
     icut          = int(options.icut),
     #sys_dict      = sys_dict,
     sys_dict      = None,
-    #do_ratio_plot = True,
+    do_ratio_plot = True,
     save_eps      = True,
     plotsfile     = plotsfile,
     )
@@ -184,8 +189,8 @@ else:
          region      = options.region,
          icut        = int(options.icut),
          histname    = os.path.join(mumu_vdict[options.vname]['path'],mumu_vdict[options.vname]['hname']),
-         #rebin       = mumu_vdict[options.vname]['rebin'],
-         rebin       = 1,
+         rebin       = mumu_vdict[options.vname]['rebin'],
+         rebinVar    = mumu_vdict[options.vname]['rebinVar'],
          sys_dict    = None,
          outname     = plotsfile
          )

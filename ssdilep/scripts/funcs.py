@@ -11,6 +11,7 @@ import ROOT
 from pyplot import histutils
 from math import sqrt
 from decimal import Decimal
+from array import array
 #import sys_conv
 
 
@@ -51,6 +52,7 @@ def get_hists(
         histname  = None,
         samples   = None,
         rebin     = None,
+        rebinVar  = [],
         sys_dict  = None,
         ):
     '''
@@ -61,7 +63,11 @@ def get_hists(
     for s in samples:
       if not s.hist(region=region,icut=icut,histname=histname): continue
       h = s.hist(region=region,icut=icut,histname=histname).Clone()
-      if rebin and h: h.Rebin(rebin)
+      if rebin and len(rebinVar)==0 and h: h.Rebin(rebin)
+      elif len(rebinVar)>1 and h:
+        print "Performing variable bin rebining with on " + histname
+        runArray = array('d',rebinVar)
+        h = h.Rebin( len(rebinVar)-1, histname+"Var", runArray )
       hists[s] = h
       assert h, 'failed to gen hist for %s'%s.name
       h.SetName('h_%s_%s'%(region,s.name))
@@ -72,6 +78,7 @@ def get_hists(
                                      histname  = histname,
                                      sample    = s,
                                      rebin     = rebin,
+                                     rebinVar     = rebinVar,
                                      sys_dict  = sys_dict,
                                      )
 
@@ -85,6 +92,7 @@ def get_sys_hists(
         histname = None,
         sample   = None,
         rebin    = None,
+        rebinVar = [],
         sys_dict = None,
         ):
     
@@ -104,10 +112,15 @@ def get_sys_hists(
           h_up.SetName('h_%s_%s_up_%s'%(region,sys.name,sample.name))
           h_dn.SetName('h_%s_%s_dn_%s'%(region,sys.name,sample.name))
           
-          if rebin:
-           if h_up: h_up.Rebin(rebin)
-           if h_dn: h_dn.Rebin(rebin)
-             
+          if rebin and len(rebinVar)==0 :
+            if h_up: h_up.Rebin(rebin)
+            if h_dn: h_dn.Rebin(rebin)
+          elif len(rebinVar)>1 :
+            runArray = array('d',rebinVar)
+            print "Performing variable bin rebining with on " + histname + " SYS: " + str(sys) + " " + name
+            if h_up: h_up = h_up.Rebin( len(rebinVar)-1, histname+"Var", runArray )
+            if h_dn: h_dn = h_dn.Rebin( len(rebinVar)-1, histname+"Var", runArray )
+
         hist_dict[sys] = (h_up,h_dn)
     return hist_dict 
 
@@ -220,6 +233,7 @@ def plot_hist(
     xmin          = None,
     xmax          = None,
     rebin         = None,
+    rebinVar     = [],
     sys_dict      = None,
     do_ratio_plot = False,
     save_eps      = False,
@@ -249,6 +263,7 @@ def plot_hist(
         histname=histname,
         samples=samples,
         rebin=rebin,
+        rebinVar=rebinVar,
         sys_dict=sys_dict,
         )
     ## sum nominal background
@@ -409,7 +424,7 @@ def plot_hist(
 
     if data: h_data.Draw("SAME")
     pad1.SetLogy(log)
-    pad1.SetLogx(logx)
+    if logx!=None : pad1.SetLogx(logx)
     leg.Draw()
     pad1.RedrawAxis()
 
@@ -463,9 +478,10 @@ def plot_hist(
       yaxis2.SetNdivisions(510)
       xaxis2.SetNdivisions(510)
 
-      if logx: 
+      if logx:
         pad2.SetLogx(logx) 
         xaxis2.SetMoreLogLabels()
+        xaxis2.SetNoExponent() 
       else: 
         pass
 
@@ -497,6 +513,7 @@ def write_hist(
         icut        = None,
         histname    = None,
         rebin       = None,
+        rebinVar    = [],
         sys_dict    = None,
         outname     = None,
         ):
@@ -524,6 +541,13 @@ def write_hist(
     for s,h in hists.items():
         hname = 'h_%s_nominal_%s' % (region,s.name)
         h.SetNameTitle(hname,hname)
+        if rebin and len(rebinVar)==0 and h:
+          h.Rebin(rebin)
+          print "rebin ",rebin
+        elif len(rebinVar)>1 and h:
+          print "Performing variable bin rebining with on " + histname
+          runArray = array('d',rebinVar)
+          h = h.Rebin( len(rebinVar)-1, histname+"Var", runArray )
         fout.WriteTObject(h,hname)
         ## systematics
         if hasattr(h,'sys_hists'):
@@ -546,6 +570,26 @@ def write_hist(
     
     fout.Close()
 
+
+def list_open_files():
+    l = ROOT.gROOT.GetListOfFiles()
+    itr = l.MakeIterator()
+    obj = itr.Next()
+    while obj:
+        print obj.GetName()
+        obj = itr.Next()
+
+#____________________________________________________________
+def generateLogBins(bins_N,bins_min,bins_max):
+  bins = []
+  bins += [bins_min]
+  bins_factor = pow( Decimal(bins_max)/Decimal(bins_min) , Decimal(1)/Decimal(bins_N) )
+  for i in range(1,bins_N+1):
+    bins += [bins[i-1]*bins_factor]
+  for i in range(bins_N+1):
+    bins[i] = round(bins[i],0)
+    if i!=0: assert bins[i]!=bins[i-1], "two consetuvie bin edges have the same value due to rounding"
+  return bins
 
 def list_open_files():
     l = ROOT.gROOT.GetListOfFiles()
