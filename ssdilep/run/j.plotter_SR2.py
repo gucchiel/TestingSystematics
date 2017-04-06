@@ -233,56 +233,56 @@ def analyze(config):
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 0,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu0RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 0,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu0AllSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 1,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu1RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 1,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu1AllSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 2,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu2RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 2,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu2AllSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 3,
             mu_iso        = "NotFixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu3RecoSF",
             scale         = None,
             )
     loop += ssdilep.algs.ObjWeights.MuAllSF(
             mu_index      = 3,
             mu_iso        = "FixedCutTightTrackOnly",
-            mu_reco       = "Loose",
+            mu_reco       = "Medium",
             key           = "Mu3AllSF",
             scale         = None,
             )
