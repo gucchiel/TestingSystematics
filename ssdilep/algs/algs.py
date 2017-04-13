@@ -180,7 +180,11 @@ class CutAlg(pyframe.core.Algorithm):
       for j in self.store['jets']:
         if not j.isClean: return False
       return True
-    
+
+    #__________________________________________________________________________
+    def cut_EleVeto(self):
+      return self.chain.nel == 0
+
     #__________________________________________________________________________
     def cut_AllMuPt22(self):
       muons = self.store['muons']
@@ -639,7 +643,15 @@ class CutAlg(pyframe.core.Algorithm):
       m_vis = (mu_lead.tlv + mu_sublead.tlv).M()
 
       return abs(m_vis)<200*GeV
-    
+   
+    #__________________________________________________________________________
+    def cut_dRhigh35(self):
+      return self.store['muons_dR'] > 3.5
+
+    #__________________________________________________________________________
+    def cut_pTHlow80(self):
+      return self.store['muons_pTH'] < 80*GeV
+
     #__________________________________________________________________________
     def cut_SingleMuPassAndMatch(self):
       required_triggers = self.store["reqTrig"]
@@ -922,17 +934,14 @@ class CutAlg(pyframe.core.Algorithm):
             if(muons[0].tlv.DeltaR(jet.tlv) > 2.5): continue
             else: return False
         return True    
+    
     #__________________________________________________________________________
     def cut_OneOrTwoBjets(self):
         nbjets = 0
         jets = self.store['jets']
         for jet in jets:
-          if jet.isFix77:
-            nbjets += 1
-        if nbjets in [1,2]:
-          return True
-        else:
-          return False
+          if jet.isFix77: nbjets += 1
+        return nbjets in [1,2]
 
     #__________________________________________________________________________
 
