@@ -82,7 +82,8 @@ class BuildTrigConfig(pyframe.core.Algorithm):
           if trig in self.store["SingleMuTrigIndex"].keys(): continue
           self.store["SingleMuTrigIndex"][trig] = i
 
-        # the slice has to be built using the required triggers!
+        # the slice has to be built using the required triggers ...
+        """
         muons_thr = [1000 * GeV]
         for trig in self.store["reqTrig"]:
           for thr in trig.split("_"):
@@ -97,6 +98,12 @@ class BuildTrigConfig(pyframe.core.Algorithm):
                 trig_thr = float( thr.replace("mu","") ) * mGeV
                 if trig_thr>= muons_thr[ithr] and trig_thr < muons_thr[ithr+1]:
                   self.store["SingleMuTrigSlice"][trig] = (muons_thr[ithr],muons_thr[ithr+1])
+        """
+      
+      # ... by hand for now 
+      self.store["SingleMuTrigSlice"]["HLT_mu26_ivarmedium"] = (28*GeV,51*GeV)
+      self.store["SingleMuTrigSlice"]["HLT_mu50"] = (51*GeV,10000*GeV)
+      
       
       # ---------
       # electrons
@@ -559,7 +566,8 @@ class DiMuVars(pyframe.core.Algorithm):
         if len(muons)>=2:
           
           for p in combinations(muons,2):
-            ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
+            if p[0].trkcharge * p[1].trkcharge > 0.:
+              ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
           
           max_sig  = 1000.
           for pair,sig in ss_pairs.iteritems():
@@ -585,7 +593,9 @@ class DiMuVars(pyframe.core.Algorithm):
           self.store['mTtot']          = (muon1T + muon2T + met.tlv).M()  
           self.store['muons_dphi']     = muon2.tlv.DeltaPhi(muon1.tlv)
           self.store['muons_deta']     = muon2.tlv.Eta()-muon1.tlv.Eta()
-         
+          self.store['muons_pTH']      = (muon2.tlv+muon1.tlv).Pt()
+          self.store['muons_dR']       = math.sqrt(self.store['muons_dphi']**2 + self.store['muons_deta']**2)
+ 
         # puts additional muons in the store
         if ss_pairs and len(muons)>2:
            i = 2
@@ -634,7 +644,8 @@ class DiEleVars(pyframe.core.Algorithm):
         if len(electrons)>=2:
           
           for p in combinations(electrons,2):
-            ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
+            if p[0].trkcharge * p[1].trkcharge > 0.:
+              ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
           
           max_sig  = 1000.
           for pair,sig in ss_pairs.iteritems():

@@ -96,18 +96,41 @@ reg_prefix, reg_suffix = funcs.get_pref_and_suff(options.region)
 
 if reg_suffix == "MAINREG":
   
-  #fake_subtraction_regions = ["LL"]
-  fake_subtraction_regions = ["LLL"]
-  
-  if options.fakest == "FullRegions":
+  # including all regions for fake-factor method
+  # ---------------------------------------------
+  if options.fakest == "AllRegions":
     main_addition_regions = ["TT","TTT","TTTT"]
-    fake_addition_regions = ["TL","LT","TTL","TLT","LTT","TTTL","TTLT","TLTT","LTTT"]
+    
+    fake_addition_regions = []
+    fake_addition_regions += ["TL","LT"]
+    fake_addition_regions += ["TTL","TLT","LTT"]
+    fake_addition_regions += ["LLL"]
+    fake_addition_regions += ["TTTL","TTLT","TLTT","LTTT"]
+
+    fake_subtraction_regions = []
+    fake_subtraction_regions += ["LL"]
+    fake_subtraction_regions += ["LLT","LTL","TLL"]
   
-  if options.fakest == "ReducedRegions":
-    #main_addition_regions = ["TT"]
+  # only two lepton regions
+  # ---------------------------------------------
+  if options.fakest == "TwoLepRegions":
+    
+    main_addition_regions    = ["TT"]
+    fake_addition_regions    = ["TL","LT"]
+    fake_subtraction_regions = ["LL"]
+
+  # only three lepton regions
+  # ---------------------------------------------
+  if options.fakest == "ThreeLepRegions":
+    
     main_addition_regions = ["TTT"]
-    #fake_addition_regions = ["TL","LT"]
-    fake_addition_regions = ["TTL","LTT","TLT","TLL","LLT","LTL"]
+    
+    fake_addition_regions = []
+    fake_addition_regions += ["TTL","TLT","LTT"]
+    fake_addition_regions += ["LLL"]
+
+    fake_subtraction_regions = []
+    fake_subtraction_regions += ["LLT","LTL","TLL"]
 
 else:
   
