@@ -131,6 +131,26 @@ h_muons_mTtot  = Hist1D( hname  = "h_muons_mTtot",
                               vexpr  = "self.store['mTtot']/GeV",
                             )
 
+h_muons_pTH  = Hist1D( hname  = "h_muons_pTH",
+                              xtitle = "p_T(SS_{lead}) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['muons_pTH']/GeV",
+                              )
+
+h_muons_dR  = Hist1D( hname  = "h_muons_dR",
+                              xtitle = "#DeltaR(SS_{lead})",
+                              ytitle = "Events", 
+                              nbins  = 60,
+                              xmin   = 0.,
+                              xmax   = 6.,
+                              dir    = "event",
+                              vexpr  = "self.store['muons_dR']",
+                              )
+
 h_mujet_dphi  = Hist1D( hname  = "h_mujet_dphi",
                               xtitle = "#Delta#phi(#mu_{lead},jet_{lead})",
                               ytitle = "Events", 

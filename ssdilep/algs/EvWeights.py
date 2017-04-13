@@ -63,7 +63,7 @@ class TrigPresc(pyframe.core.Algorithm):
           for trig in self.store["reqTrig"]: 
             #if trig in self.store["passTrig"].keys(): 
             for mu in self.store["muons"]:
-              if mu.tlv.Pt()>=self.store["singleMuTrigSlice"][trig][0] and mu.tlv.Pt()<self.store["singleMuTrigSlice"][trig][1]:
+              if mu.tlv.Pt()>=self.store["SingleMuTrigSlice"][trig][0] and mu.tlv.Pt()<self.store["SingleMuTrigSlice"][trig][1]:
                 ineff_list.append(1. - 1. / presc_dict[trig])
 
           if ineff_list:

@@ -289,7 +289,7 @@ def analyze(config):
     ## configure histograms
     ## ---------------------------------------
     hist_list = []
-    hist_list += ssdilep.hists.Main_hists.hist_list
+    hist_list += ssdilep.hists.MuMain_hists.hist_list
     #hist_list += ssdilep.hists.PtOnly_hists.hist_list
     
     

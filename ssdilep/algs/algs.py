@@ -396,7 +396,7 @@ class CutAlg(pyframe.core.Algorithm):
       
       mu0_is_tight     = bool(muons[0].isIsolated_FixedCutTightTrackOnly and muons[0].trkd0sig<3.)
       mu1_is_tight     = bool(muons[1].isIsolated_FixedCutTightTrackOnly and muons[1].trkd0sig<3.)
-      mu2_is_tight     = bool(muons[2].isIsolated_FixedCutTipghtTrackOnly and muons[2].trkd0sig<3.)
+      mu2_is_tight     = bool(muons[2].isIsolated_FixedCutTightTrackOnly and muons[2].trkd0sig<3.)
       pass_mc_filter   = True
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
@@ -3295,6 +3295,7 @@ class PlotAlg(pyframe.algs.CutFlowAlg,CutAlg):
             elif h.get_name() == "Hist2D": 
               h.instance = self.hist(h.hname, "ROOT.TH2F('$', ';%s;%s', %d, %lf, %lf, %d, %lf, %lf)" % (h.hname,h.hname,h.nbinsx,h.xmin,h.xmax,h.nbinsy,h.ymin,h.ymax), dir=os.path.join(region, '%s'%h.dir))
               h.set_axis_titles()
+
 
         # ---------------
         # Fill histograms
