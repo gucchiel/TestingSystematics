@@ -586,7 +586,9 @@ class DiMuVars(pyframe.core.Algorithm):
           self.store['mTtot']          = (muon1T + muon2T + met.tlv).M()  
           self.store['muons_dphi']     = muon2.tlv.DeltaPhi(muon1.tlv)
           self.store['muons_deta']     = muon2.tlv.Eta()-muon1.tlv.Eta()
-         
+          self.store['muons_pTH']      = (muon2.tlv+muon1.tlv).Pt()
+          self.store['muons_dR']       = math.sqrt(self.store['muons_dphi']**2 + self.store['muons_deta']**2)
+ 
         # puts additional muons in the store
         if ss_pairs and len(muons)>2:
            i = 2
