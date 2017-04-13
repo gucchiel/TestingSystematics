@@ -82,7 +82,8 @@ class BuildTrigConfig(pyframe.core.Algorithm):
           if trig in self.store["SingleMuTrigIndex"].keys(): continue
           self.store["SingleMuTrigIndex"][trig] = i
 
-        # the slice has to be built using the required triggers!
+        # the slice has to be built using the required triggers ...
+        """
         muons_thr = [1000 * GeV]
         for trig in self.store["reqTrig"]:
           for thr in trig.split("_"):
@@ -97,6 +98,12 @@ class BuildTrigConfig(pyframe.core.Algorithm):
                 trig_thr = float( thr.replace("mu","") ) * mGeV
                 if trig_thr>= muons_thr[ithr] and trig_thr < muons_thr[ithr+1]:
                   self.store["SingleMuTrigSlice"][trig] = (muons_thr[ithr],muons_thr[ithr+1])
+        """
+      
+      # ... by hand for now 
+      self.store["SingleMuTrigSlice"]["HLT_mu26_ivarmedium"] = (28*GeV,51*GeV)
+      self.store["SingleMuTrigSlice"]["HLT_mu50"] = (51*GeV,10000*GeV)
+      
       
       # ---------
       # electrons
