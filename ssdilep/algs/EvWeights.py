@@ -39,13 +39,11 @@ class TrigPresc(pyframe.core.Algorithm):
     #__________________________________________________________________________
     def __init__(self, 
           cutflow     = None,
-          use_avg     = None,
-          SKIP        = None,
+          #use_avg     = None,
           key         = None):
         pyframe.core.Algorithm.__init__(self, name="TrigPresc", isfilter=True)
         self.cutflow     = cutflow
-        self.use_avg     = use_avg
-        self.SKIP        = SKIP
+        #self.use_avg     = use_avg
         self.key         = key
     #__________________________________________________________________________
     def execute(self, weight):
@@ -56,22 +54,17 @@ class TrigPresc(pyframe.core.Algorithm):
             "HLT_mu20_L1MU15"     : 354.153, 
             "HLT_mu24"            : 47.64, 
             "HLT_mu50"            : 1.0,
-            "HLT_mu26_imedium"    : 1.949,
-            #"HLT_mu26_ivarmedium" : 1.097,
-            "HLT_mu26_ivarmedium" : 1.000,
+            #"HLT_mu26_imedium"    : 1.943,
+            "HLT_mu26_ivarmedium" : 1.098,
             }
 
         if "data" in self.sampletype:
           ineff_list = []
           for trig in self.store["reqTrig"]: 
-            if trig in self.store["passTrig"].keys():
-              if not self.use_avg:
-                 if self.store["passTrig"][trig] != 0:
-                   ineff_list.append(1. - 1. / self.store["passTrig"][trig])
-                 else:
-                   ineff_list.append(1. - 1. / presc_dict[trig])
-              else:
-                 ineff_list.append(1. - 1. / presc_dict[trig])
+            #if trig in self.store["passTrig"].keys(): 
+            for mu in self.store["muons"]:
+              if mu.tlv.Pt()>=self.store["singleMuTrigSlice"][trig][0] and mu.tlv.Pt()<self.store["singleMuTrigSlice"][trig][1]:
+                ineff_list.append(1. - 1. / presc_dict[trig])
 
           if ineff_list:
             tot_ineff = 1.0
@@ -79,10 +72,9 @@ class TrigPresc(pyframe.core.Algorithm):
             trigpresc -= tot_ineff
         
         trigpresc = 1. / trigpresc
-        
-        if self.SKIP:  trigpresc = 1.0
-        
-        if self.key: self.store[self.key] = trigpresc
+
+        if self.key: 
+          self.store[self.key] = trigpresc
         self.set_weight(trigpresc*weight)
         return True
 
