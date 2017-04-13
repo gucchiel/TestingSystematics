@@ -15,6 +15,7 @@ description:
 from sample import Sample
 import ROOT
 
+from samples_DCH import *
 
 ## colors
 black = ROOT.kBlack
