@@ -309,7 +309,7 @@ def analyze(config):
             cut_flow     = [
               ['TwoMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTT',['Mu0AllSF','Mu1AllSF']],
               ],
             )
@@ -321,7 +321,7 @@ def analyze(config):
             cut_flow     = [
               ['TwoMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuLT',['Mu0RecoSF','Mu1AllSF','Mu0FF']],
               ],
             )
@@ -333,7 +333,7 @@ def analyze(config):
             cut_flow     = [
               ['TwoMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTL',['Mu0AllSF','Mu1RecoSF','Mu1FF']],
               ],
             )
@@ -345,7 +345,7 @@ def analyze(config):
             cut_flow     = [
               ['TwoMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuLL',['Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF']],
               ],
             )
@@ -360,7 +360,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF']],
               ],
             )
@@ -372,7 +372,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTTL',['Mu0AllSF','Mu1AllSF','Mu2RecoSF','Mu2FF']],
               ],
             )
@@ -384,7 +384,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTLT',['Mu0AllSF','Mu2AllSF','Mu1RecoSF','Mu1FF']],
               ],
             )
@@ -396,7 +396,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuLTT',['Mu1AllSF','Mu2AllSF','Mu0RecoSF','Mu0FF']],
               ],
             )
@@ -408,7 +408,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuLLT',['Mu2AllSF','Mu0RecoSF','Mu1RecoSF','Mu0FF','Mu1FF']],
               ],
             )
@@ -420,7 +420,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuLTL',['Mu1AllSF','Mu0RecoSF','Mu2RecoSF','Mu0FF','Mu2FF']],
               ],
             )
@@ -432,7 +432,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTLL',['Mu0AllSF','Mu1RecoSF','Mu2RecoSF','Mu1FF','Mu2FF']],
               ],
             )
@@ -444,7 +444,7 @@ def analyze(config):
             cut_flow     = [
               ['ThreeMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuLLL',['Mu0RecoSF','Mu1RecoSF','Mu2RecoSF','Mu0FF','Mu1FF','Mu2FF']],
               ],
             )
@@ -459,7 +459,7 @@ def analyze(config):
             cut_flow     = [
               ['FourMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
               ],
             )
@@ -471,7 +471,7 @@ def analyze(config):
             cut_flow     = [
               ['FourMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTTTL',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3RecoSF','Mu3FF']],
               ],
             )
@@ -483,7 +483,7 @@ def analyze(config):
             cut_flow     = [
               ['FourMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTTLT',['Mu0AllSF','Mu1AllSF','Mu3AllSF','Mu2RecoSF','Mu2FF']],
               ],
             )
@@ -495,7 +495,7 @@ def analyze(config):
             cut_flow     = [
               ['FourMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuTLTT',['Mu0AllSF','Mu2AllSF','Mu3AllSF','Mu1RecoSF','Mu1FF']],
               ],
             )
@@ -507,7 +507,7 @@ def analyze(config):
             cut_flow     = [
               ['FourMuons',None],
               ['OneOrTwoBjets',None],
-              ['PassAndMatchPresc',['MuTrigSFRecoMedium']],
+              ['SingleMuPassAndMatchPresc',['MuTrigSFRecoMedium']],
               ['MuLTTT',['Mu1AllSF','Mu2AllSF','Mu3AllSF','Mu0RecoSF','Mu0FF']],
               ],
             )
