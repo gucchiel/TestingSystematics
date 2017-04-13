@@ -559,7 +559,8 @@ class DiMuVars(pyframe.core.Algorithm):
         if len(muons)>=2:
           
           for p in combinations(muons,2):
-            ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
+            if p[0].trkcharge * p[1].trkcharge > 0.:
+              ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
           
           max_sig  = 1000.
           for pair,sig in ss_pairs.iteritems():
@@ -634,7 +635,8 @@ class DiEleVars(pyframe.core.Algorithm):
         if len(electrons)>=2:
           
           for p in combinations(electrons,2):
-            ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
+            if p[0].trkcharge * p[1].trkcharge > 0.:
+              ss_pairs[p] = p[0].trkd0sig + p[1].trkd0sig 
           
           max_sig  = 1000.
           for pair,sig in ss_pairs.iteritems():
