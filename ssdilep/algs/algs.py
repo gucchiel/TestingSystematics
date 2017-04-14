@@ -884,15 +884,6 @@ class CutAlg(pyframe.core.Algorithm):
           return False
 
     #__________________________________________________________________________
-
-    def cut_BadJetVeto(self):
-        jets = self.store['jets']
-        for jet in jets:
-          if not jet.isClean:
-            return False
-        return True
-
-    #__________________________________________________________________________
     #
     # Electron cuts from the old framework
     #__________________________________________________________________________    
@@ -1539,12 +1530,25 @@ class CutAlg(pyframe.core.Algorithm):
 
     #___________________________________________________________________________
 
-    def cut_OddSSElectronMuon(self):
+    def cut_OneSSElectronMuonPair(self):
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
-      print len(leptons)
+      #print len(leptons)
+      if len(leptons) >= 2:
+        for p in permutations(leptons,2):
+          if (p[0].trkcharge * p[1].trkcharge > 0.0) and (p[0] in electrons) and (p[1] in muons) : ss_pairs.append(p)
+      if len(ss_pairs)==1 : return True
+      return False
+    #___________________________________________________________________________
+
+    def cut_OddSSPairs(self):
+      electrons = self.store['electrons_loose']
+      muons     = self.store['muons']
+      ss_pairs = []
+      leptons = electrons + muons
+      #print len(leptons)
       if len(leptons) >= 2:
         for p in combinations(leptons,2):
           if p[0].trkcharge * p[1].trkcharge > 0.0: ss_pairs.append(p)
@@ -1660,7 +1664,36 @@ class CutAlg(pyframe.core.Algorithm):
       if len(os_pairs)==1 or len(os_pairs)==3: return True
       return False
 
-   #____________________________________________________________________________
+
+
+    
+  #__________________________________________________________________________
+    def cut_pTHAbove100(self):
+      return self.store['pTH'] > 100*GeV
+    
+    
+  #__________________________________________________________________________
+    def cut_MuonDRBelow35(self):
+      return self.store['muons_dR'] < 3.5
+    
+     
+  #__________________________________________________________________________
+    def cut_mTTotAbove250(self):
+      return self.store['mTTot'] > 250*GeV
+    
+
+  #__________________________________________________________________________
+    def cut_SSMassAbove200GeV(self):
+       electrons = self.store['electrons_loose']
+       muons = self.store['muons']
+       leptons = electrons+muons
+
+       if len(leptons)>=2:
+           for p in combinations(leptons,2):
+               if (p[0].trkcharge * p[1].trkcharge > 0.0 and (p[0].tlv+p[1].tlv).M() > 200*GeV): return True
+       return False
+
+  #____________________________________________________________________________
 
     def cut_AllElePairsM20(self):
       electrons = self.store['electrons_loose']

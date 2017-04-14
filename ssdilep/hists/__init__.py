@@ -9,3 +9,4 @@ import FF_hists
 import PtOnly_hists
 import H2D_hists
 import TAndP_hists
+import SR1Muons_hists
