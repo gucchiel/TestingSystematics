@@ -50,7 +50,12 @@ SCRIPT="j.plotter_SR1_MuMu.py"
 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_DCH800.root  --sampletype="mc" --samplename="Pythia8EvtGen_A14NNPDF23LO_DCH800_HLMpMp_HLMmMm" --events=10000   #--config="sys:FF_DN" 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_DCH800.root  --sampletype="mc" --samplename="Pythia8EvtGen_A14NNPDF23LO_DCH800_HRMpMp_HRMmMm" --events=10000   #--config="sys:FF_DN" 
-python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Sherpa_CT10_ggllll.root  --sampletype="mc" --samplename="Sherpa_CT10_ggllll" --events=10000   #--config="sys:FF_DN" 
+
+python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_DCH800.root  --sampletype="mc" --samplename="Pythia8EvtGen_A14NNPDF23LO_DCH800_HLMpMp_HLEmEm" --events=10000   #--config="sys:FF_DN" 
+#python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_DCH800.root  --sampletype="mc" --samplename="Pythia8EvtGen_A14NNPDF23LO_DCH800_HRMpMp_HRMmMm" --events=10000   #--config="sys:FF_DN" 
+
+
+#python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Sherpa_CT10_ggllll.root  --sampletype="mc" --samplename="Sherpa_CT10_ggllll" --events=10000   #--config="sys:FF_DN" 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Sherpa_221_NNPDF30NNLO_llll.root  --samplename="Sherpa_221_NNPDF30NNLO_llll" --sampletype="mc" --events=10000   #--config="sys:FF_DN" 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ0W.root  --sampletype="mc" #--events=4000   #--config="sys:FF_DN" 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.root --samplename="PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad" --sampletype="mc" --events=20000   #--config="sys:FF_DN" 

@@ -1744,7 +1744,7 @@ class CutAlg(pyframe.core.Algorithm):
     
   #__________________________________________________________________________
     def cut_pTHAbove100(self):
-      return self.store['pTH'] > 100*GeV
+      return self.store['muons_pTH'] > 100*GeV
     
     
   #__________________________________________________________________________
