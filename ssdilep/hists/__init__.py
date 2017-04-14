@@ -1,6 +1,7 @@
 import hists
 import histconfig
 import Main_hists
+import MuMain_hists
 import EleMain_hists
 import ThreeLepMain_hists
 import EleMuMain_hists

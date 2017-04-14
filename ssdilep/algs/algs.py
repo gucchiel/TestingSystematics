@@ -94,14 +94,17 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_TwoSSMuonPairs(self):
       pdgId_L=0
       pdgId_R=0
-      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
-      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
-      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
-      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
-
+      isSignal = False
+      if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in range(306538,306560))):
+          isSignal= True
+          for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+          for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+          for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+          for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+          
       muons = self.store['muons']
       ss_pairs = []
-      if (self.chain.nmuon == 4 and (pdgId_L==52 or pdgId_R==52)):
+      if (self.chain.nmuon == 4 and (((pdgId_L==52 or pdgId_R==52) and isSignal==True) or (isSignal==False))):
         for p in combinations(muons,4):
           if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge > 0.0: return True
       return False
@@ -177,7 +180,11 @@ class CutAlg(pyframe.core.Algorithm):
       for j in self.store['jets']:
         if not j.isClean: return False
       return True
-    
+
+    #__________________________________________________________________________
+    def cut_EleVeto(self):
+      return self.chain.nel == 0
+
     #__________________________________________________________________________
     def cut_AllMuPt22(self):
       muons = self.store['muons']
@@ -389,7 +396,7 @@ class CutAlg(pyframe.core.Algorithm):
       
       mu0_is_tight     = bool(muons[0].isIsolated_FixedCutTightTrackOnly and muons[0].trkd0sig<3.)
       mu1_is_tight     = bool(muons[1].isIsolated_FixedCutTightTrackOnly and muons[1].trkd0sig<3.)
-      mu2_is_tight     = bool(muons[2].isIsolated_FixedCutTipghtTrackOnly and muons[2].trkd0sig<3.)
+      mu2_is_tight     = bool(muons[2].isIsolated_FixedCutTightTrackOnly and muons[2].trkd0sig<3.)
       pass_mc_filter   = True
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
@@ -636,7 +643,15 @@ class CutAlg(pyframe.core.Algorithm):
       m_vis = (mu_lead.tlv + mu_sublead.tlv).M()
 
       return abs(m_vis)<200*GeV
-    
+   
+    #__________________________________________________________________________
+    def cut_dRhigh35(self):
+      return self.store['muons_dR'] > 3.5
+
+    #__________________________________________________________________________
+    def cut_pTHlow80(self):
+      return self.store['muons_pTH'] < 80*GeV
+
     #__________________________________________________________________________
     def cut_SingleMuPassAndMatch(self):
       required_triggers = self.store["reqTrig"]
@@ -660,7 +675,47 @@ class CutAlg(pyframe.core.Algorithm):
       for trig in required_triggers:
         if trig in passed_triggers: return True
       return False      
-    
+    #__________________________________________________________________________
+    def cut_PassTriggersSLT(self):
+      if self.sampletype == "mc" : runNumber = self.chain.rand_run_nr
+      else : runNumber = self.chain.runNumber
+      if runNumber < 290000. :
+          trigchains={"HLT_e24_lhmedium_L1EM20VH", "HLT_e60_lhmedium","HLT_e120_lhloose","HLT_mu50","HLT_mu20_L1MU15"}
+          for i in xrange(self.chain.passedTriggers.size()):
+              if self.chain.passedTriggers.at(i) in trigchains: return True
+      else:
+          trigchains={"HLT_e26_lhtight_nod0_ivarloose", "HLT_e60_lhmedium_nod0","HLT_e140_lhloose_nod0","HLT_mu50","HLT_mu26_ivarmedium"}
+          for i in xrange(self.chain.passedTriggers.size()):
+              if self.chain.passedTriggers.at(i) in trigchains: return True
+      return False        
+    #__________________________________________________________________________
+    def cut_PassTriggersDLT(self):
+      if self.sampletype == "mc" : runNumber = self.chain.rand_run_nr
+      else : runNumber = self.chain.runNumber
+      
+      if runNumber < 290000. :
+          trigchains={"HLT_2e17_lhloose","HLT_2mu14","HLT_e17_lhloose_nod0_mu14"}
+          for i in xrange(self.chain.passedTriggers.size()):
+              if self.chain.passedTriggers.at(i) in trigchains: return True
+      else:
+          trigchains={"HLT_2e17_lhloose","HLT_2mu14","HLT_e17_lhloose_nod0_mu14"}
+          for i in xrange(self.chain.passedTriggers.size()):
+              if self.chain.passedTriggers.at(i) in trigchains: return True
+      return False        
+    #__________________________________________________________________________
+    def cut_PassTriggersSLTORDLT(self):
+      if self.sampletype == "mc" : runNumber = self.chain.rand_run_nr
+      else : runNumber = self.chain.runNumber
+
+      if runNumber < 290000. :
+          trigchains={"HLT_e24_lhmedium_L1EM20VH", "HLT_e60_lhmedium","HLT_e120_lhloose","HLT_mu50","HLT_mu20_L1MU15","HLT_2e17_lhloose","HLT_2mu10","HLT_e17_lhloose_nod0_mu14"}
+          for i in xrange(self.chain.passedTriggers.size()):
+              if self.chain.passedTriggers.at(i) in trigchains: return True
+      else:
+          trigchains={"HLT_e26_lhtight_nod0_ivarloose", "HLT_e60_lhmedium_nod0","HLT_e140_lhloose_nod0","HLT_mu50","HLT_mu26_ivarmedium","HLT_2e17_lhloose","HLT_2mu14","HLT_e17_lhloose_nod0_mu14"}
+          for i in xrange(self.chain.passedTriggers.size()):
+              if self.chain.passedTriggers.at(i) in trigchains: return True
+      return False        
     #__________________________________________________________________________
     def cut_PassMixed(self):
       required_triggers = self.store["reqTrig"]
@@ -872,16 +927,21 @@ class CutAlg(pyframe.core.Algorithm):
             return False
         return True
     #__________________________________________________________________________
+    def cut_DeltaRMuonFarFromJet(self):
+        jets = self.store['jets']
+        muons = self.store['muons']
+        for jet in jets:
+            if(muons[0].tlv.DeltaR(jet.tlv) > 2.5): continue
+            else: return False
+        return True    
+    
+    #__________________________________________________________________________
     def cut_OneOrTwoBjets(self):
         nbjets = 0
         jets = self.store['jets']
         for jet in jets:
-          if jet.isFix77:
-            nbjets += 1
-        if nbjets in [1,2]:
-          return True
-        else:
-          return False
+          if jet.isFix77: nbjets += 1
+        return nbjets in [1,2]
 
     #__________________________________________________________________________
     #
@@ -1506,14 +1566,17 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_TwoSSElectronPairs(self):
       pdgId_L=0
       pdgId_R=0
-      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
-      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
-      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
-      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)
+      isSignal = False
+      if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in range(306538,306560))):
+          isSignal= True
+          for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+          for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+          for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+          for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)
 
       electrons = self.store['electrons_loose']
       ss_pairs = []
-      if (len(electrons)==4 and (pdgId_L==44 or pdgId_R==44)):
+      if (len(electrons)== 4 and ((pdgId_L==44 or pdgId_R==44) and isSignal==True) or (isSignal==False)):
         for p in combinations(electrons,4):
           if p[0].trkcharge * p[1].trkcharge * p[2].trkcharge * p[3].trkcharge > 0.0: return True
       return False
@@ -1559,17 +1622,20 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_TwoSSElectronMuonPairsEEMM(self):
       pdgId_L=0
       pdgId_R=0
-      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
-      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
-      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
-      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
-        
+      isSignal = False
+      if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in range(306538,306560))):
+          isSignal= True
+          for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+          for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+          for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+          for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+          
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 2 and len(muons)== 2 and (pdgId_L==48 or pdgId_R==48):
+      if len(electrons) == 2 and len(muons)== 2 and (((pdgId_L==48 or pdgId_R==48) and isSignal==True) or (isSignal==False)):
         ss_electrons = electrons[0].trkcharge * electrons[1].trkcharge
         ss_muons     = muons[0].trkcharge * muons[1].trkcharge
         for p in combinations(leptons,4):
@@ -1581,17 +1647,20 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_TwoSSElectronMuonPairsEMEM(self):
       pdgId_L=0
       pdgId_R=0
-      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
-      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
-      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
-      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
-  
+      isSignal = False
+      if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in range(306538,306560))):
+          isSignal= True
+          for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+          for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+          for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+          for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+          
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 2 and len(muons)==2 and (pdgId_L==48 or pdgId_R==48):
+      if len(electrons) == 2 and len(muons)==2 and (((pdgId_L==48 or pdgId_R==48) and isSignal==True) or (isSignal==False)):
         for p in combinations(leptons,4):
           ss_elemu = (electrons[0].trkcharge * muons[0].trkcharge > 0.0)or(electrons[0].trkcharge * muons[1].trkcharge > 0.0)or(electrons[1].trkcharge * muons[0].trkcharge > 0.0)
           if p[0].trkcharge * p[1].trkcharge *p[2].trkcharge * p[3].trkcharge  and (ss_elemu) > 0.0:  return True
@@ -1601,17 +1670,20 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_TwoSSElectronMuonPairsEEEM(self):
       pdgId_L=0
       pdgId_R=0
-      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
-      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
-      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
-      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
-        
+      isSignal = False
+      if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in range(306538,306560))):
+          isSignal= True
+          for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+          for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+          for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+          for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+          
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 3 and len(muons)== 1 and (pdgId_L==46 or pdgId_R==46):
+      if len(electrons) == 3 and len(muons)== 1 and (((pdgId_L==46 or pdgId_R==46) and isSignal==True) or (isSignal==False)):
         ss_electrons = (electrons[0].trkcharge*electrons[1].trkcharge>0.0)or(electrons[0].trkcharge*electrons[2].trkcharge>0.0)or(electrons[1].trkcharge*electrons[2].trkcharge>0.0)
         ss_elemu     = (muons[0].trkcharge*electrons[0].trkcharge>0.0)or(muons[0].trkcharge*electrons[1].trkcharge>0.0)or(muons[0].trkcharge*electrons[2].trkcharge>0.0)
         for p in combinations(leptons,4):
@@ -1622,17 +1694,20 @@ class CutAlg(pyframe.core.Algorithm):
     def cut_TwoSSElectronMuonPairsMMEM(self):
       pdgId_L=0
       pdgId_R=0
-      for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
-      for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
-      for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
-      for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
-
+      isSignal = False
+      if (("mc" in self.sampletype) and (self.chain.mcChannelNumber in range(306538,306560))):
+          isSignal= True
+          for pdgId_Lpp in self.chain.HLpp_Daughters: pdgId_L += abs(pdgId_Lpp)
+          for pdgId_Lmm in self.chain.HLmm_Daughters: pdgId_L += abs(pdgId_Lmm)
+          for pdgId_Rpp in self.chain.HRpp_Daughters: pdgId_R += abs(pdgId_Rpp)
+          for pdgId_Rmm in self.chain.HRmm_Daughters: pdgId_R += abs(pdgId_Rmm)  
+          
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
 
-      if len(electrons) == 1 and len(muons)== 3 and (pdgId_L==50 or pdgId_R==50):
+      if len(electrons) == 1 and len(muons)== 3 and (((pdgId_L==50 or pdgId_R==50) and isSignal) or (isSignal==False)):
         ss_muons = (muons[0].trkcharge*muons[1].trkcharge>0.0)or(muons[0].trkcharge*muons[2].trkcharge>0.0)or(muons[1].trkcharge*muons[2].trkcharge>0.0)
         ss_elemu     = (muons[0].trkcharge*electrons[0].trkcharge>0.0)or(muons[1].trkcharge*electrons[0].trkcharge>0.0)or(muons[2].trkcharge*electrons[0].trkcharge>0.0)
         for p in combinations(leptons,4):
@@ -3138,55 +3213,40 @@ class CutAlg(pyframe.core.Algorithm):
         if(passZVetoEle and passZVetoMuon): return True
         return False
     #____________________________________________________________________________
+    def cut_IsControlRegion2(self):
+        posmass = self.store['mVis1']
+        negmass = self.store['mVis2']
+
+        if((posmass<150*GeV) and (negmass<150*GeV)): return True
+        return False
+    #____________________________________________________________________________
     def cut_IsValidationRegion2(self):
-        electrons = self.store['electrons_loose']
-        muons     = self.store['muons']
-        leptons   = electrons + muons 
-        
-        if(len(leptons)>=2):
-            for i in leptons:
-                for j in leptons:
-                    if(i==j): continue
-                    else:
-                        charge = i.trkcharge * j.trkcharge
-                        mass   = (i.tlv + j.tlv).M()
-                        if( charge>0. and mass > 200*GeV): return False
-        return True                
+        posmass = self.store['mVis1']
+        negmass = self.store['mVis2']
+
+        if((150*GeV<posmass<200*GeV) and (150*GeV<negmass<200*GeV)): return True
+        return False
     #____________________________________________________________________________
     def cut_IsSignalRegion2(self):
-        electrons = self.store['electrons_loose']
-        muons     = self.store['muons']
-        leptons   = electrons + muons 
-        if(len(leptons)>=2):
-            for i in leptons:
-                for j in leptons:
-                    if(i==j): continue
-                    else:
-                        charge = i.trkcharge * j.trkcharge
-                        mass   = (i.tlv + j.tlv).M()
-                        if( charge>0. and mass < 200*GeV): return False
-        return True                
+        posmass = self.store['mVis1']
+        negmass = self.store['mVis2']
+
+        if((posmass>200*GeV) and (negmass>200*GeV)): return True
+        return False
     #____________________________________________________________________________
     def cut_DeltaMassOverMass(self):
-        alpha = array('d',[0.08, 0.004, 0.005, 0.004, 0.003, 0.004])
-        beta  = array('d',[0.78, 1.50,  1.41,  1.45,  1.41,  1.46 ])
-        electrons = self.store['electrons_loose']
-        muons     = self.store['muons']
-        leptons   = electrons + muons 
-        
-        flavour =self.store['ChannelFlavour']
+        alpha = array('d',[0.09, 0.005, 0.003, 0.004, 0.007, 0.004])
+        beta  = array('d',[0.74, 1.46,  1.47,  1.46,  1.30,  1.50 ])
+        flavour =self.store['ChannelFlavour']        
+        mpos = self.store['mVis1'] 
+        mneg = self.store['mVis2'] 
+        massDiff = (mpos - mneg)/GeV
+        mass     = (mpos + mneg)/(2*GeV)
 
-        if(len(leptons)>=2):
-            for i in leptons:
-                for j in leptons:
-                    if(i==j): continue
-                    else:
-                        charge   = i.trkcharge * j.trkcharge
-                        massDiff = (i.tlv.M()/GeV - j.tlv.M()/GeV)
-                        mass     = (i.tlv.M()/GeV + j.tlv.M()/GeV)/2
-                        massCut  = (abs(massDiff)/(alpha[flavour]*(pow(mass,beta[flavour]))))
-                        if( charge>0. and (abs(massDiff)>3)): return False
-        return True                   
+        massCut = (abs(massDiff)/(alpha[flavour]*(pow(mass,beta[flavour]))))
+        print massCut
+        if(abs(massCut) < 3): return True
+        return False
     #____________________________________________________________________________
 
     def cut_PASS(self):
@@ -3268,6 +3328,7 @@ class PlotAlg(pyframe.algs.CutFlowAlg,CutAlg):
             elif h.get_name() == "Hist2D": 
               h.instance = self.hist(h.hname, "ROOT.TH2F('$', ';%s;%s', %d, %lf, %lf, %d, %lf, %lf)" % (h.hname,h.hname,h.nbinsx,h.xmin,h.xmax,h.nbinsy,h.ymin,h.ymax), dir=os.path.join(region, '%s'%h.dir))
               h.set_axis_titles()
+
 
         # ---------------
         # Fill histograms

@@ -131,16 +131,6 @@ h_muons_deta  = Hist1D( hname  = "h_muons_deta",
                               vexpr  = "self.store['muons_deta']",
                             )
 
-h_muons_dR  = Hist1D( hname  = "h_muons_dR",
-                              xtitle = "#DeltaR(#mu_{lead},#mu_{sublead})",
-                              ytitle = "Events", 
-                              nbins  = 50,
-                              xmin   = -0.,
-                              xmax   = 5.,
-                              dir    = "event",
-                              vexpr  = "self.store['muons_dR']",
-                            )
-
 h_muons_mVis  = Hist1D( hname  = "h_muons_mVis",
                               xtitle = "m_{vis}(#mu_{lead},#mu_{sublead}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
@@ -182,14 +172,24 @@ h_muons_mTTot  = Hist1D( hname  = "h_muons_mTTot",
                             )
 
 h_muons_pTH  = Hist1D( hname  = "h_muons_pTH",
-                              xtitle = "pT_{vis}(pair) [GeV]",
+                              xtitle = "p_T(SS_{lead}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
                               nbins  = 2000,
                               xmin   = 0.0,
                               xmax   = 2000.,
                               dir    = "event",
-                              vexpr  = "self.store['pTH']/GeV",
-                            )
+                              vexpr  = "self.store['muons_pTH']/GeV",
+                              )
+
+h_muons_dR  = Hist1D( hname  = "h_muons_dR",
+                              xtitle = "#DeltaR(SS_{lead})",
+                              ytitle = "Events", 
+                              nbins  = 60,
+                              xmin   = 0.,
+                              xmax   = 6.,
+                              dir    = "event",
+                              vexpr  = "self.store['muons_dR']",
+                              )
 
 h_mujet_dphi  = Hist1D( hname  = "h_mujet_dphi",
                               xtitle = "#Delta#phi(#mu_{lead},jet_{lead})",
@@ -1038,7 +1038,7 @@ h_elelead_pt_jetlead_pt  = Hist2D( hname      = "h_elelead_pt_jetlead_pt",
 # leading lepton
 # ---------------
 h_leplead_pt = Hist1D( hname  = "h_leplead_pt",
-                              xtitle = "p_{T}(#mu_{lead}) [GeV]",
+                              xtitle = "p_{T}(lep_{lead}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
                               nbins  = 2000,
                               xmin   = 0.0,
@@ -1048,7 +1048,7 @@ h_leplead_pt = Hist1D( hname  = "h_leplead_pt",
                             )
 
 h_leplead_eta = Hist1D( hname  = "h_leplead_eta",
-                              xtitle = "#eta(#mu_{lead})",
+                              xtitle = "#eta(lep_{lead})",
                               ytitle = "Events / (0.1)", 
                               nbins  = 50,
                               xmin   = -2.5,
@@ -1058,7 +1058,7 @@ h_leplead_eta = Hist1D( hname  = "h_leplead_eta",
                             )
 
 h_leplead_phi = Hist1D( hname  = "h_leplead_phi",
-                              xtitle = "#phi(#mu_{lead})",
+                              xtitle = "#phi(lep_{lead})",
                               ytitle = "Events / (0.1)", 
                               nbins  = 64,
                               xmin   = -3.2,
@@ -1068,7 +1068,7 @@ h_leplead_phi = Hist1D( hname  = "h_leplead_phi",
                             )
 
 h_leplead_trkd0 = Hist1D( hname  = "h_leplead_trkd0",
-                              xtitle = "d^{trk}_{0}(#mu_{lead}) [mm]",
+                              xtitle = "d^{trk}_{0}(lep_{lead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 80,
                               xmin   = -0.4,
@@ -1078,7 +1078,7 @@ h_leplead_trkd0 = Hist1D( hname  = "h_leplead_trkd0",
                             )
 
 h_leplead_trkd0sig = Hist1D( hname  = "h_leplead_trkd0sig",
-                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (#mu_{lead})",
+                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (lep_{lead})",
                               ytitle = "Events / (0.01)", 
                               nbins  = 100,
                               xmin   = 0.,
@@ -1088,7 +1088,7 @@ h_leplead_trkd0sig = Hist1D( hname  = "h_leplead_trkd0sig",
                             )
 
 h_leplead_trkz0 = Hist1D( hname  = "h_leplead_trkz0",
-                              xtitle = "z^{trk}_{0}(#mu_{lead}) [mm]",
+                              xtitle = "z^{trk}_{0}(lep_{lead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 40,
                               xmin   = -2,
@@ -1098,7 +1098,7 @@ h_leplead_trkz0 = Hist1D( hname  = "h_leplead_trkz0",
                             )
 
 h_leplead_trkz0sintheta  = Hist1D( hname  = "h_leplead_trkz0sintheta",
-                              xtitle = "z^{trk}_{0}sin#theta(#mu_{lead}) [mm]",
+                              xtitle = "z^{trk}_{0}sin#theta(lep_{lead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 200,
                               xmin   = -1,
@@ -1108,7 +1108,7 @@ h_leplead_trkz0sintheta  = Hist1D( hname  = "h_leplead_trkz0sintheta",
                             )
 
 h_leplead_ptvarcone30  = Hist1D( hname  = "h_leplead_ptvarcone30",
-                              xtitle = "ptvarcone30/p_{T}(#mu_{lead})",
+                              xtitle = "ptvarcone30/p_{T}(lep_{lead})",
                               ytitle = "Events / (0.001)", 
                               nbins  = 10000,
                               xmin   = 0.,
@@ -1118,7 +1118,7 @@ h_leplead_ptvarcone30  = Hist1D( hname  = "h_leplead_ptvarcone30",
                             )
 
 h_lep3_pt = Hist1D( hname  = "h_lep3_pt",
-                              xtitle = "p_{T}(#mu_{lead}) [GeV]",
+                              xtitle = "p_{T}(lep_{lead}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
                               nbins  = 2000,
                               xmin   = 0.0,
@@ -1128,7 +1128,7 @@ h_lep3_pt = Hist1D( hname  = "h_lep3_pt",
                             )
 
 h_lep3_eta = Hist1D( hname  = "h_lep3_eta",
-                              xtitle = "#eta(#mu_{lead})",
+                              xtitle = "#eta(lep_{lead})",
                               ytitle = "Events / (0.1)", 
                               nbins  = 50,
                               xmin   = -2.5,
@@ -1138,7 +1138,7 @@ h_lep3_eta = Hist1D( hname  = "h_lep3_eta",
                             )
 
 h_lep3_phi = Hist1D( hname  = "h_lep3_phi",
-                              xtitle = "#phi(#mu_{lead})",
+                              xtitle = "#phi(lep_{lead})",
                               ytitle = "Events / (0.1)", 
                               nbins  = 64,
                               xmin   = -3.2,
@@ -1148,7 +1148,7 @@ h_lep3_phi = Hist1D( hname  = "h_lep3_phi",
                             )
 
 h_lep3_trkd0 = Hist1D( hname  = "h_lep3_trkd0",
-                              xtitle = "d^{trk}_{0}(#mu_{lead}) [mm]",
+                              xtitle = "d^{trk}_{0}(lep_{lead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 80,
                               xmin   = -0.4,
@@ -1158,7 +1158,7 @@ h_lep3_trkd0 = Hist1D( hname  = "h_lep3_trkd0",
                             )
 
 h_lep3_trkd0sig = Hist1D( hname  = "h_lep3_trkd0sig",
-                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (#mu_{lead})",
+                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (lep_{lead})",
                               ytitle = "Events / (0.01)", 
                               nbins  = 100,
                               xmin   = 0.,
@@ -1168,7 +1168,7 @@ h_lep3_trkd0sig = Hist1D( hname  = "h_lep3_trkd0sig",
                             )
 
 h_lep3_trkz0 = Hist1D( hname  = "h_lep3_trkz0",
-                              xtitle = "z^{trk}_{0}(#mu_{lead}) [mm]",
+                              xtitle = "z^{trk}_{0}(lep_{lead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 40,
                               xmin   = -2,
@@ -1178,7 +1178,7 @@ h_lep3_trkz0 = Hist1D( hname  = "h_lep3_trkz0",
                             )
 
 h_lep3_trkz0sintheta  = Hist1D( hname  = "h_lep3_trkz0sintheta",
-                              xtitle = "z^{trk}_{0}sin#theta(#mu_{lead}) [mm]",
+                              xtitle = "z^{trk}_{0}sin#theta(lep_{lead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 200,
                               xmin   = -1,
@@ -1188,7 +1188,7 @@ h_lep3_trkz0sintheta  = Hist1D( hname  = "h_lep3_trkz0sintheta",
                             )
 
 h_lep3_ptvarcone30  = Hist1D( hname  = "h_lep3_ptvarcone30",
-                              xtitle = "ptvarcone30/p_{T}(#mu_{lead})",
+                              xtitle = "ptvarcone30/p_{T}(lep_{lead})",
                               ytitle = "Events / (0.001)", 
                               nbins  = 10000,
                               xmin   = 0.,
@@ -1200,7 +1200,7 @@ h_lep3_ptvarcone30  = Hist1D( hname  = "h_lep3_ptvarcone30",
 # subleading lepton
 # ------------------
 h_lepsublead_pt = Hist1D( hname  = "h_lepsublead_pt",
-                              xtitle = "p_{T}(#mu_{sublead}) [GeV]",
+                              xtitle = "p_{T}(lep_{sublead}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
                               nbins  = 2000,
                               xmin   = 0.0,
@@ -1210,7 +1210,7 @@ h_lepsublead_pt = Hist1D( hname  = "h_lepsublead_pt",
                             )
 
 h_lepsublead_eta = Hist1D( hname  = "h_lepsublead_eta",
-                              xtitle = "#eta(#mu_{sublead})",
+                              xtitle = "#eta(lep_{sublead})",
                               ytitle = "Events / (0.1)", 
                               nbins  = 50,
                               xmin   = -2.5,
@@ -1220,7 +1220,7 @@ h_lepsublead_eta = Hist1D( hname  = "h_lepsublead_eta",
                             )
 
 h_lepsublead_phi = Hist1D( hname  = "h_lepsublead_phi",
-                              xtitle = "#phi(#mu_{sublead})",
+                              xtitle = "#phi(lep_{sublead})",
                               ytitle = "Events / (0.1)", 
                               nbins  = 64,
                               xmin   = -3.2,
@@ -1230,7 +1230,7 @@ h_lepsublead_phi = Hist1D( hname  = "h_lepsublead_phi",
                             )
 
 h_lepsublead_trkd0 = Hist1D( hname  = "h_lepsublead_trkd0",
-                              xtitle = "d^{trk}_{0}(#mu_{sublead}) [mm]",
+                              xtitle = "d^{trk}_{0}(lep_{sublead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 80,
                               xmin   = -0.4,
@@ -1240,7 +1240,7 @@ h_lepsublead_trkd0 = Hist1D( hname  = "h_lepsublead_trkd0",
                             )
 
 h_lepsublead_trkd0sig = Hist1D( hname  = "h_lepsublead_trkd0sig",
-                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (#mu_{sublead})",
+                              xtitle = "d^{trk}_{0} / #sigma(d^{trk}_{0}) (lep_{sublead})",
                               ytitle = "Events / (0.01)", 
                               nbins  = 100,
                               xmin   = 0.,
@@ -1250,7 +1250,7 @@ h_lepsublead_trkd0sig = Hist1D( hname  = "h_lepsublead_trkd0sig",
                             )
 
 h_lepsublead_trkz0 = Hist1D( hname  = "h_lepsublead_trkz0",
-                              xtitle = "z^{trk}_{0}(#mu_{sublead}) [mm]",
+                              xtitle = "z^{trk}_{0}(lep_{sublead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 40,
                               xmin   = -2,
@@ -1260,7 +1260,7 @@ h_lepsublead_trkz0 = Hist1D( hname  = "h_lepsublead_trkz0",
                             )
 
 h_lepsublead_trkz0sintheta  = Hist1D( hname  = "h_lepsublead_trkz0sintheta",
-                              xtitle = "z^{trk}_{0}sin#theta(#mu_{sublead}) [mm]",
+                              xtitle = "z^{trk}_{0}sin#theta(lep_{sublead}) [mm]",
                               ytitle = "Events / (0.01)", 
                               nbins  = 200,
                               xmin   = -1,
@@ -1270,7 +1270,7 @@ h_lepsublead_trkz0sintheta  = Hist1D( hname  = "h_lepsublead_trkz0sintheta",
                             )
 
 h_lepsublead_ptvarcone30  = Hist1D( hname  = "h_lepsublead_ptvarcone30",
-                              xtitle = "ptvarcone30/p_{T}(#mu_{sublead})",
+                              xtitle = "ptvarcone30/p_{T}(lep_{sublead})",
                               ytitle = "Events / (0.001)", 
                               nbins  = 10000,
                               xmin   = 0.,
