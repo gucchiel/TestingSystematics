@@ -22,11 +22,10 @@ INSCRIPT="../ssdilep/run"
 #SCRIPT="j.plotter_TAndP.py"
 
 
-#SCRIPT="j.plotter_VR1.py"
-#SCRIPT="j.plotter_VR2.py"
-#SCRIPT="j.plotter_VR3.py"
-SCRIPT="j.plotter_VR4.py"
-#SCRIPT="j.plotter_VR5.py"
+#SCRIPT="j.plotter_VRmumu_SSVR2b.py"
+#SCRIPT="j.plotter_VRmumu_LOWPTVR.py"
+SCRIPT="j.plotter_VRmumu_HIDRVR.py"
+#SCRIPT="j.plotter_CRmumu_SSCR.py"
 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00280273.root --sampletype="data"  #--events=20000
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00302393.root --sampletype="data"  --events=20000
@@ -44,9 +43,10 @@ SCRIPT="j.plotter_VR4.py"
 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Sherpa_221_NNPDF30NNLO_llll.root  --samplename="Sherpa_221_NNPDF30NNLO_llll" --sampletype="mc" --events=10000   #--config="sys:FF_DN" 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ0W.root  --sampletype="mc" #--events=4000   #--config="sys:FF_DN" 
-python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.root --samplename="PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad" --sampletype="mc" --events=20000   #--config="sys:FF_DN" 
+#python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.root --samplename="PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad" --sampletype="mc" --events=20000   #--config="sys:FF_DN" 
 
-#python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/DCH300.root  --sampletype="mc" --samplename="DCH300_HRMpMp_HRMmMm" --events=10000   #--config="sys:FF_DN" 
+#python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_DCH300.root  --sampletype="mc" --samplename="DCH300_HRMpMp_HRMmMm" --events=10000   #--config="sys:FF_DN" 
+python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/Pythia8EvtGen_A14NNPDF23LO_DCH300.root  --sampletype="mc" --samplename="DCH300_HLMpMp_HLMmMm" --events=10000   #--config="sys:FF_DN" 
 
 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00304008_BTagOR.root --samplename="physics_Main_00304008_BTagOR" --sampletype="data" > physics_Main_00304008_BTagOR.log 2>&1
@@ -54,7 +54,7 @@ python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/PowhegPythiaEvtGen_P2012_ttbar_hd
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00304008_OldOR.root --samplename="physics_Main_00304008_OldOR" --sampletype="data" > physics_Main_00304008_OldOR.log 2>&1
 
 
-#python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00298633.root --sampletype="data" --samplename="physics_Main_00298633" 
+#python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00298633.root --sampletype="data" --samplename="physics_Main_00298633" --events=10000
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00300655.root --sampletype="data" --samplename="physics_Main_00300655" 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00300687.root --sampletype="data" --samplename="physics_Main_00300687" 
 #python ${INSCRIPT}/${SCRIPT} --input ${INPATH}/physics_Main_00307306.root --sampletype="data" --samplename="physics_Main_00307306" 
