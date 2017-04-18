@@ -15,6 +15,7 @@ description:
 from sample import Sample
 import ROOT
 
+from samples_DCH import *
 
 ## colors
 black = ROOT.kBlack
@@ -40,7 +41,7 @@ GRL += [
         "282631","282712","282784","282992","283074","283155","283270","283429",
         "283608","283780","284006","284154","284213","284285","284420","284427",
         "284484",
-
+        
         #2016
         "297730","298595","298609","298633","298687","298690","298771","298773",
         "298862","298967","299055","299144","299147","299184","299243","299584",
@@ -61,11 +62,26 @@ GRL += [
         "310249","310341","310370","310405","310468","310473","310634","310691",
         "310738","310809","310863","310872","310969","311071","311170","311244",
         "311287","311321","311365","311402","311473","311481",
+        
+        
+        #2016 first batch (temporary)
+        #"297730","298595","298609","298633","298687","298690","298771","298773",
+        #"298862","298967","299055","299144","299147","299184","299243","299584",
+        #"300279","300345","300415","300418","300487","300540","300571","300600",
+        #"300655","300687","300784","300800","300863","300908","301912","301918",
+        #"301932","301973","302053","302137","302265","302269","302300","302347",
+        #"302380","302391","302393","302737","302831","302872","302919","302925",
+        #"302956","303007","303079","303201","303208","303264","303266","303291",
+        #"303304","303338","303421","303499","303560","303638","303832","303846",
+        #"303892","303943","304006","304008","304128","304178","304198","304211",
+        #"304243","304308","304337","304409","304431","304494",
+        
         ]
 
 #GRL += ["302919","299055","279932","279928",]
 
-ds_name = '00%s.physics_Main'
+#ds_name = '00%s.physics_Main'
+ds_name = 'physics_Main_00%s'
 
 for run in GRL:
     name = ds_name % run
@@ -122,10 +138,10 @@ fakes_TT = Sample( name         = 'fakes_TT',
 """
 fakes_cr    = Sample( name      = "fakes_cr",
                    tlatex       = "Fakes CR",
-                   fill_color   = ROOT.kRed-10,
-                   line_color   = ROOT.kRed-8,
+                   fill_color   = ROOT.kGray,
+                   line_color   = ROOT.kGray+1,
                    line_style   = 1,
-                   marker_color = ROOT.kRed-8,
+                   marker_color = ROOT.kGray+1,
                    marker_style = 20,
                    type         = "datadriven",
                    )
@@ -133,10 +149,10 @@ fakes_cr    = Sample( name      = "fakes_cr",
 
 fakes    = Sample( name         = "fakes",
                    tlatex       = "Fakes",
-                   fill_color   = ROOT.kRed-10,
-                   line_color   = ROOT.kRed-8,
+                   fill_color   = ROOT.kGray,
+                   line_color   = ROOT.kGray+1,
                    line_style   = 1,
-                   marker_color = ROOT.kRed-8,
+                   marker_color = ROOT.kGray+1,
                    marker_style = 20,
                    #daughters    = [fakes_TL,fakes_LT,fakes_TT],
                    daughters    = list_runs,
@@ -401,9 +417,9 @@ Sherpa_CT10_llvvjj_ss_EW6       = Sample( name = "Sherpa_CT10_llvvjj_ss_EW6",   
 
 diboson_sherpa221 = Sample( name =   'diboson_sherpa221',
                   tlatex = 'DB inclusive',
-                  fill_color = ROOT.kGreen-10,
-                  line_color =  ROOT.kGreen-8,
-                  marker_color =  ROOT.kGreen-8,
+                  fill_color = ROOT.kOrange-3,
+                  line_color =  ROOT.kOrange+5,
+                  marker_color =  ROOT.kOrange+5,
                   daughters = [
                                 Sherpa_221_NNPDF30NNLO_llll,
                                 Sherpa_221_NNPDF30NNLO_lllv,
@@ -418,7 +434,7 @@ diboson_sherpa221 = Sample( name =   'diboson_sherpa221',
                                 Sherpa_221_NNPDF30NNLO_ZqqZll,
                                 Sherpa_221_NNPDF30NNLO_ZqqZvv,
                                 Sherpa_CT10_ggllll,
-                                Sherpa_CT10_ggllvv,
+                                #######Sherpa_CT10_ggllvv,
                                 Sherpa_CT10_lllljj_EW6,
                                 Sherpa_CT10_lllvjj_EW6,
                                 Sherpa_CT10_llvvjj_ss_EW4,
@@ -1142,9 +1158,9 @@ ttH125                                = Sample( name =  "aMcAtNloPythia8EvtGen_A
 
 ttX = Sample( name =   'ttX',
                   tlatex = 't#bar{t}X',
-                  fill_color = ROOT.kViolet-9,
-                  line_color =  ROOT.kViolet-7,
-                  marker_color =  ROOT.kViolet-7,
+                  fill_color = ROOT.kViolet+1,
+                  line_color =  ROOT.kViolet+2,
+                  marker_color =  ROOT.kViolet+2,
                   daughters = [
                                ttW_Np0,                
                                ttW_Np1,        
@@ -1152,8 +1168,8 @@ ttX = Sample( name =   'ttX',
                                #ttZnnqq_Np0,    
                                #ttZnnqq_Np1,    
                                #ttZnnqq_Np2,    
-                               ttee_Np0,       
-                               ttee_Np1,       
+                               #ttee_Np0,       
+                               #ttee_Np1,       
                                #ttmumu_Np0,     
                                #ttmumu_Np1,     
                                #tttautau_Np0,   
@@ -1209,9 +1225,9 @@ PowhegPythiaEvtGen_P2012_Wt_inclusive_antitop          = Sample( name =  "Powheg
 
 singletop = Sample( name =   'singletop',
                     tlatex = 'single-top',
-                    fill_color = ROOT.kYellow-10,
-                    line_color =  ROOT.kYellow-8,
-                    marker_color =  ROOT.kYellow-8,
+                    fill_color = ROOT.kRed+3,
+                    line_color =  ROOT.kRed+4,
+                    marker_color =  ROOT.kRed+4,
                     daughters = [
                                  PowhegPythiaEvtGen_P2012_singletop_tchan_lept_antitop,    
                                  PowhegPythiaEvtGen_P2012_singletop_tchan_lept_top,
@@ -1229,21 +1245,19 @@ singletop = Sample( name =   'singletop',
 # Notes:
 #       * cross sections: https://twiki.cern.ch/twiki/bin/view/AtlasProtected/XsecSummaryTTbar 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ttbar_hdamp172p5_nonallhad            = Sample( name =  "ttbar_hdamp172p5_nonallhad", xsec = 451.645679998 )
-ttbar_hdamp172p5_allhad               = Sample( name =  "ttbar_hdamp172p5_allhad",    xsec = 380.11432     )
+#ttbar_hdamp172p5_nonallhad            = Sample( name =  "ttbar_hdamp172p5_nonallhad", xsec = 451.645679998 )
+#ttbar_hdamp172p5_allhad               = Sample( name =  "ttbar_hdamp172p5_allhad",    xsec = 380.11432     )
 ttbar_nonallhad                       = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad", xsec = 0.69611*0.54341*1000 )
 ttbar_hdamp172p5_dil                  = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_dil",       xsec = 0.073329*1000 )
 
 ttbar = Sample( name =  'ttbar_dilep',
                     tlatex = 't#bar{t}',
-                    fill_color = ROOT.kBlue-10,
-                    line_color =  ROOT.kBlue-8,
-                    marker_color =  ROOT.kBlue-8,
+                    fill_color = ROOT.kCyan+1,
+                    line_color =  ROOT.kCyan+2,
+                    marker_color =  ROOT.kCyan+2,
                     daughters = [
-                                 #ttbar_hdamp172p5_nonallhad,
+                                 ttbar_nonallhad,
                                  #ttbar_hdamp172p5_allhad,   
-                                 # ttbar_nonallhad,           
-                                 ttbar_hdamp172p5_dil,           
                                 ],
                 ) 
 
@@ -1442,12 +1456,50 @@ all_mc = []
 
 ### EXOT12 ZPeak
 # all_mc += diboson_sherpa.daughters
-all_mc += diboson_sherpa221.daughters
+####all_mc += diboson_sherpa221.daughters
 # all_mc += Zee221.daughters
 # all_mc += singletop.daughters
 # all_mc += ttbar.daughters
-all_mc += ttX.daughters
-all_mc += Higgs.daughters
+#####all_mc += ttX.daughters
+#####all_mc += Higgs.daughters
 # all_mc += vgamma.daughters
 # all_mc += WenuPowheg.daughters
+
+# EXOT12 mu FF validation
+all_mc += diboson_sherpa221.daughters
+all_mc += ZZ.daughters
+all_mc += WZ.daughters
+all_mc += WW.daughters
+all_mc += ttX.daughters
+all_mc += ttbar.daughters
+all_mc += singletop.daughters
+
+all_mc += WenuPowheg.daughters
+all_mc += ZeePowheg.daughters
+all_mc += WmunuPowheg.daughters
+all_mc += ZmumuPowheg.daughters
+
+#all_mc += Wenu.daughters
+#all_mc += Wmunu.daughters
+#all_mc += Zee.daughters
+#all_mc += Zmumu.daughters
+
+
+mc_bkg = []
+
+mc_bkg.append( diboson_sherpa221 )
+
+mc_bkg.append( ttX )
+mc_bkg.append( ttbar )
+mc_bkg.append( singletop )
+mc_bkg.append( WmunuPowheg )
+mc_bkg.append( ZmumuPowheg )
+#mc_bkg.append( WenuPowheg )
+
+
+# EOF
+
+
+
+
 
