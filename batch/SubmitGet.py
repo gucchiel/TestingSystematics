@@ -14,7 +14,10 @@ parser.add_option('-s', '--samp', dest='sample',
                   help='sample name',metavar='SAMP',default="")
 (options, args) = parser.parse_args()
 
-
+# -------------------------
+# rucio UI
+# https://rucio-ui.cern.ch/
+# -------------------------
 
 # --------------
 #user  = "fscutti"
