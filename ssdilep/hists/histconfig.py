@@ -71,6 +71,16 @@ h_nelectrons = Hist1D( hname  = "h_nelectrons",
                               vexpr  = "self.chain.nel",
                             )
 
+h_nleptons = Hist1D( hname  = "h_nleptons",
+                              xtitle = "N_{lep}",
+                              ytitle = "Events", 
+                              nbins  = 8,
+                              xmin   = 0,
+                              xmax   = 8,
+                              dir    = "event",
+                              vexpr  = "self.store['nleptons']",
+                            )
+
 h_njets = Hist1D( hname  = "h_njets",
                               xtitle = "N_{jet}",
                               ytitle = "Events", 
@@ -89,6 +99,16 @@ h_muons_chargeprod  = Hist1D( hname  = "h_muons_chargeprod",
                               xmax   = 2,
                               dir    = "event",
                               vexpr  = "self.store['charge_product']",
+                            )
+
+h_muons_chargesum  = Hist1D( hname  = "h_muons_chargesum",
+                              xtitle = "pair charge sum",
+                              ytitle = "Events", 
+                              nbins  = 6,
+                              xmin   = -3,
+                              xmax   = 3,
+                              dir    = "event",
+                              vexpr  = "self.store['charge_sum']",
                             )
 
 h_muons_dphi  = Hist1D( hname  = "h_muons_dphi",
@@ -121,6 +141,16 @@ h_muons_mVis  = Hist1D( hname  = "h_muons_mVis",
                               vexpr  = "self.store['mVis']/GeV",
                             )
 
+h_muons_mVisTot  = Hist1D( hname  = "h_muons_mVisTot",
+                              xtitle = "m_{vis}(all leptons) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mVisTot']/GeV",
+                            )
+
 h_muons_mTtot  = Hist1D( hname  = "h_muons_mTtot",
                               xtitle = "m^{tot}_{T}(#mu_{lead},#mu_{sublead}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
@@ -129,6 +159,16 @@ h_muons_mTtot  = Hist1D( hname  = "h_muons_mTtot",
                               xmax   = 2000.,
                               dir    = "event",
                               vexpr  = "self.store['mTtot']/GeV",
+                            )
+
+h_muons_mTTot  = Hist1D( hname  = "h_muons_mTTot",
+                              xtitle = "m^{tot}_{T}(all leptons + MET) [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mTTot']/GeV",
                             )
 
 h_muons_pTH  = Hist1D( hname  = "h_muons_pTH",

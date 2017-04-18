@@ -554,6 +554,7 @@ class DiMuVars(pyframe.core.Algorithm):
         ## --------------------------------------------------
         assert self.store.has_key(self.key_muons), "muons key: %s not found in store!" % (self.key_muons)
         muons = self.store[self.key_muons]
+        electrons = self.store['electrons']
         met = self.store[self.key_met]
         
         # ------------------
@@ -583,19 +584,52 @@ class DiMuVars(pyframe.core.Algorithm):
         if ss_pairs:
           muon1 = self.store['muon1'] 
           muon2 = self.store['muon2'] 
-          muon1T = ROOT.TLorentzVector()
-          muon1T.SetPtEtaPhiM( muon1.tlv.Pt(), 0., muon1.tlv.Phi(), muon1.tlv.M() )
-          muon2T = ROOT.TLorentzVector()
-          muon2T.SetPtEtaPhiM( muon2.tlv.Pt(), 0., muon2.tlv.Phi(), muon2.tlv.M() )
         
           self.store['charge_product'] = muon2.trkcharge*muon1.trkcharge
+          self.store['charge_sum']     = muon1.trkcharge + muon2.trkcharge
           self.store['mVis']           = (muon2.tlv+muon1.tlv).M()
-          self.store['mTtot']          = (muon1T + muon2T + met.tlv).M()  
           self.store['muons_dphi']     = muon2.tlv.DeltaPhi(muon1.tlv)
           self.store['muons_deta']     = muon2.tlv.Eta()-muon1.tlv.Eta()
-          self.store['muons_pTH']      = (muon2.tlv+muon1.tlv).Pt()
           self.store['muons_dR']       = math.sqrt(self.store['muons_dphi']**2 + self.store['muons_deta']**2)
- 
+          self.store['muons_pTH']            = (muon2.tlv+muon1.tlv).Pt()
+          
+          self.store['nleptons']       = self.chain.nmuon + self.chain.nel
+          
+          leptons = muons + electrons
+          
+          if len(leptons) == 2:
+            lep1T = ROOT.TLorentzVector()
+            lep1T.SetPtEtaPhiM( leptons[0].tlv.Pt(), 0., leptons[0].tlv.Phi(), leptons[0].tlv.M() )
+            lep2T = ROOT.TLorentzVector()
+            lep2T.SetPtEtaPhiM( leptons[1].tlv.Pt(), 0., leptons[1].tlv.Phi(), leptons[1].tlv.M() )
+            
+            self.store['mTTot']        = (lep1T + lep2T + met.tlv).M()
+            self.store['mVisTot']      = (leptons[0].tlv + leptons[1].tlv).M()
+          
+          if len(leptons) == 3:
+            lep1T = ROOT.TLorentzVector()
+            lep1T.SetPtEtaPhiM( leptons[0].tlv.Pt(), 0., leptons[0].tlv.Phi(), leptons[0].tlv.M() )
+            lep2T = ROOT.TLorentzVector()
+            lep2T.SetPtEtaPhiM( leptons[1].tlv.Pt(), 0., leptons[1].tlv.Phi(), leptons[1].tlv.M() )
+            lep3T = ROOT.TLorentzVector()
+            lep3T.SetPtEtaPhiM( leptons[2].tlv.Pt(), 0., leptons[2].tlv.Phi(), leptons[2].tlv.M() )
+            
+            self.store['mTTot']        = (lep1T + lep2T + lep3T + met.tlv).M()
+            self.store['mVisTot']      = (leptons[0].tlv + leptons[1].tlv + leptons[2].tlv).M()
+          
+          if len(leptons) == 4:
+            lep1T = ROOT.TLorentzVector()
+            lep1T.SetPtEtaPhiM( leptons[0].tlv.Pt(), 0., leptons[0].tlv.Phi(), leptons[0].tlv.M() )
+            lep2T = ROOT.TLorentzVector()
+            lep2T.SetPtEtaPhiM( leptons[1].tlv.Pt(), 0., leptons[1].tlv.Phi(), leptons[1].tlv.M() )
+            lep3T = ROOT.TLorentzVector()
+            lep3T.SetPtEtaPhiM( leptons[2].tlv.Pt(), 0., leptons[2].tlv.Phi(), leptons[2].tlv.M() )
+            lep4T = ROOT.TLorentzVector()
+            lep4T.SetPtEtaPhiM( leptons[3].tlv.Pt(), 0., leptons[3].tlv.Phi(), leptons[3].tlv.M() )
+            
+            self.store['mTTot']        = (lep1T + lep2T + lep3T + lep4T + met.tlv).M()
+            self.store['mVisTot']      = (leptons[0].tlv + leptons[1].tlv + leptons[2].tlv + leptons[3].tlv).M()
+        
         # puts additional muons in the store
         if ss_pairs and len(muons)>2:
            i = 2
