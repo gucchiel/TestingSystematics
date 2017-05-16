@@ -20,9 +20,16 @@ cutflow_weighted_presel   = Var(name = 'cutflow_weighted_presel',log=False)
 cutflow_ZCR               = Var(name = 'cutflow_ZCR',log=False)
 cutflow_weighted_ZCR      = Var(name = 'cutflow_weighted_ZCR',log=False)
 
-bins_pt = generateLogBins(35,30,2000)
-bins_pt_2 = generateLogBins(20,30,1000)
-
+bins_pt = generateLogBins(10,30,400)
+bins_pt_4lep = generateLogBins(5,30,200)
+bins_pt_2 = generateLogBins(8,30,400)
+#bins_mVis = generateLogBins(25,20,900) # ttbar CR
+#bins_mVis = generateLogBins(15,60,200) # bins for CRs
+#bins_mVis = generateLogBins(20,30,3000) # bins for plotting
+#bins_mVis = generateLogBins(5,200,900) #bins for SRs
+bins_mVis = generateLogBins(12,200,1000) #bins for SRs
+bins_pTH = [0,1,2,3,4,5,6,7,8,9] + generateLogBins(50,10,3000)
+bins_met = [0,1,2,3,4,5,6,7,8,9] + generateLogBins(50,10,3000)
 ## Event variables
 ## ---------------------------------------
 averageIntPerXing = Var(name = 'averageIntPerXing',
@@ -186,18 +193,19 @@ elemu_chargeprod = Var(name = 'elemu_chargeprod',
 
 elemu_mVis = Var(name     = 'elemu_mVis',
               path    = 'event',
-              xmin    = 0.,
-              xmax    = 210.,
-              rebin   = 20,
+              xmin    = 190.0,
+              xmax    = 2000.,
+              rebinVar   = bins_mVis,
+              #rebin   = 20,
               log     = True,
-              #logx    = False,
+              logx    = True,
               )
 
 elemu_mTtot = Var(name = 'elemu_mTtot',
               path    = 'event',
-              xmin    = 0.,
-              xmax    = 2000.,
-              rebin   = 1,
+              xmin    = 0,
+              xmax    = 1000.,
+              rebinVar   = bins_mVis,
               log     = True,
               )
 
@@ -205,7 +213,7 @@ elemu_dphi = Var(name = 'elemu_dphi',
               path    = 'event',
               xmin    = -3.2,
               xmax    = 3.2,
-              rebin   = 4,
+              rebin   = 5,
               log     = False,
               )
 
@@ -213,8 +221,34 @@ elemu_deta = Var(name = 'elemu_deta',
               path    = 'event',
               xmin    = -2.5,
               xmax    = 2.5,
-              rebin  = 4,
+              rebin  = 5,
               log     = False,
+              )
+
+elemu_dR = Var(name = 'elemu_dR',
+              path    = 'event',
+              xmin    = 0,
+              xmax    = 5,
+              rebin  = 5,
+              log     = True,
+              )
+elemu_pTH = Var(name = 'elemu_pTH',
+              path    = 'event',
+              xmin    = 0,
+              xmax    = 1800,
+              rebin  = 1,
+              rebinVar = bins_pTH,
+              log     = True,
+              logx     = True,
+              )
+elemu_sumpT = Var(name = 'elemu_sumpT',
+              path    = 'event',
+              xmin    = 0,
+              xmax    = 2000,
+              rebin  = 1,
+              rebinVar = bins_pTH,
+              log     = True,
+              logx     = True,
               )
 
 OSelemu_mVis1 = Var(name     = 'OSelemu_mVis1',
@@ -851,7 +885,7 @@ lep3_eta = Var(name = 'lep3_eta',
               path    = 'leptons',
               xmin    = -2.5,
               xmax    = 2.5,
-              rebin   = 5,
+              rebin   = 10,
               log     = False,
               )
 lep3_phi = Var(name = 'lep3_phi',
@@ -911,9 +945,10 @@ met_clus_phi = Var(name = 'met_clus_phi',
 met_trk_et = Var(name = 'met_trk_et',
               path    = 'met',
               xmin    = 0.,
-              xmax    = 200.,
+              xmax    = 1000.,
               rebin   = 20,
-              log     = False,
+              log     = True,
+              logx    = True,   
               )
 
 met_trk_phi = Var(name = 'met_trk_phi',
@@ -941,6 +976,244 @@ met_trk_sumet = Var(name = 'met_trk_sumet',
               )
 
 
+#SR2 variables
+lep1_pt = Var(name = 'lep1_pt',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 200.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              rebinVar = bins_pt_4lep,   
+              log    = False,
+              logx   = True,   
+              )
+lep2_pt = Var(name = 'lep2_pt',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 200.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              rebinVar = bins_pt_4lep,   
+              log    = False,
+              logx   = True,   
+              )
+lep3_pt = Var(name = 'lep3_pt',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 200.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              rebinVar = bins_pt_4lep,   
+              log    = False,
+              logx   = True,   
+              )
+lep4_pt = Var(name = 'lep4_pt',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 200.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              rebinVar = bins_pt_4lep,   
+              log    = False,
+              logx   = True,   
+              )
+lep1_eta = Var(name = 'lep1_eta',
+              path   = 'leptons',
+              xmin   = -2.5,
+              xmax   = 2.5,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 10,
+              log    = False,
+              logx   = True,   
+              )
+lep2_eta = Var(name = 'lep2_eta',
+              path   = 'leptons',
+              xmin   = -2.5,
+              xmax   = 2.5,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 10,
+              log    = False,
+              logx   = True,   
+              )
+lep4_eta = Var(name = 'lep4_eta',
+              path   = 'leptons',
+              xmin   = -2.5,
+              xmax   = 2.5,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 10,
+              log    = False,
+              logx   = True,   
+              )
+lep1_phi = Var(name = 'lep1_phi',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 400.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              log    = False,
+              logx   = True,   
+              )
+lep2_phi = Var(name = 'lep2_phi',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 400.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              log    = False,
+              logx   = True,   
+              )
+lep3_phi = Var(name = 'lep3_phi',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 400.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              log    = False,
+              logx   = True,   
+              )
+lep4_phi = Var(name = 'lep4_phi',
+              path   = 'leptons',
+              xmin   = 30.,
+              xmax   = 400.,
+              #xmax   = 120.,
+              #rebin  = 20,
+              rebin  = 1,
+              log    = False,
+              logx   = True,   
+              )
+
+PosCouple_mVis = Var(name     = 'PosCouple_mVis',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 210.,
+              rebin   = 20,
+              log     = True,
+              #logx    = False,
+              )
+PosCouple_dR = Var(name     = 'PosCouple_dR',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 5,
+              rebin   = 5,
+              log     = True,
+              logx   = False,   
+              )
+PosCouple_Pt = Var(name     = 'PosCouple_Pt',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 2000,
+              rebin   = 20,
+              log     = True,
+              logx   = False,   
+              )
+NegCouple_mVis = Var(name     = 'NegCouple_mVis',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 210.,
+              rebin   = 20,
+              log     = True,
+              logx   = False,   
+              )
+NegCouple_Pt = Var(name     = 'NegCouple_Pt',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 2000,
+              rebin   = 20,
+              log     = True,
+              logx   = False,   
+              )
+NegCouple_dR = Var(name     = 'NegCouple_dR',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 5,
+              rebin   = 5,
+              log     = True,
+              logx   = False,   
+              )
+Couples_mVis = Var(name     = 'Couples_mVis',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 400,
+              rebin   = 20,
+              log     = True,
+              logx   = False,   
+              )
+Couples_FullMass = Var(name     = 'Couples_FullMass',
+              path    = 'event',
+              xmin    = 0.,
+              xmax    = 400,
+              rebin   = 25,
+              log     = True,
+              logx   = False,   
+              )
+Couples_dR = Var(name     = 'Couples_dR',
+              path    = 'event',
+              xmin    = 0,
+              xmax    = 5,
+              rebin   = 5,
+              log     = True,
+              logx   = False,   
+              )
+Couples_dM = Var(name     = 'Couples_dM',
+              path    = 'event',
+              xmin    = -200,
+              xmax    = 200,
+              rebin   = 20,
+              log     = True,
+              logx   = False,   
+              )
+Couples_dMOverM = Var(name     = 'Couples_dMOverM',
+              path    = 'event',
+              xmin    = -3,
+              xmax    = 3,
+              rebin   = 200,
+              log     = True,
+              logx   = False,   
+              )
+Couples_dMOverAlphaMBeta = Var(name     = 'Couples_dMOverAlphaMBeta',
+              path    = 'event',
+              xmin    = -10,
+              xmax    = 10,
+              rebin   = 700,
+              log     = True,
+              logx   = False,   
+              )
+Couples_dEta = Var(name     = 'Couples_dEta',
+              path    = 'event',
+              xmin    = -2.5,
+              xmax    = 2.5,
+              rebin   = 15,
+              log     = True,
+              logx   = False,   
+              )
+Couples_dPhi = Var(name     = 'Couples_dPhi',
+              path    = 'event',
+              xmin    = -5,
+              xmax    = 5,
+              rebin   = 20,
+              log     = True,
+              logx   = False,   
+              )
+NegMassVsPosMass = Var(name     = 'NegMassVsPosMass',
+              path    = 'event',
+              xmin    = 0,
+              xmax    = 2000,
+              ymin    = 0,
+              ymax    = 2000,         
+              #rebin   = 20,
+              log     = True,
+              logx   = False,   
+              )
 
 vars_list = []
 
@@ -957,6 +1230,7 @@ vars_list.append(nelectrons)
 vars_list.append(njets)
 vars_list.append(nmuonpairs)
 
+vars_list.append(met_trk_et)
 vars_list.append(met_clus_et)
 vars_list.append(met_clus_phi)
 vars_list.append(met_clus_sumet)
@@ -1045,6 +1319,9 @@ vars_list.append(elemu_mTtot)
 vars_list.append(elemu_mVis)
 vars_list.append(elemu_dphi)
 vars_list.append(elemu_deta)
+vars_list.append(elemu_dR)
+vars_list.append(elemu_pTH)
+vars_list.append(elemu_sumpT)
 vars_list.append(elemu_chargeprod)
 
 vars_list.append(OSelemu_mTtot1)
@@ -1080,6 +1357,38 @@ vars_list.append(lep3_trkd0)
 vars_list.append(lep3_trkd0sig)
 vars_list.append(lep3_trkz0)
 vars_list.append(lep3_trkz0sintheta)
+
+
+#SR2 Variables
+vars_list.append(lep1_pt)
+vars_list.append(lep1_eta)
+vars_list.append(lep1_phi)
+vars_list.append(lep2_pt)
+vars_list.append(lep2_eta)
+vars_list.append(lep2_phi)
+vars_list.append(lep3_pt)
+vars_list.append(lep3_eta)
+vars_list.append(lep3_phi)
+vars_list.append(lep4_pt)
+vars_list.append(lep4_eta)
+vars_list.append(lep4_phi)
+vars_list.append(PosCouple_mVis)
+vars_list.append(NegCouple_mVis)
+vars_list.append(PosCouple_dR)
+vars_list.append(NegCouple_dR)
+vars_list.append(PosCouple_Pt)
+vars_list.append(NegCouple_Pt)
+vars_list.append(Couples_mVis)
+vars_list.append(Couples_FullMass)
+vars_list.append(Couples_dR)
+vars_list.append(Couples_dM)
+vars_list.append(Couples_dEta)
+vars_list.append(Couples_dPhi)
+vars_list.append(Couples_dMOverM)
+vars_list.append(Couples_dMOverAlphaMBeta)
+vars_list.append(NegMassVsPosMass)
+
+
 # ---------------------
 # cutflows
 # ---------------------
