@@ -120,6 +120,7 @@ def analyze(config):
     ## +++++++++++++++++++++++++++++++++++++++
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OneElectronOneMuon')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BJetVeto')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
     ## weights configuration
@@ -271,7 +272,7 @@ def analyze(config):
             )
     ## SS CR
     ## ---------------------------------------
-
+    """
     loop += ssdilep.algs.algs.PlotAlg(
             region       = 'SSCRttbar_TT',
             plot_all     = False,
@@ -321,7 +322,7 @@ def analyze(config):
                            ['MassBelow200GeV',None],
                            ],
             )
-
+    """
     loop += pyframe.algs.HistCopyAlg()
 
     ##-------------------------------------------------------------------------
