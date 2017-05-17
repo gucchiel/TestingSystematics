@@ -80,6 +80,15 @@ h_njets = Hist1D( hname  = "h_njets",
                               dir    = "event",
                               vexpr  = "self.chain.njets",
                             )
+h_nbjets = Hist1D( hname  = "h_nbjets",
+                              xtitle = "N_{jet}",
+                              ytitle = "Events", 
+                              nbins  = 8,
+                              xmin   = 0,
+                              xmax   = 8,
+                              dir    = "event",
+                              vexpr  = "self.store['nbjets']",
+                            )
 
 h_muons_chargeprod  = Hist1D( hname  = "h_muons_chargeprod",
                               xtitle = "q(#mu_{lead}) #timesq (#mu_{sublead})",
@@ -232,6 +241,34 @@ h_elemu_dphi  = Hist1D( hname  = "h_elemu_dphi",
                               dir    = "event",
                               vexpr  = "self.store['elemu_dphi']",
                             )
+h_elemu_dR  = Hist1D( hname  = "h_elemu_dR",
+                              xtitle = "#DeltaR(l_{lead},l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = 0,
+                              xmax   = 5,
+                              dir    = "event",
+                              vexpr  = "self.store['elemu_dR']",
+                            )
+h_elemu_pTH  = Hist1D( hname  = "h_elemu_pTH",
+                              xtitle = "p_{T}(l_{lead} + l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 5000,
+                              xmin   = 0,
+                              xmax   = 5000,
+                              dir    = "event",
+                              vexpr  = "self.store['pTH']/GeV",
+                            )
+
+h_elemu_sumpT  = Hist1D( hname  = "h_elemu_sumpT",
+                              xtitle = "p_{T}(l_{lead}) + p_{T}(l_{sublead})",
+                              ytitle = "Events", 
+                              nbins  = 7000,
+                              xmin   = 0,
+                              xmax   = 7000,
+                              dir    = "event",
+                              vexpr  = "self.store['sumpT']/GeV",
+                            )
 
 h_elemu_deta  = Hist1D( hname  = "h_elemu_deta",
                               xtitle = "#Delta#eta(l_{lead},l_{sublead})",
@@ -262,6 +299,86 @@ h_elemu_mTtot  = Hist1D( hname  = "h_elemu_mTtot",
                               dir    = "event",
                               vexpr  = "self.store['mTtot']/GeV",
                             )
+
+h_elejet_dphi  = Hist1D( hname  = "h_elejet_dphi",
+                              xtitle = "#Delta#phi(ele,jet)",
+                              ytitle = "Events", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "event",
+                              vexpr  = "self.store['ele_jet_dphi']",
+                            )
+
+h_elejet_deta  = Hist1D( hname  = "h_elejet_deta",
+                              xtitle = "#Delta#eta(ele,jet)",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['ele_jet_deta']",
+                            )
+h_elebjet_dphi  = Hist1D( hname  = "h_elebjet_dphi",
+                              xtitle = "#Delta#phi(ele,bjet)",
+                              ytitle = "Events", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "event",
+                              vexpr  = "self.store['ele_bjet_dphi']",
+                            )
+
+h_elebjet_deta  = Hist1D( hname  = "h_elebjet_deta",
+                              xtitle = "#Delta#eta(ele,jbet)",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['ele_bjet_deta']",
+                            )
+
+h_mujet_dphi  = Hist1D( hname  = "h_mujet_dphi",
+                              xtitle = "#Delta#phi(#mu,jet)",
+                              ytitle = "Events", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "event",
+                              vexpr  = "self.store['mu_jet_dphi']",
+                            )
+
+h_mujet_deta  = Hist1D( hname  = "h_mujet_deta",
+                              xtitle = "#Delta#eta(mu,jet)",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['mu_jet_deta']",
+                            )
+h_mubjet_dphi  = Hist1D( hname  = "h_mubjet_dphi",
+                              xtitle = "#Delta#phi(#mu,bjet)",
+                              ytitle = "Events", 
+                              nbins  = 64,
+                              xmin   = -3.2,
+                              xmax   = 3.2,
+                              dir    = "event",
+                              vexpr  = "self.store['mu_bjet_dphi']",
+                            )
+
+h_mubjet_deta  = Hist1D( hname  = "h_mubjet_deta",
+                              xtitle = "#Delta#eta(#mu,jbet)",
+                              ytitle = "Events", 
+                              nbins  = 50,
+                              xmin   = -2.5,
+                              xmax   = 2.5,
+                              dir    = "event",
+                              vexpr  = "self.store['mu_bjet_deta']",
+                            )
+
+
 #also adding OS variables for the three lepton case
 
 h_OSelemu_dphi1  = Hist1D( hname  = "h_OSelemu_dphi1",
@@ -977,6 +1094,33 @@ h_elelead_pt_jetlead_pt  = Hist2D( hname      = "h_elelead_pt_jetlead_pt",
 
 # leading lepton
 # ---------------
+
+h_mulead_Origin_vs_Type  = Hist2D( hname      = "h_mulead_Origin_vs_Type",
+                              xtitle  = "Type",
+                              ytitle  = "Origin",
+                              nbinsx  = 50,
+                              xmin    = 0.,
+                              xmax    = 50.,
+                              nbinsy  = 50,
+                              ymin    = 0.,
+                              ymax    = 50.,
+                              dir     = "event",
+                              vexpr   = "self.store['muons'][0].truthType, self.store['muons'][0].truthOrigin",
+                          )
+
+h_elelead_Origin_vs_Type  = Hist2D( hname      = "h_elelead_Origin_vs_Type",
+                              xtitle  = "Type",
+                              ytitle  = "Origin",
+                              nbinsx  = 50,
+                              xmin    = 0.,
+                              xmax    = 50.,
+                              nbinsy  = 50,
+                              ymin    = 0.,
+                              ymax    = 50.,
+                              dir     = "event",
+                              vexpr   = "self.store['electrons'][0].truthType, self.store['electrons'][0].truthOrigin",
+                          )
+
 h_leplead_pt = Hist1D( hname  = "h_leplead_pt",
                               xtitle = "p_{T}(lep_{lead}) [GeV]",
                               ytitle = "Events / (1 GeV)", 
