@@ -76,8 +76,9 @@ class Sample(object):
     #____________________________________________________________
     def hist(self,**kw): 
         assert self.estimator, "ERROR - sample %s missing estimator!" % self.name
-
+        
         h = self.estimator.hist(**kw)
+        if h:print h.Integral()
         return h
 
 
