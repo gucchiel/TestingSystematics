@@ -740,7 +740,38 @@ class EleMuVars(pyframe.core.Algorithm):
           self.store['mTtot']          = (lep1T + lep2T + met.tlv).M()  
           self.store['elemu_dphi']       = lep2.tlv.DeltaPhi(lep1.tlv)
           self.store['elemu_deta']       = lep2.tlv.Eta()-lep1.tlv.Eta()
-          
+          self.store['pTH']            = (lep1.tlv+lep2.tlv).Pt()
+          self.store['sumpT']            = (lep1.tlv.Pt()+lep2.tlv.Pt())
+          self.store['elemu_dR']       = lep1.tlv.DeltaR(lep2.tlv)
+
+          #Adding other variables for jet information
+          jets = self.store['jets']
+          self.store['bjets']=[]
+          nbjets=0.
+          njet=0.
+          for jet in jets:
+              njet +=1
+              if jet.isFix77:
+                  nbjets += 1
+                  self.store['bjets'] = jets[0]
+                  
+          self.store['nbjets']=nbjets        
+          if( nbjets>0 and njet>0):    
+              lead_jet=jets[0]
+              lead_bjet=self.store['bjets']
+              ele = electrons[0]
+              mu = muons[0]
+              
+              self.store['ele_jet_deta']=ele.tlv.Eta()-lead_jet.tlv.Eta()
+              self.store['ele_bjet_deta']=ele.tlv.Eta()-lead_bjet.tlv.Eta()
+              self.store['ele_jet_dphi']=ele.tlv.DeltaPhi(lead_jet.tlv)
+              self.store['ele_bjet_dphi']=ele.tlv.DeltaPhi(lead_bjet.tlv)
+              self.store['mu_jet_deta']=mu.tlv.Eta()-lead_jet.tlv.Eta()
+              self.store['mu_bjet_deta']=mu.tlv.Eta()-lead_bjet.tlv.Eta()
+              self.store['mu_jet_dphi']=mu.tlv.DeltaPhi(lead_jet.tlv)
+              self.store['mu_bjet_dphi']=mu.tlv.DeltaPhi(lead_bjet.tlv)
+
+
           # leading and subleading pt variables
           '''
           self.store['leplead_pt'] = lep1.tlv.Pt()
@@ -864,6 +895,9 @@ class ThreeLepVars(pyframe.core.Algorithm):
           self.store['mTtot']          = (lep1T + lep2T + met.tlv).M()  
           self.store['elemu_dphi']       = lep2.tlv.DeltaPhi(lep1.tlv)
           self.store['elemu_deta']       = lep2.tlv.Eta()-lep1.tlv.Eta()
+          self.store['elemu_dR']         = lep2.tlv.DeltaR(lep1.tlv)
+          self.store['pTH']         = (lep1.tlv+ lep2.tlv).Pt()
+          self.store['sumpT']         = (lep1.tlv.Pt()+ lep2.tlv.Pt() + lep3.tlv.Pt())
           
           #Variables for the two OS couples:
           self.store['OSmVis1']           = (lep1.tlv+lep3.tlv).M()
