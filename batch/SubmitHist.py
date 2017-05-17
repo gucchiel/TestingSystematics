@@ -16,8 +16,9 @@ USER   = os.getenv('USER')
 
 ## global config
 # inputs
-NTUP='/coepp/cephfs/mel/fscutti/ssdilep/EXOT12_common_v1Ntuples/merged' # input NTUP path
+#NTUP='/coepp/cephfs/mel/fscutti/ssdilep/EXOT12_common_v1Ntuples/merged' # input NTUP path
 #NTUP='/coepp/cephfs/mel/fscutti/ssdilep/EXOT12_common_v2Ntuples' # input NTUP path
+NTUP='/coepp/cephfs/mel/fscutti/ssdilep/EXOT12_common_v3Ntuples/merged' # input NTUP path
 
 #NTUP='/coepp/cephfs/mel/fscutti/ssdilep/EXOT12_pv3/merged' # input NTUP path
 #NTUP='/coepp/cephfs/mel/fscutti/ssdilep/EXOT12_pv3/merged' # input NTUP path
@@ -26,6 +27,7 @@ NTUP='/coepp/cephfs/mel/fscutti/ssdilep/EXOT12_common_v1Ntuples/merged' # input 
 
 #NTUP='/coepp/cephfs/mel/fscutti/ssdilep/HIGG3D3_v7/merged' # input NTUP path
 #NTUP='/coepp/cephfs/mel/fscutti/ssdilep/HIGG3D3_v8/merged' # input NTUP path
+#NTUP='/coepp/cephfs/mel/fscutti/ssdilep/nHIGG3D3_v9/merged' # input NTUP path
 
 JOBDIR = "/coepp/cephfs/mel/%s/jobdir" % USER # Alright this is twisted...
 INTARBALL = os.path.join(JOBDIR,'histtarball_%s.tar.gz' % (time.strftime("d%d_m%m_y%Y_H%H_M%M_S%S")) )
@@ -33,24 +35,11 @@ INTARBALL = os.path.join(JOBDIR,'histtarball_%s.tar.gz' % (time.strftime("d%d_m%
 AUTOBUILD = True                # auto-build tarball using Makefile.tarball
 
 # outputs
-#RUN = "Hist21JanV2TP"
-#RUN = "Hist21JanV1TP"
-#RUN = "Hist21JanV2VR"
-#RUN = "Hist21JanV1VR"
-#RUN = "HistFull21JanFF"
+#RUN = "HistFF25Mar"
+#RUN = "HistVR25MarData"
+#RUN = "HistVRNew30Mar"
 
-#RUN = "Hist22JanV2VR"
-#RUN = "Hist23JanFF"
-#RUN = "Hist23JanV2VR"
-
-#RUN = "Hist30JanV2TP" 
-#RUN = "HistRew30JanFF"
-#RUN = "Hist30JanV2VR"
-#RUN = "Hist31JanV2VR"
-RUN = "HistTEST"
-
-#RUN = "HistUniTruth23JanV1VR"
-
+RUN = "HistNoteVR3"
 
 OUTPATH="/coepp/cephfs/mel/%s/ssdilep/%s"%(USER,RUN) # 
 
@@ -60,13 +49,15 @@ QUEUE="long"                        # length of pbs queue (short, long, extralon
 # pick your script!!!
 #SCRIPT="./ssdilep/run/j.plotter_FF.py"  
 #SCRIPT="./ssdilep/run/j.plotter_TAndP.py"  
-SCRIPT="./ssdilep/run/j.plotter_VR_OneMuPair.py"  
+#SCRIPT="./ssdilep/run/j.plotter_VR_OneMuPair.py"  
 
+SCRIPT="./ssdilep/run/j.plotter_VR3.py"  
 
 BEXEC="Hist.sh"                      # exec script (probably dont change) 
+
 DO_NOM = True                        # submit the nominal job
 DO_NTUP_SYS = False                  # submit the NTUP systematics jobs
-DO_PLOT_SYS = False                 # submit the plot systematics jobs
+DO_PLOT_SYS = True                 # submit the plot systematics jobs
 TESTMODE = False                    # submit only 1 sub-job (for testing)
 
 NCORES = 1
@@ -94,12 +85,11 @@ def main():
     global TESTMODE
 
     ## get lists of samples
-    all_mc   = samples.all_mc
     all_data = samples.all_data
+    all_mc   = samples.all_mc
 
     nominal = all_data + all_mc 
-    #nominal = all_mc 
-    #nominal = all_data
+
     
     ntup_sys = [
         ['SYS1_UP',                  all_mc],
@@ -153,9 +143,16 @@ def submit(tag,job_sys,samps,config={}):
     global DO_PLOT_SYS
     global TESTMODE
 
+    # configure output path 
+    # ---------------------
+    absoutpath = os.path.abspath(os.path.join(OUTPATH,tag))
+    abslogpath = os.path.abspath(os.path.join(OUTPATH,'log_%s'%tag))
+    
     ## construct config file
-    cfg = os.path.join(JOBDIR,'ConfigHist.%s'%tag)
+    # ----------------------
+    cfg = os.path.join(JOBDIR,'Config%s.%s'%(RUN,tag))
     f = open(cfg,'w')
+    
     for s in samps:
 
         ## input & output
@@ -172,29 +169,31 @@ def submit(tag,job_sys,samps,config={}):
         sconfig_str = ",".join(["%s:%s"%(key,val) for key,val in sconfig.items()])
 
         line = ';'.join([s.name,sinput,soutput,stype,sconfig_str])
-        f.write('%s\n'%line) 
+        
+        if not file_exists(absoutpath,s.name+".root"): f.write('%s\n'%line) 
 
     f.close()
-
+    
+    # configure input path 
+    # --------------------
     abscfg     = os.path.abspath(cfg)
     absintar   = os.path.abspath(INTARBALL)
-    absoutpath = os.path.abspath(os.path.join(OUTPATH,tag))
-    abslogpath = os.path.abspath(os.path.join(OUTPATH,'log_%s'%tag))
     nsubjobs   = len(samps)
     if TESTMODE: nsubjobs = 1
-
+    
+    
     prepare_path(absoutpath)
     prepare_path(abslogpath)
-
+    
     vars=[]
     vars+=["CONFIG=%s"    % abscfg     ]
     vars+=["INTARBALL=%s" % absintar   ]
     vars+=["OUTPATH=%s"   % absoutpath ]
     vars+=["SCRIPT=%s"    % SCRIPT     ]
     vars+=["NCORES=%d"    % NCORES     ]
-
+    
     VARS = ','.join(vars)
-
+    
     cmd = 'qsub'
     cmd += ' -l nodes=1:ppn=%d' % NCORES
     cmd += ' -q %s'             % QUEUE
@@ -220,6 +219,11 @@ def input_file(sample,sys):
     sinput += '.root'
     sinput = os.path.join(NTUP,sys,sinput) 
     return sinput
+
+def file_exists(path,file):
+    if os.path.exists(path):
+      return file in os.listdir(os.path.join(path))
+    else: return False
 
 def output_file(sample,sys):
     soutput = sample.name

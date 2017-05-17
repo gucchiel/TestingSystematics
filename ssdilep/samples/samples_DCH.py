@@ -26,6 +26,7 @@ ROOT.SetAtlasStyle()
 #       * cross sections: https://twiki.cern.ch/twiki/bin/view/AtlasProtected/XsecSummaryHiggsBSMOthers 
 #------------------------------------------------------------------------------------------------------
 
+
 DCH250 = Sample(name = "DCH250", 
                 tlatex = 'm_{H^{\pm\pm}}=300 GeV',         
                 line_color   = ROOT.kRed+1,
@@ -37,7 +38,8 @@ DCH250 = Sample(name = "DCH250",
                 xsec         = 0.034825, 
                 feff         = 1.0,  
                 )
-DCH300 = Sample(name = "DCH300", 
+
+DCH300 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH300", 
                 tlatex = 'm_{H^{\pm\pm}}=300 GeV',         
                 line_color   = ROOT.kRed+1,
                 marker_color = ROOT.kRed+1,
@@ -60,7 +62,7 @@ DCH350 = Sample(name = "DCH350",
                 feff         = 1.0,  
                 )
 
-DCH400 = Sample(name = "DCH400", 
+DCH400 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH400", 
                 tlatex = 'm_{H^{\pm\pm}}=400 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -72,7 +74,7 @@ DCH400 = Sample(name = "DCH400",
                 feff         = 1.0,  
                 )
 
-DCH500 = Sample(name = "DCH500", 
+DCH500 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH500", 
                 tlatex = 'm_{H^{\pm\pm}}=500 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -95,7 +97,7 @@ DCH550 = Sample(name = "DCH550",
                 feff         = 1.0,  
                 )
 
-DCH600 = Sample(name = "DCH600", 
+DCH600 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH600", 
                 tlatex = 'm_{H^{\pm\pm}}=600 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -106,6 +108,7 @@ DCH600 = Sample(name = "DCH600",
                 xsec         = 0.00072042, 
                 feff         = 1.0,  
                 )
+
 
 DCH650 = Sample(name = "DCH650", 
                 tlatex = 'm_{H^{\pm\pm}}=500 GeV',         
@@ -118,7 +121,8 @@ DCH650 = Sample(name = "DCH650",
                 xsec         = 0.000476508, 
                 feff         = 1.0,  
                 )
-DCH700 = Sample(name = "DCH700", 
+
+DCH700 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH700", 
                 tlatex = 'm_{H^{\pm\pm}}=700 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -140,7 +144,8 @@ DCH750 = Sample(name = "DCH750",
                 xsec         = 0.00021991, 
                 feff         = 1.0,  
                 )
-DCH800 = Sample(name = "DCH800", 
+
+DCH800 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH800", 
                 tlatex = 'm_{H^{\pm\pm}}=800 GeV',         
                 line_color   = ROOT.kBlue+1,
                 marker_color = ROOT.kBlue+1,
@@ -162,7 +167,7 @@ DCH850 = Sample(name = "DCH850",
                 xsec         = 0.000107411, 
                 feff         = 1.0,  
                 )
-DCH900 = Sample(name = "DCH900", 
+DCH900 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH900", 
                 tlatex = 'm_{H^{\pm\pm}}=900 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -174,7 +179,7 @@ DCH900 = Sample(name = "DCH900",
                 feff         = 1.0,  
                 )
 
-DCH1000 = Sample(name = "DCH1000", 
+DCH1000 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH1000", 
                 tlatex = 'm_{H^{\pm\pm}}=1000 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -186,7 +191,7 @@ DCH1000 = Sample(name = "DCH1000",
                 feff         = 1.0,  
                 )
 
-DCH1100 = Sample(name = "DCH1100", 
+DCH1100 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH1100", 
                 tlatex = 'm_{H^{\pm\pm}}=1100 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -198,7 +203,7 @@ DCH1100 = Sample(name = "DCH1100",
                 feff         = 1.0,  
                 )
 
-DCH1200 = Sample(name = "DCH1200", 
+DCH1200 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH1200", 
                 tlatex = 'm_{H^{\pm\pm}}=1200 GeV',         
                 line_color   = ROOT.kOrange-3,
                 marker_color = ROOT.kOrange-3,
@@ -210,7 +215,7 @@ DCH1200 = Sample(name = "DCH1200",
                 feff         = 1.0,  
                 )
 
-DCH1300 = Sample(name = "DCH1300", 
+DCH1300 = Sample(name = "Pythia8EvtGen_A14NNPDF23LO_DCH1300", 
                 tlatex = 'm_{H^{\pm\pm}}=1300 GeV',         
                 line_color   = ROOT.kGreen+1,
                 marker_color = ROOT.kGreen+1,

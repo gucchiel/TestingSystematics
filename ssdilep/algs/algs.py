@@ -178,7 +178,11 @@ class CutAlg(pyframe.core.Algorithm):
       for j in self.store['jets']:
         if not j.isClean: return False
       return True
-    
+
+    #__________________________________________________________________________
+    def cut_EleVeto(self):
+      return self.chain.nel == 0
+
     #__________________________________________________________________________
     def cut_AllMuPt22(self):
       muons = self.store['muons']
@@ -390,7 +394,7 @@ class CutAlg(pyframe.core.Algorithm):
       
       mu0_is_tight     = bool(muons[0].isIsolated_FixedCutTightTrackOnly and muons[0].trkd0sig<3.)
       mu1_is_tight     = bool(muons[1].isIsolated_FixedCutTightTrackOnly and muons[1].trkd0sig<3.)
-      mu2_is_tight     = bool(muons[2].isIsolated_FixedCutTipghtTrackOnly and muons[2].trkd0sig<3.)
+      mu2_is_tight     = bool(muons[2].isIsolated_FixedCutTightTrackOnly and muons[2].trkd0sig<3.)
       pass_mc_filter   = True
       
       if ("mc" in self.sampletype) and not(self.chain.mcChannelNumber in range(306538,306560)):
@@ -637,7 +641,15 @@ class CutAlg(pyframe.core.Algorithm):
       m_vis = (mu_lead.tlv + mu_sublead.tlv).M()
 
       return abs(m_vis)<200*GeV
-    
+   
+    #__________________________________________________________________________
+    def cut_dRhigh35(self):
+      return self.store['muons_dR'] > 3.5
+
+    #__________________________________________________________________________
+    def cut_pTHlow80(self):
+      return self.store['muons_pTH'] < 80*GeV
+
     #__________________________________________________________________________
     def cut_SingleMuPassAndMatch(self):
       required_triggers = self.store["reqTrig"]
@@ -920,6 +932,7 @@ class CutAlg(pyframe.core.Algorithm):
             if(muons[0].tlv.DeltaR(jet.tlv) > 2.5): continue
             else: return False
         return True    
+    
     #__________________________________________________________________________
     def cut_OneOrTwoBjets(self):
         nbjets = 0
@@ -1775,12 +1788,25 @@ class CutAlg(pyframe.core.Algorithm):
 
     #___________________________________________________________________________
 
-    def cut_OddSSElectronMuon(self):
+    def cut_OneSSElectronMuonPair(self):
       electrons = self.store['electrons_loose']
       muons     = self.store['muons']
       ss_pairs = []
       leptons = electrons + muons
-      print len(leptons)
+      #print len(leptons)
+      if len(leptons) >= 2:
+        for p in permutations(leptons,2):
+          if (p[0].trkcharge * p[1].trkcharge > 0.0) and (p[0] in electrons) and (p[1] in muons) : ss_pairs.append(p)
+      if len(ss_pairs)==1 : return True
+      return False
+    #___________________________________________________________________________
+
+    def cut_OddSSPairs(self):
+      electrons = self.store['electrons_loose']
+      muons     = self.store['muons']
+      ss_pairs = []
+      leptons = electrons + muons
+      #print len(leptons)
       if len(leptons) >= 2:
         for p in combinations(leptons,2):
           if p[0].trkcharge * p[1].trkcharge > 0.0: ss_pairs.append(p)
@@ -1908,7 +1934,36 @@ class CutAlg(pyframe.core.Algorithm):
       if len(os_pairs)==1 or len(os_pairs)==3: return True
       return False
 
-   #____________________________________________________________________________
+
+
+    
+  #__________________________________________________________________________
+    def cut_pTHAbove100(self):
+      return self.store['muons_pTH'] > 100*GeV
+    
+    
+  #__________________________________________________________________________
+    def cut_MuonDRBelow35(self):
+      return self.store['muons_dR'] < 3.5
+    
+     
+  #__________________________________________________________________________
+    def cut_mTTotAbove250(self):
+      return self.store['mTTot'] > 250*GeV
+    
+
+  #__________________________________________________________________________
+    def cut_SSMassAbove200GeV(self):
+       electrons = self.store['electrons_loose']
+       muons = self.store['muons']
+       leptons = electrons+muons
+
+       if len(leptons)>=2:
+           for p in combinations(leptons,2):
+               if (p[0].trkcharge * p[1].trkcharge > 0.0 and (p[0].tlv+p[1].tlv).M() > 200*GeV): return True
+       return False
+
+  #____________________________________________________________________________
 
     def cut_AllElePairsM20(self):
       electrons = self.store['electrons_loose']
@@ -4068,6 +4123,7 @@ class PlotAlg(pyframe.algs.CutFlowAlg,CutAlg):
             elif h.get_name() == "Hist2D": 
               h.instance = self.hist(h.hname, "ROOT.TH2F('$', ';%s;%s', %d, %lf, %lf, %d, %lf, %lf)" % (h.hname,h.hname,h.nbinsx,h.xmin,h.xmax,h.nbinsy,h.ymin,h.ymax), dir=os.path.join(region, '%s'%h.dir))
               h.set_axis_titles()
+
 
         # ---------------
         # Fill histograms
