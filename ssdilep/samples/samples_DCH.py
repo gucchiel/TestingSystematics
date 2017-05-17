@@ -16,6 +16,9 @@ from sample import Sample
 from copy import copy
 
 import ROOT
+ROOT.SetAtlasStyle()
+
+
 
 #------------------------------------------------------------------------------------------------------
 # Doubly charged Higss 
@@ -23,6 +26,17 @@ import ROOT
 #       * cross sections: https://twiki.cern.ch/twiki/bin/view/AtlasProtected/XsecSummaryHiggsBSMOthers 
 #------------------------------------------------------------------------------------------------------
 
+DCH250 = Sample(name = "DCH250", 
+                tlatex = 'm_{H^{\pm\pm}}=300 GeV',         
+                line_color   = ROOT.kRed+1,
+                marker_color = ROOT.kRed+1,
+                fill_color   = ROOT.kRed+1,
+                line_width   = 3,
+                line_style   = 1,
+                fill_style   = 3004,
+                xsec         = 0.034825, 
+                feff         = 1.0,  
+                )
 DCH300 = Sample(name = "DCH300", 
                 tlatex = 'm_{H^{\pm\pm}}=300 GeV',         
                 line_color   = ROOT.kRed+1,
@@ -31,7 +45,18 @@ DCH300 = Sample(name = "DCH300",
                 line_width   = 3,
                 line_style   = 1,
                 fill_style   = 3004,
-                xsec         = 0.020179, 
+                xsec         = 0.016704, 
+                feff         = 1.0,  
+                )
+DCH350 = Sample(name = "DCH350", 
+                tlatex = 'm_{H^{\pm\pm}}=300 GeV',         
+                line_color   = ROOT.kRed+1,
+                marker_color = ROOT.kRed+1,
+                fill_color   = ROOT.kRed+1,
+                line_width   = 3,
+                line_style   = 1,
+                fill_style   = 3004,
+                xsec         = 0.0087528, 
                 feff         = 1.0,  
                 )
 
@@ -43,7 +68,7 @@ DCH400 = Sample(name = "DCH400",
                 line_width   = 3,
                 line_style   = 1,
                 fill_style   = 3004,
-                xsec         = 0.0059727, 
+                xsec         = 0.0049001, 
                 feff         = 1.0,  
                 )
 
@@ -55,7 +80,18 @@ DCH500 = Sample(name = "DCH500",
                 line_width   = 3,
                 line_style   = 1,
                 fill_style   = 3004,
-                xsec         = 0.0021733, 
+                xsec         = 0.0017631, 
+                feff         = 1.0,  
+                )
+DCH550 = Sample(name = "DCH550", 
+                tlatex = 'm_{H^{\pm\pm}}=500 GeV',         
+                line_color   = ROOT.kOrange-3,
+                marker_color = ROOT.kOrange-3,
+                fill_color   = ROOT.kOrange-3,
+                line_width   = 3,
+                line_style   = 1,
+                fill_style   = 3004,
+                xsec         = 0.00110919, 
                 feff         = 1.0,  
                 )
 
@@ -67,10 +103,21 @@ DCH600 = Sample(name = "DCH600",
                 line_width   = 3,
                 line_style   = 1,
                 fill_style   = 3004,
-                xsec         = 0.00089447, 
+                xsec         = 0.00072042, 
                 feff         = 1.0,  
                 )
 
+DCH650 = Sample(name = "DCH650", 
+                tlatex = 'm_{H^{\pm\pm}}=500 GeV',         
+                line_color   = ROOT.kOrange-3,
+                marker_color = ROOT.kOrange-3,
+                fill_color   = ROOT.kOrange-3,
+                line_width   = 3,
+                line_style   = 1,
+                fill_style   = 3004,
+                xsec         = 0.000476508, 
+                feff         = 1.0,  
+                )
 DCH700 = Sample(name = "DCH700", 
                 tlatex = 'm_{H^{\pm\pm}}=700 GeV',         
                 line_color   = ROOT.kOrange-3,
@@ -79,10 +126,20 @@ DCH700 = Sample(name = "DCH700",
                 line_width   = 3,
                 line_style   = 1,
                 fill_style   = 3004,
-                xsec         = 0.00040462, 
+                xsec         = 0.00032154, 
                 feff         = 1.0,  
                 )
-
+DCH750 = Sample(name = "DCH750", 
+                tlatex = 'm_{H^{\pm\pm}}=500 GeV',         
+                line_color   = ROOT.kOrange-3,
+                marker_color = ROOT.kOrange-3,
+                fill_color   = ROOT.kOrange-3,
+                line_width   = 3,
+                line_style   = 1,
+                fill_style   = 3004,
+                xsec         = 0.00021991, 
+                feff         = 1.0,  
+                )
 DCH800 = Sample(name = "DCH800", 
                 tlatex = 'm_{H^{\pm\pm}}=800 GeV',         
                 line_color   = ROOT.kBlue+1,
@@ -91,10 +148,20 @@ DCH800 = Sample(name = "DCH800",
                 line_width   = 3,
                 line_style   = 1,
                 fill_style   = 3004,
-                xsec         = 0.00019397, 
+                xsec         = 0.00015288, 
                 feff         = 1.0,  
                 )
-
+DCH850 = Sample(name = "DCH850", 
+                tlatex = 'm_{H^{\pm\pm}}=500 GeV',         
+                line_color   = ROOT.kOrange-3,
+                marker_color = ROOT.kOrange-3,
+                fill_color   = ROOT.kOrange-3,
+                line_width   = 3,
+                line_style   = 1,
+                fill_style   = 3004,
+                xsec         = 0.000107411, 
+                feff         = 1.0,  
+                )
 DCH900 = Sample(name = "DCH900", 
                 tlatex = 'm_{H^{\pm\pm}}=900 GeV',         
                 line_color   = ROOT.kOrange-3,
@@ -156,17 +223,24 @@ DCH1300 = Sample(name = "DCH1300",
                 )
 
 root_DCH = []
+root_DCH.append(DCH250)
 root_DCH.append(DCH300)
+root_DCH.append(DCH350)
 root_DCH.append(DCH400)
+#root_DCH.append(DCH450)
 root_DCH.append(DCH500)
+root_DCH.append(DCH550)
 root_DCH.append(DCH600)
+root_DCH.append(DCH650)
 root_DCH.append(DCH700)
+root_DCH.append(DCH750)
 root_DCH.append(DCH800)
+root_DCH.append(DCH850)
 root_DCH.append(DCH900)
 root_DCH.append(DCH1000)
-root_DCH.append(DCH1100)
+#root_DCH.append(DCH1100)
 root_DCH.append(DCH1200)
-root_DCH.append(DCH1300)
+#root_DCH.append(DCH1300)
 
 
 # -----------------
@@ -174,22 +248,27 @@ root_DCH.append(DCH1300)
 # -----------------
 
 parent = {}
-parent["HR"] = {"feff":1.0, "tlatex": "H^{\pm\pm}_{R}(%s)"}
+#parent["HR"] = {"feff":1.0, "tlatex": "H^{\pm\pm}_{R}(%s)"}
 parent["HL"] = {"feff":1.0, "tlatex": "H^{\pm\pm}_{L}(%s)"}
 
 pos_decay = {}
-pos_decay["MpMp"] = {"feff": 1. / 0.25, "tlatex": "#mu^{+}#mu^{+}"}
-pos_decay["EpMp"] = {"feff": 1. / 0.50, "tlatex": "e^{+}#mu^{+}"}
-pos_decay["EpEp"] = {"feff": 1. / 0.25, "tlatex": "#mu^{+}#mu^{+}"}
+#pos_decay["MpMp"] = {"feff": 1. / 0.25, "tlatex": "#mu^{+}#mu^{+}"}
+#pos_decay["EpMp"] = {"feff": 1. / 0.50, "tlatex": "e^{+}#mu^{+}"}
+pos_decay["EpMp"] = {"feff": 1./0.50, "tlatex": "e^{+}\\mu^{+} "}
+#pos_decay["EpEp"] = {"feff": 1. / 0.25, "tlatex": "#mu^{+}#mu^{+}"}
 
 neg_decay = {}
 neg_decay["MmMm"] = {"feff": 1. / 0.25, "tlatex": "#mu^{-}#mu^{-}"}
-neg_decay["EmMm"] = {"feff": 1. / 0.50, "tlatex": "e^{-}#mu^{-}"}
-neg_decay["EmEm"] = {"feff": 1. / 0.25, "tlatex": "#mu^{-}#mu^{-}"}
+neg_decay["EmMm"] = {"feff": 1. / 0.50, "tlatex": "e^{-}\\mu^{-}"}
+neg_decay["EmEm"] = {"feff": 1. / 0.25, "tlatex": "e^{-}e^{-}"}
 
 # loops over the list of original samples
 # and appends the decay modes taking into
 # account the different efficiencies
+
+arrow = "#rightwarrow"
+
+
 
 full_DCH = []
 for boson in parent.keys():
@@ -201,7 +280,7 @@ for boson in parent.keys():
         globals()[full_sname]         = copy(sroot)
         globals()[full_sname].infile  = sroot.name
         globals()[full_sname].name    = full_sname
-        globals()[full_sname].tlatex  = parent[boson]["tlatex"]%(sroot.name.replace("DCH",""))+"#rightarrow " + pos_decay[pos_mode]["tlatex"] + neg_decay[neg_mode]["tlatex"]
+        globals()[full_sname].tlatex  = (parent[boson]["tlatex"]%(sroot.name.replace("DCH",""))+ "\\rightarrow "+ pos_decay[pos_mode]["tlatex"] + neg_decay[neg_mode]["tlatex"])
         globals()[full_sname].feff    = parent[boson]["feff"] * pos_decay[pos_mode]["feff"] * neg_decay[neg_mode]["feff"]
         full_DCH.append(globals()[full_sname])
 
