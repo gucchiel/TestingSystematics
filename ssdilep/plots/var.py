@@ -24,6 +24,8 @@ class Var(object):
             rebinVar = [],
             xmin  = None,
             xmax  = None,
+            ymin  = None,
+            ymax  = None,     
             log   = None,
             logx  = None,
             ):
@@ -39,6 +41,8 @@ class Var(object):
         self.rebinVar = rebinVar
         self.xmin  = xmin
         self.xmax  = xmax
+        self.ymin  = ymin
+        self.ymax  = ymax
         self.log   = log
         self.logx  = logx
 
