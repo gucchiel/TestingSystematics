@@ -1,4 +1,4 @@
-#PBS -l walltime=20:00:00
+#PBS -l walltime=40:00:00
 #PBS -l pmem=1gb
 
 #!/bin/bash
@@ -96,9 +96,9 @@ echo "CFG:        ${CFG}"
 
 echo
 echo "copying input locally..."
-TMPINPUT="`mktemp ntuple.XXXXXXX`.root"
-echo cp ${INPUT} ${TMPINPUT}
-cp ${INPUT} ${TMPINPUT}
+#TMPINPUT="`mktemp ntuple.XXXXXXX`.root"
+#echo cp ${INPUT} ${TMPINPUT}
+#cp ${INPUT} ${TMPINPUT}
 
 
 # -----------------------------
@@ -113,9 +113,9 @@ echo $$ > /cgroup/cpuset/${USER}/${PBS_JOBID}/tasks
 
 echo ""
 echo "executing job..."
-echo ${SCRIPT} --input ${TMPINPUT} --samplename ${SAMPLENAME} --sampletype ${SAMPLETYPE} --config "${CFG}"
+echo ${SCRIPT} --input ${INPUT} --samplename ${SAMPLENAME} --sampletype ${SAMPLETYPE} --config "${CFG}"
 
-${SCRIPT} --input ${TMPINPUT} --samplename ${SAMPLENAME} --sampletype ${SAMPLETYPE} --config "${CFG}"
+${SCRIPT} --input ${INPUT} --samplename ${SAMPLENAME} --sampletype ${SAMPLETYPE} --config "${CFG}"
 
 
 echo "finished execution"

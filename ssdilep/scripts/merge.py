@@ -177,7 +177,6 @@ if reg_suffix == "MAINREG" or "TESTING":
 
     fake_subtraction_regions = []
     fake_subtraction_regions += ["LLTT","LTTL","TLLT","TTLL","TLTL","LTLT"]
-    
 
 else:
   

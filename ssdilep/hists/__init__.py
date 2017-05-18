@@ -1,6 +1,7 @@
 import hists
 import histconfig
 import Main_hists
+import MuMain_hists
 import EleMain_hists
 import ThreeLepMain_hists
 import EleMuMain_hists
@@ -9,3 +10,4 @@ import FF_hists
 import PtOnly_hists
 import H2D_hists
 import TAndP_hists
+import SR1Muons_hists

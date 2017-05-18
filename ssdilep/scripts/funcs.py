@@ -439,14 +439,10 @@ def plot_hist(
       pad2.Draw()
     pad1.cd()
 
-    ytitle = "Events" 
+    ytitle = "Events"
     if not rebin: ytitle = yaxistitle
-    elif rebin!=1:
-      if not "BDT" in xtitle:
-        ytitle += " / %s"%rebin
-        if ("eta" in xtitle) or ("phi" in xtitle) or ("trk" in xtitle): pass
-        else: ytitle += " GeV"
-      else: ytitle += " / %s"%(0.05)
+    elif rebin!=1 and "GeV" in xtitle:
+      ytitle += " / %s GeV"%rebin
 
     fr1 = pad1.DrawFrame(xmin,ymin,xmax,ymax,';%s;%s'%(xtitle,ytitle))
     if do_ratio_plot:
