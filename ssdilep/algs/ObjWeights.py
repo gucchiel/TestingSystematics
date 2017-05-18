@@ -37,7 +37,9 @@ class MuAllSF(pyframe.core.Algorithm):
             mu_reco    = None,
             mu_ttva    = None, # not really any choice here!
             key        = None,
-            scale      = None,
+            sys_id     = None,
+            sys_iso    = None,
+            sys_TTVA   = None,
             ):
         pyframe.core.Algorithm.__init__(self, name=name)
         self.mu_index  = mu_index
@@ -45,12 +47,46 @@ class MuAllSF(pyframe.core.Algorithm):
         self.mu_reco   = mu_reco
         self.mu_ttva   = mu_ttva
         self.key       = key
-        self.scale     = scale
+        self.sys_id     = sys_id
+        self.sys_iso    = sys_iso
+        self.sys_TTVA   = sys_TTVA
 
         assert key, "Must provide key for storing mu iso sf"
     
     #_________________________________________________________________________
     def initialize(self): 
+
+      #Muon ID
+      self.id_sys = 0
+      if self.sys_id == "UPSTAT":
+        self.id_sys = 4
+      elif self.sys_id == "UPSYS":
+        self.id_sys = 8
+      elif self.sys_id == "DNSTAT":
+        self.id_sys = 3
+      elif self.sys_id == "DNSYS":
+        self.id_sys = 7
+
+      self.iso_sys=0
+      if self.sys_id ==   "UPSTAT":
+         self.iso_sys= 2
+      elif self.sys_id == "UPSYS":
+          self.iso_sys= 4
+      elif self.sys_id == "DNSTAT":
+          self.iso_sys= 1
+      elif self.sys_id == "DNSYS":
+          self.iso_sys= 3
+
+      self.TTVA_sys=0
+      if self.sys_TTVA ==   "UPSTAT":
+         self.TTVA_sys= 2
+      elif self.sys_TTVA == "UPSYS":
+          self.TTVA_sys= 4
+      elif self.sys_TTVA == "DNSTAT":
+          self.TTVA_sys= 1
+      elif self.sys_TTVA == "DNSYS":
+          self.TTVA_sys= 3
+
       pass
     
     #_________________________________________________________________________
@@ -69,18 +105,16 @@ class MuAllSF(pyframe.core.Algorithm):
             
             if muon.isTruthMatchedToMuon:
               if not ("Not" in self.mu_iso):
-                sf *= getattr(muon,"_".join(["IsoEff","SF","Iso"+self.mu_iso])).at(0)
+                sf *= getattr(muon,"_".join(["IsoEff","SF","Iso"+self.mu_iso])).at(self.iso_sys)
                 # EXOT12 v1 ntuples 
                 #sf *= getattr(muon,"_".join(["IsoEff","SF",self.mu_iso])).at(0)
               if not ("Not" in self.mu_reco):
-                sf *= getattr(muon,"_".join(["RecoEff","SF","Reco"+self.mu_reco])).at(0)
+                sf *= getattr(muon,"_".join(["RecoEff","SF","Reco"+self.mu_reco])).at(self.id_sys)
                 # EXOT12 v1 ntuples 
                 #sf *= getattr(muon,"_".join(["RecoEff","SF",self.mu_reco])).at(0)
               
-              sf *= getattr(muon,"_".join(["TTVAEff","SF"])).at(0)
-          
-              if self.scale: pass
-
+              sf *= getattr(muon,"_".join(["TTVAEff","SF"])).at(self.TTVA_sys)
+              
         if self.key: 
           self.store[self.key] = sf
         return True
@@ -97,18 +131,46 @@ class EleAllSF(pyframe.core.Algorithm):
             ele_reco    = None,
             key        = None,
             scale      = None,
-            ):
+            sys        = None,
+            sys_id     = None,
+            sys_iso     = None,
+            sys_reco     = None,
+                 ):
         pyframe.core.Algorithm.__init__(self, name=name)
         self.ele_index  = ele_index
         self.ele_iso    = ele_iso
         self.ele_reco   = ele_reco
         self.key       = key
         self.scale     = scale
+        self.sys       = sys
+        self.sys_id    = sys_id
+        self.sys_iso   = sys_iso
+        self.sys_reco  = sys_reco
 
         assert key, "Must provide key for storing ele iso sf"
     
     #_________________________________________________________________________
     def initialize(self): 
+
+
+      self.id_sys = 0
+      if self.sys_id == "UP":
+        self.id_sys = 2
+      elif self.sys_id == "DN":
+        self.id_sys = 1
+
+      self.iso_sys = 0
+      if self.sys_iso == "UP":
+        self.iso_sys = 2
+      elif self.sys_iso == "DN":
+        self.iso_sys = 1
+
+      self.reco_sys = 0
+      if self.sys_reco == "UP":
+        self.reco_sys = 2
+      elif self.sys_reco == "DN":
+        self.reco_sys = 1
+
       pass
     
     #_________________________________________________________________________
@@ -127,12 +189,12 @@ class EleAllSF(pyframe.core.Algorithm):
 
               #if electron.isTruthMatchedToElectron:
                 if ("Not" in self.ele_iso):
-                    sf *= getattr(ele,"RecoEff_SF").at(0)
-                    sf *= getattr(ele,"PIDEff_SF_LH" + self.ele_reco[0:-3] ).at(0)
+                    sf *= getattr(ele,"RecoEff_SF").at(self.reco_sys)
+                    sf *= getattr(ele,"PIDEff_SF_LH" + self.ele_reco[0:-3] ).at(self.id_sys)
                 else:    
-                    sf *= getattr(ele,"RecoEff_SF").at(0)
-                    sf *= getattr(ele,"IsoEff_SF_" + self.ele_reco + self.ele_iso ).at(0)
-                    sf *= getattr(ele,"PIDEff_SF_LH" + self.ele_reco[0:-3] ).at(0)
+                    sf *= getattr(ele,"RecoEff_SF").at(self.reco_sys)
+                    sf *= getattr(ele,"IsoEff_SF_" + self.ele_reco + self.ele_iso ).at(self.iso_sys)
+                    sf *= getattr(ele,"PIDEff_SF_LH" + self.ele_reco[0:-3] ).at(self.id_sys)
           
                 if self.scale: pass
 
@@ -146,12 +208,12 @@ class EleFakeFactorGraph(pyframe.core.Algorithm):
     Applies the fake-factors to electron pairs
     """
     #__________________________________________________________________________
-    def __init__(self, name="EleFakeFactor",config_file=None,ele_index=None,key=None,sys=None):
+    def __init__(self, name="EleFakeFactor",config_file=None,ele_index=None,key=None,sys=None,):
         pyframe.core.Algorithm.__init__(self,name=name)
         self.config_file    = config_file
         self.ele_index       = ele_index
         self.key            = key
-        self.sys            = None
+        self.sys_FF         = sys
 
         assert config_file, "Must provide config file!"
         assert key, "Must provide key for storing fakefactor"
@@ -160,9 +222,9 @@ class EleFakeFactorGraph(pyframe.core.Algorithm):
         f = ROOT.TFile.Open(self.config_file)
         assert f, "Failed to open fake-factor config file: %s"%(self.config_file)
 
-        if self.sys=="UP":
+        if self.sys_FF=="UP":
             h_ff = f.Get("FFup")
-        elif self.sys=="DN":
+        elif self.sys_FF=="DN":
             h_ff = f.Get("FFdn")
         else:
             h_ff = f.Get("FF")
@@ -171,6 +233,7 @@ class EleFakeFactorGraph(pyframe.core.Algorithm):
         self.h_ff = h_ff.Clone()
         self.h_ff.SetDirectory(0)
         f.Close()
+
     #_________________________________________________________________________
     def execute(self, weight):
         
@@ -200,12 +263,12 @@ class MuFakeFactorGraph(pyframe.core.Algorithm):
     Applies the fake-factors to muon pairs
     """
     #__________________________________________________________________________
-    def __init__(self, name="MuFakeFactor",config_file=None,mu_index=None,key=None,scale=None):
+    def __init__(self, name="MuFakeFactor",config_file=None,mu_index=None,key=None,sys=None):
         pyframe.core.Algorithm.__init__(self,name=name)
         self.config_file    = config_file
         self.mu_index       = mu_index
         self.key            = key
-        self.scale          = scale
+        self.sys            = sys
         
         assert config_file, "Must provide config file!"
         assert key, "Must provide key for storing fakefactor"
@@ -240,8 +303,8 @@ class MuFakeFactorGraph(pyframe.core.Algorithm):
           eff_up_mu = self.g_ff.GetEYhigh()[ibin_mu]
           eff_dn_mu = self.g_ff.GetEYlow()[ibin_mu]
           
-          if self.scale == 'up': ff_mu +=eff_up_mu
-          if self.scale == 'dn': ff_mu -=eff_dn_mu
+          if self.sys == 'UP': ff_mu +=eff_up_mu
+          if self.sys == 'DN': ff_mu -=eff_dn_mu
        
         if self.key: 
           self.store[self.key] = ff_mu
