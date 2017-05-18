@@ -16,7 +16,7 @@ from sample import Sample
 from copy import copy
 
 import ROOT
-ROOT.SetAtlasStyle()
+#ROOT.SetAtlasStyle()
 
 
 
