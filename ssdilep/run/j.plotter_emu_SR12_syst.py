@@ -150,8 +150,9 @@ def analyze(config):
     ##-------------------------------------------------------------------------
     loop = pyframe.core.EventLoop(name='ssdilep',
                                   sampletype=config['sampletype'],
-                                  samplename=config['samplename'],
-                                  outfile=config['samplename']+".root",
+                                  #samplename=config['samplename'],
+                                  #outfile=config['samplename']+".root",
+                                  outfile='ntuple.root',
                                   quiet=False,
                                   )
     
@@ -318,13 +319,13 @@ def analyze(config):
     #implementation of electron fake factors
 
     loop += ssdilep.algs.ObjWeights.EleFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-27-03-2017.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/fakeFactor-16-05-2017.root'),
             ele_index=0,
             key='Ele0FF',
             sys= sys_FF_ele,
             )
     loop += ssdilep.algs.ObjWeights.MuFakeFactorGraph(
-            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_v9.root'),
+            config_file=os.path.join(main_path,'ssdilep/data/sys_ff_mulead_pt_data_bveto.root'),
             mu_index=0,
             key='Mu0FF',
             sys=sys_FF_mu
