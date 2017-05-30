@@ -624,9 +624,9 @@ class MuTrigSF(pyframe.core.Algorithm):
         if self.sys_trig == "UPSTAT":
             self.trig_sys = 2
         elif self.sys_trig == "UPSYS":
-            self.trig_sys = 1
-        elif self.sys_trig == "DNSTAT":
             self.trig_sys = 4
+        elif self.sys_trig == "DNSTAT":
+            self.trig_sys = 1
         elif self.sys_trig == "DNSYS":
             self.trig_sys = 3
 
