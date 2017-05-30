@@ -297,6 +297,29 @@ class BuildLooseElectrons(pyframe.core.Algorithm):# Building a loose container f
                electrons_loose += [ele]
         self.store['electrons_loose'] = electrons_loose
         return True       
+#------------------------------------------------------------------------------
+class BuildLooseAndTightMuons(pyframe.core.Algorithm):# removing from muon container those not T not L muons
+    #__________________________________________________________________________
+    def __init__(self, 
+                 name="BuildLooseAndTightMuons", 
+                 key_muons="muons",
+                 ):
+        pyframe.core.Algorithm.__init__(self, name)
+        self.key_muons  = key_muons
+    #__________________________________________________________________________
+    def initialize(self):
+        log.info('Removing from muon store not T or L muons  %s ...' % self.key_muons)
+    #__________________________________________________________________________
+    def execute(self,weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        muons = self.store[self.key_muons]
+        
+        for muon in muons:
+            muon_is_tight = bool(muon.isIsolated_FixedCutTightTrackOnly and muon.trkd0sig<3.and muon.pt>30*GeV)            
+            muon_is_loose   = bool(not muon.isIsolated_FixedCutTightTrackOnly and muon.trkd0sig<10. and muon.pt>30*GeV)
+            if(not(muon_is_tight or muon_is_loose)): self.store[self.key_muons].remove(muon)
+
+        return True       
 
 #------------------------------------------------------------------------------
 class TagAndProbeVars(pyframe.core.Algorithm):
@@ -1111,12 +1134,13 @@ class MultiLeptonVars(pyframe.core.Algorithm):
         alpha = array('d',[0.08, 0.004, 0.005, 0.004, 0.003, 0.004])
         beta  = array('d',[0.78, 1.50,  1.41,  1.45,  1.41,  1.46 ])
         flavour =self.store['ChannelFlavour']
-                               
+
         two_lep_pairs = {}
         if len(leptons)>=4:
           for q in combinations(leptons,4):
             if q[0].trkcharge * q[1].trkcharge * q[2].trkcharge * q[3].trkcharge > 0.0:
               two_lep_pairs[q] = q[0].trkd0sig + q[1].trkd0sig + q[2].trkd0sig + q[3].trkd0sig
+
 
           max_sig  = 1000.
           for quad,sig in two_lep_pairs.iteritems():
@@ -1161,10 +1185,6 @@ class MultiLeptonVars(pyframe.core.Algorithm):
         if two_lep_pairs:
           lep1 = self.store['lep1']
           lep2 = self.store['lep2']
-          lep1T = ROOT.TLorentzVector()
-          lep1T.SetPtEtaPhiM( lep1.tlv.Pt(), lep1.tlv.Eta(), lep1.tlv.Phi(), lep1.tlv.M() )
-          lep2T = ROOT.TLorentzVector()
-          lep2T.SetPtEtaPhiM( lep2.tlv.Pt(), lep2.tlv.Eta(), lep2.tlv.Phi(), lep2.tlv.M() )
 
           self.store['charge_product1'] = lep2.trkcharge*lep1.trkcharge
           self.store['charge_sum1']     = lep1.trkcharge + lep2.trkcharge
@@ -1176,10 +1196,12 @@ class MultiLeptonVars(pyframe.core.Algorithm):
 
           lep3 = self.store['lep3']
           lep4 = self.store['lep4']
-          lep3T = ROOT.TLorentzVector()
-          lep3T.SetPtEtaPhiM( lep3.tlv.Pt(), lep3.tlv.Eta(), lep3.tlv.Phi(), lep3.tlv.M() )
-          lep4T = ROOT.TLorentzVector()
-          lep4T.SetPtEtaPhiM( lep4.tlv.Pt(), lep4.tlv.Eta(), lep4.tlv.Phi(), lep4.tlv.M() )
+
+          #Define here the OS masses stores
+          self.store['mOS1'] = (lep1.tlv + lep3.tlv).M()
+          self.store['mOS2'] = (lep1.tlv + lep4.tlv).M()
+          self.store['mOS3'] = (lep2.tlv + lep3.tlv).M()
+          self.store['mOS4'] = (lep2.tlv + lep4.tlv).M()
 
           self.store['charge_product2'] = lep4.trkcharge*lep3.trkcharge
           self.store['charge_sum2']     = lep3.trkcharge + lep4.trkcharge
@@ -1191,7 +1213,7 @@ class MultiLeptonVars(pyframe.core.Algorithm):
 
           self.store['charge_product'] = lep4.trkcharge * lep3.trkcharge * lep2.trkcharge * lep1.trkcharge
           self.store['charge_sum']     = lep1.trkcharge + lep2.trkcharge + lep3.trkcharge + lep4.trkcharge
-          self.store['mTtot']          = (lep1T + lep2T + lep3T + lep4T + met.tlv).M()
+          self.store['mTtot']          = (lep1.tlv + lep2.tlv + lep3.tlv + lep4.tlv + met.tlv).M()
           self.store['mVis']           = (self.store['mVis1']+self.store['mVis2'])/2
           self.store['FullMass']       = (self.store['mVis1']+self.store['mVis2'])
           self.store['dmOverM']        = ((self.store['mVis1'] - self.store['mVis2'])/((self.store['mVis1']+self.store['mVis2'])/2))
