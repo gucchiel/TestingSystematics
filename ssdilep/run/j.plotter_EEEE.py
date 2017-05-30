@@ -71,16 +71,16 @@ def analyze(config):
     elif systematic == 'EG_SCALE_ALLCORR_DN': treeSys = "EG_SCALE_ALLCORR__1down"
     elif systematic == 'EG_SCALE_E4SCINTILLATOR_UP': treeSys = "EG_SCALE_E4SCINTILLATOR__1up"
     elif systematic == 'EG_SCALE_E4SCINTILLATOR_DN': treeSys = "EG_SCALE_E4SCINTILLATOR__1down"
-    elif systematic == 'MUON_ID_DN':treeSys= "MUON_ID___1down"
-    elif systematic == 'MUON_ID_UP':treeSys= "MUON_ID___1up"
-    elif systematic == 'MUON_MS_DN':treeSys= "MUON_MS___1down"
-    elif systematic == 'MUON_MS_UP':treeSys= "MUON_MS___1up"
-    elif systematic == 'MUON_RESBIAS_DN':treeSys= "MUON_SAGITTA_RESBIAS___1down"
-    elif systematic == 'MUON_RESBIAS_UP':treeSys= "MUON_SAGITTA_RESBIAS___1up"
-    elif systematic == 'MUON_RHO_DN':treeSys= "MUON_SAGITTA_RHO___1down"
-    elif systematic == 'MUON_RHO_UP':treeSys= "MUON_SAGITTA_RHO___1up"
-    elif systematic == 'MUON_SCALE_DN':treeSys= "MUON_SCALE___1down"
-    elif systematic == 'MUON_SCALE_UP':treeSys= "MUON_SCALE___1up"
+    elif systematic == 'MUON_ID_DN':treeSys= "MUON_ID__1down"
+    elif systematic == 'MUON_ID_UP':treeSys= "MUON_ID__1up"
+    elif systematic == 'MUON_MS_DN':treeSys= "MUON_MS__1down"
+    elif systematic == 'MUON_MS_UP':treeSys= "MUON_MS__1up"
+    elif systematic == 'MUON_RESBIAS_DN':treeSys= "MUON_SAGITTA_RESBIAS__1down"
+    elif systematic == 'MUON_RESBIAS_UP':treeSys= "MUON_SAGITTA_RESBIAS__1up"
+    elif systematic == 'MUON_RHO_DN':treeSys= "MUON_SAGITTA_RHO__1down"
+    elif systematic == 'MUON_RHO_UP':treeSys= "MUON_SAGITTA_RHO__1up"
+    elif systematic == 'MUON_SCALE_DN':treeSys= "MUON_SCALE__1down"
+    elif systematic == 'MUON_SCALE_UP':treeSys= "MUON_SCALE__1up"
     # elif systematic == 'EG_SCALE_LARCALIB_EXTRA2015PRE_UP': treeSys = "EG_SCALE_LARCALIB_EXTRA2015PRE__1up"
     # elif systematic == 'EG_SCALE_LARCALIB_EXTRA2015PRE_DN': treeSys = "EG_SCALE_LARCALIB_EXTRA2015PRE__1down"
     # elif systematic == 'EG_SCALE_LARTEMPERATURE_EXTRA2015PRE_UP': treeSys = "EG_SCALE_LARTEMPERATURE_EXTRA2015PRE__1up"
@@ -207,7 +207,7 @@ def analyze(config):
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='FourLeptons')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='ZeroTotalCharge')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
-    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BJetVeto')
+    loop += ssdilep.al gs.algs.CutAlg(cutflow='presel',cut='BJetVeto')
     #loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
     loop += ssdilep.algs.vars.SR2ChannelFlavour()
