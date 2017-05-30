@@ -1565,6 +1565,7 @@ h_NegCouple_mVis  = Hist1D( hname  = "h_NegCouple_mVis",
                               dir    = "event",
                               vexpr  = "self.store['mVis2']/GeV",
                             )
+
 h_PosCouple_dR  = Hist1D( hname  = "h_PosCouple_dR",
                               xtitle = "#DeltaR_{vis}(++)",
                               ytitle = "Events", 
@@ -1611,6 +1612,46 @@ h_Couples_mVis  = Hist1D( hname  = "h_Couples_mVis",
                               dir    = "event",
                               vexpr  = "self.store['mVis']/GeV",
                             )
+
+
+h_mOS1  = Hist1D( hname  = "h_mOS1",
+                              xtitle = "(m_{OS1} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mOS1']/GeV",
+                            )
+h_mOS2  = Hist1D( hname  = "h_mOS2",
+                              xtitle = "(m_{OS2} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mOS2']/GeV",
+                            )
+h_mOS3  = Hist1D( hname  = "h_mOS3",
+                              xtitle = "(m_{OS3} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mOS3']/GeV",
+                            )
+h_mOS4 = Hist1D( hname  = "h_mOS4",
+                              xtitle = "(m_{OS4} [GeV]",
+                              ytitle = "Events / (1 GeV)", 
+                              nbins  = 2000,
+                              xmin   = 0.0,
+                              xmax   = 2000.,
+                              dir    = "event",
+                              vexpr  = "self.store['mOS4']/GeV",
+                            )
+
+
 h_Couples_FullMass  = Hist1D( hname  = "h_Couples_FullMass",
                               xtitle = "m_{vis}(++) + m_{vis}(--) [GeV]",
                               ytitle = "Events / (1 GeV)", 
