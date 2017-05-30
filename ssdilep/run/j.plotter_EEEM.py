@@ -234,9 +234,11 @@ def analyze(config):
     """
     loop += ssdilep.algs.EvWeights.ChargeFlipEleSF(
         key='ChargeFlipEleSF',
-        config_file=os.path.join(main_path,'ssdilep/data/chargeFlipRates-12-01-2017.root'),
         chargeFlipSF=True,
+        config_fileCHF=os.path.join(main_path,'ssdilep/data/chargeFlipRates-28-03-2017.root'),
+        sys_CF = sys_CF,
         )
+
     #Muon trigger efficiency implementation
     """
     loop += ssdilep.algs.EvWeights.EffCorrPair(
@@ -471,6 +473,33 @@ def analyze(config):
     ##-------------------------------------------------------------------------
 
     loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'CR2EEEMDeltaMass_TTTT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['TwoSSElectronMuonPairsEEEM',None],
+                           ['EEEMuTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Mu0AllSF']],
+                           ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ],
+            )
+
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'SR2EEEMDeltaMass_TTTT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['TwoSSElectronMuonPairsEEEM',None],
+                           ['EEEMuTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Mu0AllSF']],
+                           ['IsSignalRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ],
+            )
+
+    
+    loop += ssdilep.algs.algs.PlotAlg(
             region       = 'CR2EEEM_TTTT',
             plot_all     = False,
             do_var_check = True,
@@ -479,6 +508,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuTTTT',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Mu0AllSF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -490,6 +521,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuTTTL',['Ele0AllSF','Ele1AllSF','Ele2AllSF','Mu0RecoSF','Mu0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -501,6 +534,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuTTLT',['Ele0AllSF','Ele1AllSF','Ele2RecoSF','Mu0AllSF','Ele2FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -512,6 +547,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuTLTT',['Ele0AllSF','Ele1RecoSF','Ele2AllSF','Mu0AllSF','Ele1FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -523,6 +560,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuLTTT',['Ele0RecoSF','Ele1AllSF','Ele2AllSF','Mu0AllSF','Ele0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -534,6 +573,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuTTLL',['Ele0AllSF','Ele1AllSF','Ele2RecoSF','Mu0RecoSF','Ele2FF','Mu0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -545,6 +586,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuTLTL',['Ele0AllSF','Ele1RecoSF','Ele2AllSF','Mu0RecoSF','Ele1FF','Mu0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -556,6 +599,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuLLTT',['Ele0RecoSF','Ele1RecoSF','Ele2AllSF','Mu0AllSF','Ele0FF','Ele1FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -567,6 +612,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuLTLT',['Ele0RecoSF','Ele1AllSF','Ele2RecoSF','Mu0AllSF','Ele0FF','Ele2FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -578,6 +625,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuLTTL',['Ele0RecoSF','Ele1AllSF','Ele2AllSF','Mu0RecoSF','Ele0FF','Mu0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -589,6 +638,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsEEEM',None],
                            ['EEEMuTLLT',['Ele0AllSF','Ele1RecoSF','Ele2RecoSF','Mu0AllSF','Ele1FF','Ele2FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
 
