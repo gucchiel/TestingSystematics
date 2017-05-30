@@ -470,7 +470,32 @@ def analyze(config):
     ##-------------------------------------------------------------------------
     ## make plots
     ##-------------------------------------------------------------------------
-
+    #Here CR and SR for Gamma
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'CR2MMEMDeltaMass_TTTT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['TwoSSElectronMuonPairsMMEM',None],
+                           ['MuMuEMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Ele0AllSF']],
+                           ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ],
+            )
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'SR2MMEMDeltaMass_TTTT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['TwoSSElectronMuonPairsMMEM',None],
+                           ['MuMuEMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Ele0AllSF']],
+                           ['IsSignalRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ],
+            )
+ 
     loop += ssdilep.algs.algs.PlotAlg(
             region       = 'CR2MMEM_TTTT',
             plot_all     = False,
@@ -480,6 +505,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Ele0AllSF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -491,6 +518,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuTTTL',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Ele0RecoSF','Ele0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -502,6 +531,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuTTLT',['Mu0AllSF','Mu1AllSF','Mu2RecoSF','Ele0AllSF','Mu2FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -513,6 +544,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuTLTT',['Mu0AllSF','Mu1RecoSF','Mu2AllSF','Ele0AllSF','Mu1FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -524,6 +557,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuLTTT',['Mu0RecoSF','Mu1AllSF','Mu2AllSF','Ele0AllSF','Mu0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -535,6 +570,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuTTLL',['Mu0AllSF','Mu1AllSF','Mu2RecoSF','Ele0RecoSF','Mu2FF','Ele0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -546,6 +583,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuTLTL',['Mu0AllSF','Mu1RecoSF','Mu2AllSF','Ele0RecoSF','Mu1FF','Ele0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -557,6 +596,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuLLTT',['Mu0RecoSF','Mu1RecoSF','Mu2AllSF','Ele0AllSF','Mu0FF','Mu1FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -568,6 +609,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuLTLT',['Mu0RecoSF','Mu1AllSF','Mu2RecoSF','Ele0AllSF','Mu0FF','Mu2FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -579,6 +622,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuLTTL',['Mu0RecoSF','Mu1AllSF','Mu2AllSF','Ele0RecoSF','Mu0FF','Ele0FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -590,6 +635,8 @@ def analyze(config):
                            ['TwoSSElectronMuonPairsMMEM',None],
                            ['MuMuEMuTLLT',['Mu0AllSF','Mu1RecoSF','Mu2RecoSF','Ele0AllSF','Mu1FF','Mu2FF']],
                            ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ['ZVeto',None],
                            ],
             )
     
