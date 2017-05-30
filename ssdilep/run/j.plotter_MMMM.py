@@ -472,6 +472,32 @@ def analyze(config):
     ##-------------------------------------------------------------------------
 
     loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'CR2MMMMDeltaMass_TTTT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['TwoSSMuonPairs',None],
+                           ['MuMuMuMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
+                           ['IsControlRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ],
+            )
+
+    loop += ssdilep.algs.algs.PlotAlg(
+            region       = 'SR2MMMMDeltaMass_TTTT',
+            plot_all     = False,
+            do_var_check = True,
+            hist_list    = hist_list,
+            cut_flow     = [
+                           ['TwoSSMuonPairs',None],
+                           ['MuMuMuMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
+                           ['IsSignalRegion2',None],
+                           ['DeltaMassOverMass',None],
+                           ],
+            )
+    
+    loop += ssdilep.algs.algs.PlotAlg(
             region       = 'CR2MMMM_TTTT',
             plot_all     = False,
             do_var_check = True,
@@ -480,6 +506,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuTTTT',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3AllSF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -491,6 +519,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuTTTL',['Mu0AllSF','Mu1AllSF','Mu2AllSF','Mu3RecoSF','Mu3FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -502,6 +532,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuTTLT',['Mu0AllSF','Mu1AllSF','Mu2RecoSF','Mu3AllSF','Mu2FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -513,6 +545,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuTLTT',['Mu0AllSF','Mu1RecoSF','Mu2AllSF','Mu3AllSF','Mu1FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -524,6 +558,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuLTTT',['Mu0RecoSF','Mu1AllSF','Mu2AllSF','Mu3AllSF','Mu0FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -535,6 +571,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuTTLL',['Mu0AllSF','Mu1AllSF','Mu2RecoSF','Mu3RecoSF','Mu2FF','Mu3FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -546,6 +584,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuTLTL',['Mu0AllSF','Mu1RecoSF','Mu2AllSF','Mu3RecoSF','Mu1FF','Mu3FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -557,6 +597,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuLLTT',['Mu0RecoSF','Mu1RecoSF','Mu2AllSF','Mu3AllSF','Mu0FF','Mu1FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -568,6 +610,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuLTLT',['Mu0RecoSF','Mu1AllSF','Mu2RecoSF','Mu3AllSF','Mu0FF','Mu2FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -579,6 +623,8 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuLTTL',['Mu0RecoSF','Mu1AllSF','Mu2AllSF','Mu3RecoSF','Mu0FF','Mu3FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
     loop += ssdilep.algs.algs.PlotAlg(
@@ -590,8 +636,11 @@ def analyze(config):
                            ['TwoSSMuonPairs',None],
                            ['MuMuMuMuTLLT',['Mu0AllSF','Mu1RecoSF','Mu2RecoSF','Mu3AllSF','Mu1FF','Mu2FF']],
                            ['IsControlRegion2',None],
+                           ['ZVeto',None],
+                           ['DeltaMassOverMass',None],
                            ],
             )
+
     loop += ssdilep.algs.algs.PlotAlg(
             region       = 'SR2MMMM_TTTT',
             plot_all     = False,
