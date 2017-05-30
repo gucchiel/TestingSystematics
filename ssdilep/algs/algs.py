@@ -4039,7 +4039,6 @@ class CutAlg(pyframe.core.Algorithm):
         mass     = (mpos + mneg)/(2*GeV)
 
         massCut = (abs(massDiff)/(alpha[flavour]*(pow(mass,beta[flavour]))))
-        print massCut
         if(abs(massCut) < 3): return True
         return False
     #____________________________________________________________________________
