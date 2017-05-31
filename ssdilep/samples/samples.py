@@ -81,9 +81,9 @@ GRL += [
 
 #GRL += ["302919","299055","279932","279928",]
 
-
-#ds_name = '00%s.physics_Main'
-ds_name = 'physics_Main_00%s'
+ds_name = '00%s.physics_Main'
+#ds_name = '%s.physics_Main'
+#ds_name = 'physics_Main_00%s'
 
 for run in GRL:
     name = ds_name % run
@@ -335,13 +335,16 @@ llvvjj_ss_EW4   = Sample( name = "Sherpa_CT10_llvvjj_ss_EW4",  xsec = 0.025797  
 llvvjj_ss_EW6   = Sample( name = "Sherpa_CT10_llvvjj_ss_EW6",  xsec = 0.043004   )
 lllvjj_EW6      = Sample( name = "Sherpa_CT10_lllvjj_EW6",     xsec = 0.042017   )
 lllljj_EW6      = Sample( name = "Sherpa_CT10_lllljj_EW6",     xsec = 0.031496   )
-WplvWmqq        = Sample( name = "Sherpa_CT10_WplvWmqq",       xsec = 25.995     )
+#WplvWmqq        = Sample( name = "Sherpa_CT10_WplvWmqq",       xsec = 25.995     )
 WpqqWmlv        = Sample( name = "Sherpa_CT10_WpqqWmlv",       xsec = 26.4129606 )
-WlvZqq          = Sample( name = "Sherpa_CT10_WlvZqq",         xsec = 12.543     )
+#WlvZqq          = Sample( name = "Sherpa_CT10_WlvZqq",         xsec = 12.543     )
 WqqZll          = Sample( name = "Sherpa_CT10_WqqZll_SHv21_improved",         xsec = 3.4234     )
 WqqZvv          = Sample( name = "Sherpa_CT10_WqqZvv_SHv21_improved",         xsec = 7.4151     )
 ZqqZll          = Sample( name = "Sherpa_CT10_ZqqZll_SHv21_improved",         xsec = 2.35278615 )
 ZqqZvv          = Sample( name = "Sherpa_CT10_ZqqZvv_SHv21_improved",         xsec = 4.63359232 )
+PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4 = Sample( name = "PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4",       xsec =     4.5108   )
+PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4 = Sample( name = "PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4",       xsec =     1.2673   )
+
 
 diboson_sherpa = Sample( name =   'diboson_sherpa',
                   tlatex = 'DB inclusive',
@@ -359,9 +362,9 @@ diboson_sherpa = Sample( name =   'diboson_sherpa',
                                 llvvjj_ss_EW6,
                                 lllvjj_EW6,   
                                 lllljj_EW6,   
-                                WplvWmqq,     
+                                #WplvWmqq,     
                                 WpqqWmlv,     
-                                WlvZqq,       
+                                #WlvZqq,       
                                 WqqZll,       
                                 WqqZvv,       
                                 ZqqZll,       
@@ -392,6 +395,17 @@ diboson_sherpa_lllv = Sample( name =   'diboson_sherpa_lllv',
                               ],
                 )
 
+diboson_powheg_alt = Sample( name =   'diboson_powheg',
+                  tlatex = 'DB powheg',
+                  fill_color   = ROOT.kGreen-6,
+                  line_color   = ROOT.kGreen-2,
+                  marker_color = ROOT.kGreen-2,
+                  daughters = [
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4,
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4,
+                              ],
+                )
+
 #-----------------------------------------------------------------------------
 # Complete diboson background (inclusive)
 # Notes:
@@ -401,21 +415,54 @@ diboson_sherpa_lllv = Sample( name =   'diboson_sherpa_lllv',
 Sherpa_221_NNPDF30NNLO_llll     = Sample( name = "Sherpa_221_NNPDF30NNLO_llll",     xsec =    1.2557  )
 Sherpa_221_NNPDF30NNLO_lllv     = Sample( name = "Sherpa_221_NNPDF30NNLO_lllv",     xsec =    4.5877  )
 Sherpa_221_NNPDF30NNLO_llvv     = Sample( name = "Sherpa_221_NNPDF30NNLO_llvv",     xsec =    12.465  )
-Sherpa_221_NNPDF30NNLO_lvvv     = Sample( name = "Sherpa_221_NNPDF30NNLO_lvvv",     xsec =    3.2274  )
-Sherpa_221_NNPDF30NNLO_vvvv     = Sample( name = "Sherpa_221_NNPDF30NNLO_vvvv",     xsec =    0.60154 )
-Sherpa_221_NNPDF30NNLO_WlvZqq   = Sample( name = "Sherpa_221_NNPDF30NNLO_WlvZqq",   xsec =    11.413  )
-Sherpa_221_NNPDF30NNLO_WplvWmqq = Sample( name = "Sherpa_221_NNPDF30NNLO_WplvWmqq", xsec =    112.74  )
-Sherpa_221_NNPDF30NNLO_WpqqWmlv = Sample( name = "Sherpa_221_NNPDF30NNLO_WpqqWmlv", xsec =    24.717  )
+#Sherpa_221_NNPDF30NNLO_lvvv     = Sample( name = "Sherpa_221_NNPDF30NNLO_lvvv",     xsec =    3.2274  )
+#Sherpa_221_NNPDF30NNLO_vvvv     = Sample( name = "Sherpa_221_NNPDF30NNLO_vvvv",     xsec =    0.60154 )
+#Sherpa_221_NNPDF30NNLO_WlvZqq   = Sample( name = "Sherpa_221_NNPDF30NNLO_WlvZqq",   xsec =    11.413  )
+#Sherpa_221_NNPDF30NNLO_WplvWmqq = Sample( name = "Sherpa_221_NNPDF30NNLO_WplvWmqq", xsec =    112.74  )
+#Sherpa_221_NNPDF30NNLO_WpqqWmlv = Sample( name = "Sherpa_221_NNPDF30NNLO_WpqqWmlv", xsec =    24.717  )
 Sherpa_221_NNPDF30NNLO_WqqZll   = Sample( name = "Sherpa_221_NNPDF30NNLO_WqqZll",   xsec =    3.437  )
-Sherpa_221_NNPDF30NNLO_WqqZvv   = Sample( name = "Sherpa_221_NNPDF30NNLO_WqqZvv",   xsec =    6.7973 )
+#Sherpa_221_NNPDF30NNLO_WqqZvv   = Sample( name = "Sherpa_221_NNPDF30NNLO_WqqZvv",   xsec =    6.7973 )
 Sherpa_221_NNPDF30NNLO_ZqqZll   = Sample( name = "Sherpa_221_NNPDF30NNLO_ZqqZll",   xsec =    2.17275043   )
-Sherpa_221_NNPDF30NNLO_ZqqZvv   = Sample( name = "Sherpa_221_NNPDF30NNLO_ZqqZvv",   xsec =    4.35418464   )
+#Sherpa_221_NNPDF30NNLO_ZqqZvv   = Sample( name = "Sherpa_221_NNPDF30NNLO_ZqqZvv",   xsec =    4.35418464   )
 Sherpa_CT10_ggllll              = Sample( name = "Sherpa_CT10_ggllll",              xsec =    0.01887613  )
-#Sherpa_CT10_ggllvv              = Sample( name = "Sherpa_CT10_ggllvv",              xsec =    0.7773402 )
+Sherpa_CT10_ggllvv              = Sample( name = "Sherpa_CT10_ggllvv",              xsec =    0.7773402 )
 Sherpa_CT10_lllljj_EW6          = Sample( name = "Sherpa_CT10_lllljj_EW6",          xsec =    0.031496  )
 Sherpa_CT10_lllvjj_EW6          = Sample( name = "Sherpa_CT10_lllvjj_EW6",          xsec =    0.042287  )
 Sherpa_CT10_llvvjj_ss_EW4       = Sample( name = "Sherpa_CT10_llvvjj_ss_EW4",       xsec =    0.02347527  )
 Sherpa_CT10_llvvjj_ss_EW6       = Sample( name = "Sherpa_CT10_llvvjj_ss_EW6",       xsec =    0.03913364  )
+
+
+PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4 = Sample( name = "PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4",       xsec =     4.5108   )
+PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4 = Sample( name = "PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4",       xsec =     1.2673   )
+
+
+diboson_alt = Sample( name =   'diboson_alt',
+                  tlatex = 'DB inclusive',
+                  fill_color = ROOT.kOrange-3,
+                  line_color =  ROOT.kOrange+5,
+                  marker_color =  ROOT.kOrange+5,
+                  daughters = [
+                                #Sherpa_221_NNPDF30NNLO_llll,
+                                #Sherpa_221_NNPDF30NNLO_lllv,
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4,
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4,
+                                Sherpa_221_NNPDF30NNLO_llvv,
+                                #Sherpa_221_NNPDF30NNLO_lvvv,
+                                #Sherpa_221_NNPDF30NNLO_vvvv,
+                                #Sherpa_221_NNPDF30NNLO_WlvZqq,
+                                #Sherpa_221_NNPDF30NNLO_WplvWmqq,
+                                #Sherpa_221_NNPDF30NNLO_WpqqWmlv,
+                                Sherpa_221_NNPDF30NNLO_WqqZll,
+                                #Sherpa_221_NNPDF30NNLO_WqqZvv,
+                                Sherpa_221_NNPDF30NNLO_ZqqZll,
+                                #Sherpa_221_NNPDF30NNLO_ZqqZvv,
+                                Sherpa_CT10_ggllll,
+                                Sherpa_CT10_lllljj_EW6,
+                                Sherpa_CT10_lllvjj_EW6,
+                                Sherpa_CT10_llvvjj_ss_EW4,
+                                Sherpa_CT10_llvvjj_ss_EW6,
+                              ],
+                )
 
 diboson_sherpa221 = Sample( name =   'diboson_sherpa221',
                   tlatex = 'DB inclusive',
@@ -426,15 +473,15 @@ diboson_sherpa221 = Sample( name =   'diboson_sherpa221',
                                 Sherpa_221_NNPDF30NNLO_llll,
                                 Sherpa_221_NNPDF30NNLO_lllv,
                                 Sherpa_221_NNPDF30NNLO_llvv,
-                                Sherpa_221_NNPDF30NNLO_lvvv,
-                                Sherpa_221_NNPDF30NNLO_vvvv,
-                                Sherpa_221_NNPDF30NNLO_WlvZqq,
-                                Sherpa_221_NNPDF30NNLO_WplvWmqq,
-                                Sherpa_221_NNPDF30NNLO_WpqqWmlv,
+                                #Sherpa_221_NNPDF30NNLO_lvvv,
+                                #Sherpa_221_NNPDF30NNLO_vvvv,
+                                #Sherpa_221_NNPDF30NNLO_WlvZqq,
+                                #Sherpa_221_NNPDF30NNLO_WplvWmqq,
+                                #Sherpa_221_NNPDF30NNLO_WpqqWmlv,
                                 Sherpa_221_NNPDF30NNLO_WqqZll,
-                                Sherpa_221_NNPDF30NNLO_WqqZvv,
+                                #Sherpa_221_NNPDF30NNLO_WqqZvv,
                                 Sherpa_221_NNPDF30NNLO_ZqqZll,
-                                Sherpa_221_NNPDF30NNLO_ZqqZvv,
+                                #Sherpa_221_NNPDF30NNLO_ZqqZvv,
                                 Sherpa_CT10_ggllll,
                                 Sherpa_CT10_lllljj_EW6,
                                 Sherpa_CT10_lllvjj_EW6,
@@ -492,6 +539,27 @@ diboson_sherpa221_lllvjj = Sample( name =   'diboson_sherpa_lllvjj',
                                 Sherpa_CT10_lllvjj_EW6,  
                               ],
                 )
+
+dibosonSysSample = Sample( name =   'dibosonSysSample',
+                  tlatex = 'DB powheg',
+                  fill_color   = ROOT.kGreen-6,
+                  line_color   = ROOT.kGreen-2,
+                  marker_color = ROOT.kGreen-2,
+                  daughters = [
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4,
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4,
+                                Sherpa_221_NNPDF30NNLO_llvv,
+                                Sherpa_221_NNPDF30NNLO_WqqZll,
+                                Sherpa_221_NNPDF30NNLO_ZqqZll,
+                                Sherpa_CT10_ggllll,
+                                Sherpa_CT10_ggllvv,
+                                Sherpa_CT10_lllljj_EW6,
+                                Sherpa_CT10_lllvjj_EW6,
+                                Sherpa_CT10_llvvjj_ss_EW4,
+                                Sherpa_CT10_llvvjj_ss_EW6,
+                              ],
+                )
+
 
 #-----------------------------------------------------------------------------
 # VV (PowHeg)
@@ -1062,6 +1130,53 @@ AZNLOCTEQ6L1_DYtautau = Sample( name =   'Ztautau',
                               ],
                 )
 
+AZNLOCTEQ6L1_DYee_DYtautau = Sample( name =   'DYZ',
+                  tlatex = 'D-Y Z/#gamma*',
+                  fill_color = ROOT.kWhite,
+                  line_color =  ROOT.kBlack,
+                  marker_color =  ROOT.kBlack,
+                  daughters = [
+                              AZNLOCTEQ6L1_DYee_120M180,        
+                              AZNLOCTEQ6L1_DYee_180M250,        
+                              AZNLOCTEQ6L1_DYee_250M400,        
+                              AZNLOCTEQ6L1_DYee_400M600,        
+                              AZNLOCTEQ6L1_DYee_600M800,        
+                              AZNLOCTEQ6L1_DYee_800M1000,        
+                              AZNLOCTEQ6L1_DYee_1000M1250,        
+                              AZNLOCTEQ6L1_DYee_1250M1500,        
+                              AZNLOCTEQ6L1_DYee_1500M1750,        
+                              AZNLOCTEQ6L1_DYee_1750M2000,        
+                              AZNLOCTEQ6L1_DYee_2000M2250,        
+                              AZNLOCTEQ6L1_DYee_2250M2500,        
+                              AZNLOCTEQ6L1_DYee_2500M2750,        
+                              AZNLOCTEQ6L1_DYee_2750M3000,        
+                              # AZNLOCTEQ6L1_DYee_3000M3500,        
+                              # AZNLOCTEQ6L1_DYee_3500M4000,        
+                              # AZNLOCTEQ6L1_DYee_4000M4500,        
+                              # AZNLOCTEQ6L1_DYee_4500M5000,        
+                              # AZNLOCTEQ6L1_DYee_5000M,
+                              AZNLOCTEQ6L1_DYtautau_120M180,        
+                              AZNLOCTEQ6L1_DYtautau_180M250,        
+                              AZNLOCTEQ6L1_DYtautau_250M400,        
+                              AZNLOCTEQ6L1_DYtautau_400M600,        
+                              AZNLOCTEQ6L1_DYtautau_600M800,        
+                              AZNLOCTEQ6L1_DYtautau_800M1000,        
+                              AZNLOCTEQ6L1_DYtautau_1000M1250,        
+                              AZNLOCTEQ6L1_DYtautau_1250M1500,        
+                              AZNLOCTEQ6L1_DYtautau_1500M1750,        
+                              AZNLOCTEQ6L1_DYtautau_1750M2000,        
+                              AZNLOCTEQ6L1_DYtautau_2000M2250,        
+                              AZNLOCTEQ6L1_DYtautau_2250M2500,        
+                              AZNLOCTEQ6L1_DYtautau_2500M2750,        
+                              AZNLOCTEQ6L1_DYtautau_2750M3000,        
+                              # AZNLOCTEQ6L1_DYtautau_3000M3500,        
+                              # AZNLOCTEQ6L1_DYtautau_3500M4000,        
+                              # AZNLOCTEQ6L1_DYtautau_4000M4500,        
+                              # AZNLOCTEQ6L1_DYtautau_4500M5000,        
+                              # AZNLOCTEQ6L1_DYtautau_5000M,             
+                              ],
+                )
+
 #-------
 # Zmumu
 #-------
@@ -1289,6 +1404,62 @@ singletop = Sample( name =   'singletop',
                                 ],
                 ) 
 
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ttbar bulk samples
+# Notes:
+#       * cross sections: https://twiki.cern.ch/twiki/bin/view/AtlasProtected/XsecSummaryTTbar 
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad            = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad", xsec = 451.645679998 )
+PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_allhad               = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_allhad",    xsec = 380.11432     )
+PowhegPythiaEvtGen_P2012_ttbar_nonallhad                       = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad", xsec = 0.69611*0.54341*1000 )
+PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_dil                  = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_dil",       xsec = 0.073329*1000 )
+Sherpa_NNPDF30NNLO_ttbar_dilepton_MEPS_NLO                     = Sample( name =  "Sherpa_NNPDF30NNLO_ttbar_dilepton_MEPS_NLO",          xsec = 87.531048  )
+
+ttbar_dilep = Sample( name =  'ttbar_dilep',
+                    tlatex = 't#bar{t}',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [
+                                 # PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad,
+                                 #PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_allhad,   
+                                 #PowhegPythiaEvtGen_P2012_ttbar_nonallhad,           
+                                 PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_dil,           
+                                ],
+                ) 
+
+ttbar_inc = Sample( name =  'ttbar_dilep',
+                    tlatex = 't#bar{t}',
+                    fill_color = ROOT.kBlue-8,
+                    line_color =  ROOT.kBlue-5,
+                    marker_color =  ROOT.kBlue-5,
+                    daughters = [
+                                 PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad,
+                                 #PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_allhad,   
+                                 #PowhegPythiaEvtGen_P2012_ttbar_nonallhad,           
+                                 #PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_dil,           
+                                ],
+                ) 
+
+ttbar_alt = Sample( name =  'ttbar_dilep_Sherpa',
+                    tlatex = 't#bar{t}',
+                    fill_color = ROOT.kBlue-8,
+                    line_color =  ROOT.kBlue-5,
+                    marker_color =  ROOT.kBlue-5,
+                    daughters = [
+                                 Sherpa_NNPDF30NNLO_ttbar_dilepton_MEPS_NLO,
+                                ],
+                )
+
+ttbar_new = Sample( name =  'ttbar_new',
+                    tlatex = 't#bar{t} Py8',
+                    fill_color = ROOT.kBlue-8,
+                    line_color =  ROOT.kBlue-5,
+                    marker_color =  ROOT.kBlue-5,
+                    daughters = [
+                                 Sherpa_NNPDF30NNLO_ttbar_dilepton_MEPS_NLO,
+                                ],
+                )
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1298,21 +1469,103 @@ singletop = Sample( name =   'singletop',
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #ttbar_hdamp172p5_nonallhad            = Sample( name =  "ttbar_hdamp172p5_nonallhad", xsec = 451.645679998 )
 #ttbar_hdamp172p5_allhad               = Sample( name =  "ttbar_hdamp172p5_allhad",    xsec = 380.11432     )
-ttbar_nonallhad                       = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad", xsec = 0.69611*0.54341*1000 )
-ttbar_hdamp172p5_dil                  = Sample( name =  "PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_dil",       xsec = 0.073329*1000 )
+PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_dilep             = Sample( name =  "PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_dilep",  xsec =  87.625548               )
+PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_nonallhad         = Sample( name =  "PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_nonallhad",  xsec =  31.60191948         )
+PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_dil             = Sample( name =  "PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_dil",  xsec =  87.625548               )
+PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad       = Sample( name =  "PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad",  xsec =  25.78121944       )
+PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad_CF    = Sample( name =  "PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad_CF",  xsec =  730.18         )
+PowhegPythia8EvtGen_A14v3cDo_ttbar_hdamp258p75_nonallhad  = Sample( name =  "PowhegPythia8EvtGen_A14v3cDo_ttbar_hdamp258p75_nonallhad",  xsec =  452.3360408  )
+PowhegPythia8EvtGen_A14v3cUp_ttbar_hdamp517p5_nonallhad   = Sample( name =  "PowhegPythia8EvtGen_A14v3cUp_ttbar_hdamp517p5_nonallhad",  xsec =  452.2944528   )
+aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbar_nonallhad   = Sample( name =  "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbar_nonallhad",  xsec =  455.097484    )
 
-ttbar = Sample( name =  'ttbar_dilep',
-                    tlatex = 't#bar{t}',
-                    fill_color = ROOT.kCyan+1,
-                    line_color =  ROOT.kCyan+2,
-                    marker_color =  ROOT.kCyan+2,
-                    daughters = [
-                                 #ttbar_nonallhad,
-                                 #ttbar_hdamp172p5_allhad,   
-                                 #ttbar_nonallhad,           
-                                 ttbar_hdamp172p5_dil,           
+
+ttbar_Py8_alt = Sample( name =  'ttbar_Py8_alt',
+                    tlatex = 't#bar{t} Py8',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 PowhegPythia8EvtGen_A14v3cUp_ttbar_hdamp517p5_nonallhad,           
+                                 PowhegPythia8EvtGen_A14v3cDo_ttbar_hdamp258p75_nonallhad,           
+                                 PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_dilep,           
+                                 aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbar_nonallhad,           
+                                 PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad_CF,          
                                 ],
-                ) 
+                )
+
+top_physics = Sample( name =  'top_physics',
+                    tlatex = 't#bar{t} + single-t',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_dil,
+                                 PowhegPythiaEvtGen_P2012_singletop_tchan_lept_antitop,    
+                                 PowhegPythiaEvtGen_P2012_singletop_tchan_lept_top,
+                                 PowhegPythiaEvtGen_P2012_Wt_dilepton_antitop,       
+                                 PowhegPythiaEvtGen_P2012_Wt_dilepton_top,     
+                                ],
+                )
+
+ttbar_Py8 = Sample( name =  'ttbar_Py8',
+                    tlatex = 't#bar{t} Py8',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_dil,           
+                                ],
+                )
+
+ttbar_Py8_up = Sample( name =  'ttbar_Py8_up',
+                    tlatex = 't#bar{t} Py8 up',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 PowhegPythia8EvtGen_A14v3cUp_ttbar_hdamp517p5_nonallhad,           
+                                ],
+                )
+
+ttbar_Py8_do = Sample( name =  'ttbar_Py8_do',
+                    tlatex = 't#bar{t} Py8 do',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 PowhegPythia8EvtGen_A14v3cDo_ttbar_hdamp258p75_nonallhad,           
+                                ],
+                )
+
+ttbar_Herwig = Sample( name =  'ttbar_Herwig',
+                    tlatex = 't#bar{t} Herwin',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_dilep,           
+                                ],
+                )
+
+ttbar_Py8_aMcAtNlo = Sample( name =  'ttbar_Py8_aMcAtNlo',
+                    tlatex = 't#bar{t} aMcAtNlo',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbar_nonallhad,           
+                                ],
+                )
+
+ttbar_Py8_CF = Sample( name =  'ttbar_Py8_CF',
+                    tlatex = 't#bar{t} Py8_CF',
+                    fill_color = ROOT.kBlue-10,
+                    line_color =  ROOT.kBlue-8,
+                    marker_color =  ROOT.kBlue-8,
+                    daughters = [        
+                                 PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad_CF,           
+                                ],
+                )
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ttbar sliced samples
@@ -1395,20 +1648,32 @@ vgamma = Sample ( name = 'vgamma',
 # Notes:
 #       * cross sections: https://twiki.cern.ch/twiki/bin/view/AtlasProtected/XsecSummaryHiggsBSMOthers 
 #-----------------------------------------------------------------------------
-"""
-DCH_name =  'DCH%d'
-DCH_tlatex = 'm_{H^{\pm\pm}}=%d GeV'
+
+DCH_name =  'Pythia8EvtGen_A14NNPDF23LO_DCH%d'
+DCH_tlatex = 'DCH%d'
 DCH_masses = [
+    200,
+    250,
     300,
+    350,
     400,
+    450,
     500,
+    550,
     600,
+    650,
     700,
+    750,
     800,
+    850,
     900,
+    950,
     1000,
+    1050,
     1100,
+    1150,
     1200,
+    1250,
     1300,
     ]
 
@@ -1424,18 +1689,29 @@ for m in DCH_masses:
             line_style = 1,
             fill_style = 3004,
             )
-
-DCH300.xsec  = 0.020179   
-DCH400.xsec  = 0.0059727  
-DCH500.xsec  = 0.0021733  
-DCH600.xsec  = 0.00089447 
-DCH700.xsec  = 0.00040462 
-DCH800.xsec  = 0.00019397 
-DCH900.xsec  = 9.8716e-05 
-DCH1000.xsec = 5.2052e-05
-DCH1100.xsec = 2.8246e-05
-DCH1200.xsec = 1.5651e-05
-DCH1300.xsec = 8.877e-06 
+Pythia8EvtGen_A14NNPDF23LO_DCH200.xsec = 0.082677
+Pythia8EvtGen_A14NNPDF23LO_DCH250.xsec = 0.034825
+Pythia8EvtGen_A14NNPDF23LO_DCH300.xsec = 0.016704
+Pythia8EvtGen_A14NNPDF23LO_DCH350.xsec = 0.0087528
+Pythia8EvtGen_A14NNPDF23LO_DCH400.xsec = 0.0049001
+Pythia8EvtGen_A14NNPDF23LO_DCH450.xsec = 0.002882
+Pythia8EvtGen_A14NNPDF23LO_DCH500.xsec = 0.0017631
+Pythia8EvtGen_A14NNPDF23LO_DCH550.xsec = 0.00110919
+Pythia8EvtGen_A14NNPDF23LO_DCH600.xsec = 0.00072042
+Pythia8EvtGen_A14NNPDF23LO_DCH650.xsec = 0.000476508
+Pythia8EvtGen_A14NNPDF23LO_DCH700.xsec = 0.00032154
+Pythia8EvtGen_A14NNPDF23LO_DCH750.xsec = 0.00021991
+Pythia8EvtGen_A14NNPDF23LO_DCH800.xsec = 0.00015288
+Pythia8EvtGen_A14NNPDF23LO_DCH850.xsec = 0.000107411
+Pythia8EvtGen_A14NNPDF23LO_DCH900.xsec = 7.6403e-05
+Pythia8EvtGen_A14NNPDF23LO_DCH950.xsec = 5.47825e-05
+Pythia8EvtGen_A14NNPDF23LO_DCH1000.xsec = 3.9656e-05
+Pythia8EvtGen_A14NNPDF23LO_DCH1050.xsec = 2.88885e-05
+Pythia8EvtGen_A14NNPDF23LO_DCH1100.xsec = 2.1202e-05
+Pythia8EvtGen_A14NNPDF23LO_DCH1150.xsec = 1.56347e-05
+Pythia8EvtGen_A14NNPDF23LO_DCH1200.xsec = 1.1632e-05
+Pythia8EvtGen_A14NNPDF23LO_DCH1250.xsec = 8.74109e-06
+Pythia8EvtGen_A14NNPDF23LO_DCH1300.xsec = 6.5092e-06
 
 list_DCH =[globals()[DCH_name%(m)] for m in DCH_masses]
 
@@ -1448,10 +1724,13 @@ all_DCH = Sample( name =  'all_DCH',
                     line_style = 1,
                     fill_style = 3004,
                     daughters = list_DCH
-                ) 
+                )
 
-single_DCH = [DCH500]
-"""
+single_DCH = [Pythia8EvtGen_A14NNPDF23LO_DCH300]
+
+
+
+
 #-------------------------------------------------------------------------------
 # Collections 
 #-------------------------------------------------------------------------------
@@ -1510,11 +1789,11 @@ mc_bkg = []
 ### EXOT12 ZPeak
 # all_mc += diboson_sherpa.daughters
 
-mc_bkg.append( diboson_sherpa221)
-mc_bkg.append( ttbar)
+#mc_bkg.append( diboson_sherpa221)
+#mc_bkg.append( ttbar)
 #mc_bkg.append(Zee221)
-mc_bkg.append( singletop)
-mc_bkg.append( ttX)
+#mc_bkg.append( singletop)
+#mc_bkg.append( ttX)
 #mc_bkg.append( Higgs)
 #mc_bkg.append( ZtautauPowheg)
 #mc_bkg +=full_DCH
@@ -1535,6 +1814,7 @@ mc_bkg.append( ttX)
 # all_mc += WenuPowheg.daughters
 
 # EXOT12 mu FF validation
+"""
 all_mc += diboson_sherpa221.daughters
 all_mc += ZZ.daughters
 all_mc += WZ.daughters
@@ -1547,7 +1827,7 @@ all_mc += WenuPowheg.daughters
 all_mc += ZeePowheg.daughters
 all_mc += WmunuPowheg.daughters
 all_mc += ZmumuPowheg.daughters
-
+"""
 #all_mc += Wenu.daughters
 #all_mc += Wmunu.daughters
 #all_mc += Zee.daughters
@@ -1557,12 +1837,15 @@ all_mc += ZmumuPowheg.daughters
 mc_bkg = []
 
 mc_bkg.append( diboson_sherpa221 )
-
+#mc_bkg.append( diboson_alt)
+#mc_bkg += all_DCH.daughters
+#mc_bkg += Pythia8EvtGen_A14NNPDF23LO_DCH300
 mc_bkg.append( ttX )
-mc_bkg.append( ttbar )
-mc_bkg.append( singletop )
-mc_bkg.append( WmunuPowheg )
-mc_bkg.append( ZmumuPowheg )
+mc_bkg += all_DCH.daughters
+#mc_bkg.append( ttbar_dilep )
+#mc_bkg.append( singletop )
+#mc_bkg.append( WmunuPowheg )
+#mc_bkg.append( ZmumuPowheg )
 #mc_bkg.append( WenuPowheg )
 
 

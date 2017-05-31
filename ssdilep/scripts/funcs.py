@@ -71,16 +71,13 @@ def get_hists(
     print "rebinVar " , rebinVar
     hists = {} 
     for s in samples:
-      print s.name  
       if not s.hist(region=region,icut=icut,histname=histname): continue
       h = s.hist(region=region,icut=icut,histname=histname).Clone()
-      print " I'm cloning the histogram" 
       if rebin and len(rebinVar)==0 and h: h.Rebin(rebin)
       elif len(rebinVar)>1 and h:
         print "Performing variable bin rebining with on " + histname
         runArray = array('d',rebinVar)
         h = h.Rebin( len(rebinVar)-1, histname+"Var", runArray )
-        print " I should not be entering here " 
       hists[s] = h
       assert h, 'failed to gen hist for %s'%s.name
       h.SetName('h_%s_%s'%(region,s.name))
@@ -94,7 +91,6 @@ def get_hists(
                                      rebinVar  = rebinVar,
                                      sys_dict  = sys_dict,
                                      )
-    print "Loop ended"  
     for s in samples: s.estimator.flush_hists()
     return hists
 
@@ -637,9 +633,6 @@ def write_hist(
     fname = outname
     fout = ROOT.TFile.Open(fname,'RECREATE')
     for s,h in hists.items():
-        print s.name
-        print "hist name: ", h.GetName()
-        print h.GetSum()
         if hasattr(s,"nameSuffix"):
             s.name += s.nameSuffix
         hname = ""

@@ -79,7 +79,6 @@ class HistMgr():
         
         if region != None:
            path_to_hist = os.path.join('regions',region)
-           print path_to_hist
            ## check region exists
            if not f.Get(path_to_hist):
                f.Close()
@@ -96,7 +95,6 @@ class HistMgr():
         path_to_hist = os.path.join(path_to_hist,histname)
         
         h = f.Get(path_to_hist)
-        print h.GetTitle()
         if not h:
             f.Close()
             print 'failed retrieveing hist: %s:%s'%(path_to_file,path_to_hist)

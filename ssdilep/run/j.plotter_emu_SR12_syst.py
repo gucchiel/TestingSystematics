@@ -150,12 +150,11 @@ def analyze(config):
     ##-------------------------------------------------------------------------
     loop = pyframe.core.EventLoop(name='ssdilep',
                                   sampletype=config['sampletype'],
-                                  #samplename=config['samplename'],
-                                  #outfile=config['samplename']+".root",
+                                  samplename='ntuple',
                                   outfile='ntuple.root',
                                   quiet=False,
-                                  )
-    
+                               )
+
     ## configure the list of triggers 
     ## with eventual prescales and puts a
     ## trig list to the store for later cutflow
@@ -225,6 +224,7 @@ def analyze(config):
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OddSSElectronMuon')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='OneElectronOneMuon')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BadJetVeto')
+    loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='BJetVeto')
     loop += ssdilep.algs.algs.CutAlg(cutflow='presel',cut='DCHFilter') 
 
     """

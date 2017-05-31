@@ -7,7 +7,7 @@ variables for the ee channel
 
 ## modules
 from var import Var
-#from funcs import generateLogBins
+from funcs import generateLogBins
 
 ## Cutflows
 ## ---------------------------------------
@@ -26,7 +26,7 @@ cutflow_weighted_ZCR      = Var(name = 'cutflow_weighted_ZCR',log=False)
 ## ---------------------------------------
 """
 bins_pt = generateLogBins(35,30,2000)
-bins_pt_2 = generateLogBins(20,30,1000)
+
 bins_mt = generateLogBins(50,50,2000)
 bins_invM = generateLogBins(50,130,2000)
 bins_invM_2 = generateLogBins(15,130,200)
@@ -37,6 +37,9 @@ bins_Zpeak2 = [50,80,100,130]
 bins_met = generateLogBins(15,1,1000)
 bins_met_2 = generateLogBins(50,25,2000)
 """
+
+bins_pt_2 = generateLogBins(20,30,1000)
+
 
 ## Event variables
 ## ---------------------------------------

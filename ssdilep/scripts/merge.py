@@ -12,6 +12,13 @@ from systematics     import *
 
 from optparse import OptionParser
 
+DO_SYS = True
+ELE_SYS = False
+MU_SYS = False
+
+BRee = 0.
+BRem = 0.
+BRmm = 0.
 
 #-----------------
 # input
@@ -37,12 +44,36 @@ parser.add_option('-t', '--tag', dest='tag',
                   help='outfile tag',metavar='TAG',default=None)
 parser.add_option('-R', '--rebinToEq', dest='rebinToEq',
                   help='rebinToEq',metavar='REBINTOEQ',default=None)
+parser.add_option('-S', '--signal', dest='signal',
+                  help='signal',metavar='SIGNAL',default=None)
 parser.add_option('-V', '--varName', dest='varName',
                   help='varName',metavar='VARNAME',default=None)
 parser.add_option('-L', '--logy', dest='logy',
                   help='logy',metavar='LOGY',default=None)
+parser.add_option('-y', '--sys', dest='sys',
+                  help='sys',metavar='SYS',default=None)
+parser.add_option('-E', '--elesys', dest='elesys',
+                  help='elesys',metavar='ELESYS',default=None)
+parser.add_option('-M', '--musys', dest='musys',
+                  help='musys',metavar='MUSYS',default=None)
+parser.add_option('', '--BRee', dest='BRee',
+                  help='BRee',metavar='BREE',default=None)
+parser.add_option('', '--BRem', dest='BRem',
+                  help='BRem',metavar='BREM',default=None)
+parser.add_option('', '--BRmm', dest='BRmm',
+                  help='BRmm',metavar='BRMM',default=None)
 
 (options, args) = parser.parse_args()
+
+if options.sys == "False":
+  DO_SYS = False
+
+if options.elesys == "True":
+  ELE_SYS = True
+
+if options.musys == "True":
+  MU_SYS = True
+
 
 #-----------------
 # Configuration
@@ -75,7 +106,11 @@ hm = histmgr.HistMgr(basedir=options.indir,target_lumi=lumi)
 
 # base samples
 data    = samples.data
-mc_bkg  = samples.mc_bkg
+mc_bkg  = []
+mc_bkg = [
+  samples.diboson_sherpa221,
+  samples.ttX,
+  ]
 fakes   = samples.fakes
 
 # recombined samples
@@ -83,46 +118,117 @@ recom_data     = data.copy()
 recom_mc_bkg  = [ b.copy() for b in mc_bkg ]
 
 ## signals
-signals = []
-#signals.append(samples.all_DCH)
-#signals.append(samples.DCH800)
+signal_samples = []
 
-#signals.append(samples_DCH.DCH300_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH300_HLMpMp_HLEmMm)
-#signals.append(samples_DCH.DCH300_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH500_HLEpMp_HLEmMm)
-"""
-signals.append(samples_DCH.DCH250_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH300_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH350_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH400_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH500_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH550_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH600_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH650_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH700_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH750_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH800_HLEpMp_HLEmMm)
-signals.append(samples_DCH.DCH850_HLEpMp_HLEmMm)
-"""
-#signals.append(samples_DCH.DCH900_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH1000_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH500_HLEpMp_HLEmEm)
-#signals.append(samples_DCH.DCH500_HLEpMp_HLMmMm)
-#signals.append(samples_DCH.DCH700_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH800_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH900_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH1000_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH1200_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH500_HLEpMp_HLEmMm)
-#signals.append(samples_DCH.DCH300_HLEpMp_HLEmMm)
+# xsecL = [82.677, 34.825, 16.704, 8.7528, 4.9001, 2.882, 1.7631, 1.10919, 0.72042, 0.476508, 0.32154, 0.21991, 0.15288, 0.107411, 0.076403, 0.0547825, 0.039656, 0.0288885, 0.021202, 0.0156347, 0.011632, 0.00874109, 0.0065092]
+# masses = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300]
+xsecL = [82.677, 34.825, 16.704, 8.7528, 4.9001, 2.882, 1.7631, 1.10919, 0.72042, 0.476508, 0.32154, 0.21991, 0.15288, 0.107411, 0.076403, 0.0547825, 0.039656, 0.0288885, 0.021202, 0.0156347, 0.011632, 0.00874109]
+masses = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250]
 
-recom_signals  = [ s.copy() for s in signals ]
 
 #--------------
 # Estimators
 #--------------
-for s in mc_bkg + signals + [data]: 
+
+signalMassToPlots = [500,600,700]
+BRsToPlot = [100]
+
+signal=samples.all_DCH.daughters
+
+
+for s in samples.all_DCH.daughters:
+  print s.xsec
+
+
+
+if options.signal == "True":
+  print " signal is true"
+  if float(BRee) > 0 and float(BRmm)+float(BRem)==0:
+
+    print "ee"
+
+    for br in [10,50,100]:
+      signal_samples += [[]]
+      intiger = 1
+      for mass,xsec in zip(masses,xsecL):
+        if options.makeplot == "True":
+          if mass not in signalMassToPlots or br not in BRsToPlot: continue
+        name = "Pythia8EvtGen_A14NNPDF23LO_DCH%d" % mass
+        print "tlatex: ", "DCH%d Br(ee)=%d" % (mass,br)
+        globals()[name+"ee"+str(br)+"mm"+str(100-br)] = sample.Sample(
+          name = name,
+          tlatex = ("DCH%d Br(ee)=%d" % (mass,br)),
+          line_color = intiger,
+          marker_color = intiger,
+          fill_color = intiger,
+          line_width  = 3,
+          line_style = 1,
+          fill_style = 3004,
+          xsec       = xsec/1000.,
+          )
+        signal_samples[len(signal_samples)-1] += [ globals()[name+"ee"+str(br)+"mm"+str(100-br)] ]
+        intiger += 1
+        print "I should be adding signal"
+
+  elif float(BRem) > 0 and float(BRmm)+float(BRee)==0:
+
+    print "em"
+
+    for br in [10,50,100]:
+      signal_samples += [[]]
+      intiger = 1
+      for mass,xsec in zip(masses,xsecL):
+        if options.makeplot == "True":
+          if mass not in signalMassToPlots or br not in BRsToPlot: continue
+        name = "Pythia8EvtGen_A14NNPDF23LO_DCH%d" % mass
+        print "tlatex: ", "DCH%d Br(e#mu)=%d" % (mass,br)
+        globals()[name+"em"+str(br)+"mm"+str(100-br)] = sample.Sample(
+          name = name,
+          tlatex = ("DCH%d Br(e#mu)=%d" % (mass,br)),
+          line_color = intiger,
+          marker_color = intiger,
+          fill_color = intiger,
+          line_width  = 3,
+          line_style = 1,
+          fill_style = 3004,
+          xsec       = xsec/1000.,
+          )
+        signal_samples[len(signal_samples)-1] += [ globals()[name+"em"+str(br)+"mm"+str(100-br)] ]
+        intiger += 1
+
+  elif float(BRmm) > 0 and float(BRee)+float(BRem)==0:
+
+    print "mm"
+
+    for br in [10,50,100]:
+      signal_samples += [[]]
+      intiger = 1
+      for mass,xsec in zip(masses,xsecL):
+        if options.makeplot == "True":
+          if mass not in signalMassToPlots or br not in BRsToPlot: continue
+        name = "Pythia8EvtGen_A14NNPDF23LO_DCH%d" % mass
+        print "tlatex: ", "DCH%d Br(#mu#mu)=%d" % (mass,br)
+        globals()[name+"ee"+str(100-br)+"mm"+str(br)] = sample.Sample(
+          name = name,
+          tlatex = ("DCH%d Br(#mu#mu)=%d" % (mass,br)),
+          line_color = intiger,
+          marker_color = intiger,
+          fill_color = intiger,
+          line_width  = 3,
+          line_style = 1,
+          fill_style = 3004,
+          xsec       = xsec/1000.,
+          )
+        signal_samples[len(signal_samples)-1] += [ globals()[name+"ee"+str(br)+"mm"+str(100-br)] ]
+        intiger += 1
+
+  else:
+    print "working point ",BRee," ",BRem," ",BRem," not yet supported!"
+
+#--------------
+# Estimators
+#--------------
+for s in mc_bkg + signal + [data]: 
     histmgr.load_base_estimator(hm,s)
 
 main_addition_regions    = []
@@ -184,7 +290,7 @@ else:
     main_addition_regions =  fake_addition_regions = ["TTTT"]
     reg_prefix            =  options.region
 
-"""
+
 fakes.estimator = histmgr.AddRegEstimator(
       hm                  = hm, 
       sample              = fakes,
@@ -193,13 +299,13 @@ fakes.estimator = histmgr.AddRegEstimator(
       addition_regions    = ["_".join([reg_prefix]+[suffix]).rstrip("_") for suffix in fake_addition_regions],
       subtraction_regions = ["_".join([reg_prefix]+[suffix]).rstrip("_") for suffix in fake_subtraction_regions]
       )
-"""
-for s in recom_mc_bkg + recom_signals + [recom_data]:
+
+for s in recom_mc_bkg + signal + [recom_data]:
   s.estimator = histmgr.AddRegEstimator(
       hm               = hm, 
       sample           = s,
       data_sample      = data,
-      mc_samples       = mc_bkg + signals, 
+      mc_samples       = mc_bkg + signal, 
       addition_regions = ["_".join([reg_prefix]+[suffix]).rstrip("_") for suffix in main_addition_regions]
       )
 
@@ -207,16 +313,34 @@ for s in recom_mc_bkg + recom_signals + [recom_data]:
 # Systematics       
 #-----------------
 # just an example ...
+"""
 mc_sys = [
     SYS1, 
     SYS2,
     ]
-
+"""
 ## set mc systematics
 #for s in mc_bkg + signals:
 #    s.estimator.add_systematics(mc_sys)
 
 #fakes.estimator.add_systematics(FF)
+
+"""
+if (DO_SYS):
+  # fakes_mumu.estimator.add_systematics(FF)                                                                                                                                    
+  if options.fakest == "ChargeFlip":
+    chargeFlip.estimator.add_systematics(CF)
+  if options.samples == "chargeflip":
+    samples.Zee221.estimator.add_systematics(CF)
+  if options.samples == "ZPeak":
+    samples.Zee221.estimator.add_systematics(CF)
+    samples.diboson_sherpa221.estimator.add_systematics(CF)
+    samples.ttbar_Py8.estimator.add_systematics(CF)
+    samples.singletop_inc.estimator.add_systematics(CF)
+    samples.ttX.estimator.add_systematics(CF)
+    samples.WenuPowheg.estimator.add_systematics(CF)
+    samples.WtaunuPowheg.estimator.add_systematics(CF)
+"""
 
 mumu_vdict  = vars.vars_dict
 
@@ -229,11 +353,37 @@ plot_ord_bkg = []
 #plot_ord_bkg.append( fakes )
 plot_ord_bkg += recom_mc_bkg
 
+#sys_list_ele = [BEAM, CHOICE, PDF, SCALE_Z, EG_RESOLUTION_ALL, EG_SCALE_ALLCORR, EG_SCALE_E4SCINTILLATOR, CF, TRIG, ID, ISO, RECO]
+sys_list_ele = [EG_RESOLUTION_ALL, EG_SCALE_ALLCORR, EG_SCALE_E4SCINTILLATOR, CF, TRIG, ID, ISO, RECO]
+sys_list_muon = [MUON_ID, MUON_MS, MUON_RESBIAS, MUON_RHO, MUON_SCALE, TRIGSTAT, TRIGSYS, ISOSYS, ISOSTAT, RECOSYS, RECOSTAT, TTVASYS, TTVASTAT]
+
+if (DO_SYS):
+  if ELE_SYS:
+    fakes.estimator.add_systematics(FF)
+  if MU_SYS:
+    fakes.estimator.add_systematics(MUFF)
+  for sample in mc_bkg:
+    if sample in [samples.dibosonSysSample,samples.ttbar_Py8_up,samples.ttbar_Py8_do,samples.ttbar_Herwig,samples.ttbar_Py8_aMcAtNlo,samples.ttbar_Py8_CF]:
+      print "skip sys MC samples in other systematics"
+      continue
+    if ELE_SYS:
+      for sys in sys_list_ele:
+        sample.estimator.add_systematics(sys)
+    if MU_SYS:
+      for sys in sys_list_muon:
+        sample.estimator.add_systematics(sys)
+  for sample in signal:
+    if ELE_SYS:
+      for sys in sys_list_ele:
+        sample.estimator.add_systematics(sys)
+    if MU_SYS:
+      for sys in sys_list_muon:
+        sample.estimator.add_systematics(sys)
 
 if options.makeplot == "True":
  funcs.plot_hist(
     backgrounds   = plot_ord_bkg,
-    signal        = recom_signals, 
+    signal        = signal  if options.signal=="True" else None,   
     data          = recom_data,
     region        = options.region,
     label         = options.label,
@@ -244,8 +394,7 @@ if options.makeplot == "True":
     rebinVar      = mumu_vdict[options.vname]['rebinVar'],
     log           = mumu_vdict[options.vname]['log'],
     icut          = int(options.icut),
-    #sys_dict      = sys_dict,
-    sys_dict      = None,
+    sys_dict      = sys_dict if DO_SYS else None,
     do_ratio_plot = True,
     save_eps      = True,
     plotsfile     = plotsfile,
@@ -254,8 +403,8 @@ if options.makeplot == "True":
 else:
  funcs.write_hist(
          backgrounds = plot_ord_bkg,
-         signal      = recom_signals, # This can be a list
-         data        = recom_data,
+         signal      = signal, # This can be a list
+         #data        = recom_data,
          region      = options.region,
          icut        = int(options.icut),
          histname    = os.path.join(mumu_vdict[options.vname]['path'],mumu_vdict[options.vname]['hname']),
