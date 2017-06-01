@@ -1677,18 +1677,21 @@ DCH_masses = [
     1300,
     ]
 
+integer =1
 for m in DCH_masses:
     name = DCH_name % m
     globals()[name] = Sample(
             name = name,
             tlatex = DCH_tlatex % (m),
-            line_color = ROOT.kOrange-3,
-            marker_color = ROOT.kOrange-3,
-            fill_color = ROOT.kOrange-3,
+            line_color = integer, 
+            marker_color = integer ,
+            fill_color = integer ,
             line_width  = 3,
             line_style = 1,
             fill_style = 3004,
             )
+    integer +=1
+
 Pythia8EvtGen_A14NNPDF23LO_DCH200.xsec = 0.082677
 Pythia8EvtGen_A14NNPDF23LO_DCH250.xsec = 0.034825
 Pythia8EvtGen_A14NNPDF23LO_DCH300.xsec = 0.016704
@@ -1717,9 +1720,9 @@ list_DCH =[globals()[DCH_name%(m)] for m in DCH_masses]
 
 all_DCH = Sample( name =  'all_DCH',
                     tlatex = 'm_{H^{\pm\pm}}=all',
-                    line_color = ROOT.kOrange-3,
-                    marker_color = ROOT.kOrange-3,
-                    fill_color = ROOT.kOrange-3,
+                  #line_color = ROOT.kOrange-3,
+                   # marker_color = ROOT.kOrange-3,
+                   # fill_color = ROOT.kOrange-3,
                     line_width  = 3,
                     line_style = 1,
                     fill_style = 3004,
@@ -1841,7 +1844,10 @@ mc_bkg.append( diboson_sherpa221 )
 #mc_bkg += all_DCH.daughters
 #mc_bkg += Pythia8EvtGen_A14NNPDF23LO_DCH300
 mc_bkg.append( ttX )
-mc_bkg += all_DCH.daughters
+
+signal = []
+signal += all_DCH.daughters  
+#mc_bkg += all_DCH.daughters
 #mc_bkg.append( ttbar_dilep )
 #mc_bkg.append( singletop )
 #mc_bkg.append( WmunuPowheg )

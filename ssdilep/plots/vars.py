@@ -27,7 +27,7 @@ bins_pt_2 = generateLogBins(8,30,400)
 #bins_mVis = generateLogBins(15,60,200) # bins for CRs
 #bins_mVis = generateLogBins(20,30,3000) # bins for plotting
 #bins_mVis = generateLogBins(5,200,900) #bins for SRs
-bins_mVis = generateLogBins(12,200,1000) #bins for SRs
+bins_mVis = generateLogBins(20,200,1000) #bins for SRs
 bins_pTH = [0,1,2,3,4,5,6,7,8,9] + generateLogBins(50,10,3000)
 bins_met = [0,1,2,3,4,5,6,7,8,9] + generateLogBins(50,10,3000)
 ## Event variables
@@ -1143,8 +1143,9 @@ NegCouple_dR = Var(name     = 'NegCouple_dR',
 Couples_mVis = Var(name     = 'Couples_mVis',
               path    = 'event',
               xmin    = 0.,
-              xmax    = 400,
+              xmax    = 2000,
               rebin   = 20,
+              rebinVar = bins_mVis,     
               log     = True,
               logx   = False,   
               )

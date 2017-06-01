@@ -5,7 +5,8 @@ import histmgr
 import funcs
 import os
 
-from ssdilep.samples import samples, samples_DCH
+#from ssdilep.samples import samples, samples_DCH
+from ssdilep.samples import samples
 from ssdilep.plots   import vars_mumu
 from ssdilep.plots   import vars
 from systematics     import *
@@ -62,6 +63,8 @@ parser.add_option('', '--BRem', dest='BRem',
                   help='BRem',metavar='BREM',default=None)
 parser.add_option('', '--BRmm', dest='BRmm',
                   help='BRmm',metavar='BRMM',default=None)
+parser.add_option('', '--BRMultiplier', dest='BRMultiplier',
+                  help='BRMultiplier',metavar='BRMULTIPLIER',default=None)
 
 (options, args) = parser.parse_args()
 
@@ -112,10 +115,15 @@ mc_bkg = [
   samples.ttX,
   ]
 fakes   = samples.fakes
+signal  = samples.signal
+#signal=[]
+
+#signal.append(samples_DCH.DCH500)
 
 # recombined samples
 recom_data     = data.copy()
 recom_mc_bkg  = [ b.copy() for b in mc_bkg ]
+recom_sig     = [ s.copy() for s in samples.signal]
 
 ## signals
 signal_samples = []
@@ -133,14 +141,15 @@ masses = [200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 
 signalMassToPlots = [500,600,700]
 BRsToPlot = [100]
 
-signal=samples.all_DCH.daughters
+BRMultiplier = [16,16,8,4,4,4]
 
+element = options.BRMultiplier
 
 for s in samples.all_DCH.daughters:
-  print s.xsec
+  print BRMultiplier[int(element)]
+  s.xsec = ( s.xsec * BRMultiplier[int(element)])
 
-
-
+"""
 if options.signal == "True":
   print " signal is true"
   if float(BRee) > 0 and float(BRmm)+float(BRem)==0:
@@ -224,6 +233,7 @@ if options.signal == "True":
 
   else:
     print "working point ",BRee," ",BRem," ",BRem," not yet supported!"
+"""
 
 #--------------
 # Estimators
@@ -300,7 +310,7 @@ fakes.estimator = histmgr.AddRegEstimator(
       subtraction_regions = ["_".join([reg_prefix]+[suffix]).rstrip("_") for suffix in fake_subtraction_regions]
       )
 
-for s in recom_mc_bkg + signal + [recom_data]:
+for s in recom_mc_bkg + recom_sig + [recom_data]:
   s.estimator = histmgr.AddRegEstimator(
       hm               = hm, 
       sample           = s,
@@ -351,7 +361,8 @@ mumu_vdict  = vars.vars_dict
 ## order backgrounds for plots
 plot_ord_bkg = []
 #plot_ord_bkg.append( fakes )
-plot_ord_bkg += recom_mc_bkg
+#plot_ord_bkg += recom_mc_bkg
+plot_ord_bkg += recom_sig
 
 #sys_list_ele = [BEAM, CHOICE, PDF, SCALE_Z, EG_RESOLUTION_ALL, EG_SCALE_ALLCORR, EG_SCALE_E4SCINTILLATOR, CF, TRIG, ID, ISO, RECO]
 sys_list_ele = [EG_RESOLUTION_ALL, EG_SCALE_ALLCORR, EG_SCALE_E4SCINTILLATOR, CF, TRIG, ID, ISO, RECO]
@@ -383,7 +394,7 @@ if (DO_SYS):
 if options.makeplot == "True":
  funcs.plot_hist(
     backgrounds   = plot_ord_bkg,
-    signal        = signal  if options.signal=="True" else None,   
+    signal        = recom_sig  if options.signal=="True" else None,   
     data          = recom_data,
     region        = options.region,
     label         = options.label,
@@ -403,14 +414,14 @@ if options.makeplot == "True":
 else:
  funcs.write_hist(
          backgrounds = plot_ord_bkg,
-         signal      = signal, # This can be a list
+         signal        = recom_sig  if options.signal=="True" else None,
          #data        = recom_data,
          region      = options.region,
          icut        = int(options.icut),
          histname    = os.path.join(mumu_vdict[options.vname]['path'],mumu_vdict[options.vname]['hname']),
          rebin       = mumu_vdict[options.vname]['rebin'],
          rebinVar    = mumu_vdict[options.vname]['rebinVar'],
-         sys_dict    = None, #sys_dict if DO_SYS else None,
+         sys_dict    = sys_dict if DO_SYS else None,         
          outname     = plotsfile,
          regName     = options.tag,
          rebinToEq   = True if options.rebinToEq=="True" else False,

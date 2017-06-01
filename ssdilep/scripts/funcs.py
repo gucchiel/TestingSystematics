@@ -66,9 +66,7 @@ def get_hists(
     '''
     if sys_dict is passed, hists for all systematics will be appended in a dict. 
     '''
-    print " Im inside get_hists"
-    print "rebin ", rebin 
-    print "rebinVar " , rebinVar
+
     hists = {} 
     for s in samples:
       if not s.hist(region=region,icut=icut,histname=histname): continue
@@ -557,7 +555,6 @@ def plot_hist(
         for bin_itr in range(1,h_ratio.GetNbinsX()+1):
           if (h_total.GetBinContent(bin_itr)==0 or h_data.GetBinContent(bin_itr)==0): continue
           if (h_ratio.GetBinContent(bin_itr)-h_data.GetBinErrorLow(bin_itr)/h_total.GetBinContent(bin_itr)) > 1.51:
-            print h_ratio.GetBinCenter(bin_itr)," ",h_ratio.GetBinContent(bin_itr)
             arrowX = h_ratio.GetBinCenter(bin_itr)
             arrow = ROOT.TArrow(arrowX,1.35,arrowX,1.5,0.012,"=>");
             arrow.SetLineWidth(2)
@@ -566,7 +563,6 @@ def plot_hist(
             arrows += [arrow]
             arrow.Draw()
           elif (h_ratio.GetBinContent(bin_itr)+h_data.GetBinErrorUp(bin_itr)/h_total.GetBinContent(bin_itr)) < 0.49 and h_ratio.GetBinContent(bin_itr) not in [-100,0]:
-            print h_ratio.GetBinCenter(bin_itr)," ",h_ratio.GetBinContent(bin_itr)
             arrowX = h_ratio.GetBinCenter(bin_itr)
             arrow = ROOT.TArrow(arrowX,0.50,arrowX,0.65,0.012,"<=");
             arrow.SetLineWidth(2)
@@ -709,6 +705,7 @@ def write_hist(
                 hdnNorm = None
 
                 if hsys[0] and hsys[1] and rebinToEq:
+                    print " I'm rebinning systematics"
                     nbins = h.GetNbinsX()
                     hupEquiDistant = ROOT.TH1F(hname_sys_up,hname_sys_up,nbins,0,nbins)
                     hdnEquiDistant = ROOT.TH1F(hname_sys_dn,hname_sys_dn,nbins,0,nbins)
@@ -771,7 +768,6 @@ def list_open_files():
     itr = l.MakeIterator()
     obj = itr.Next()
     while obj:
-        print obj.GetName()
         obj = itr.Next()
 
 
