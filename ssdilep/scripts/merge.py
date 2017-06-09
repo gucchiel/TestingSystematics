@@ -111,7 +111,8 @@ hm = histmgr.HistMgr(basedir=options.indir,target_lumi=lumi)
 data    = samples.data
 mc_bkg  = []
 mc_bkg = [
-  samples.diboson_sherpa221,
+  samples.dibosonSherpa221,
+  samples.dibosonSysSample,
   samples.ttX,
   ]
 fakes   = samples.fakes
@@ -142,6 +143,7 @@ signalMassToPlots = [500,600,700]
 BRsToPlot = [100]
 
 BRMultiplier = [16,16,8,4,4,4]
+#BRMultiplier = [1,1,1,1,1,1]
 
 element = options.BRMultiplier
 
@@ -360,9 +362,9 @@ mumu_vdict  = vars.vars_dict
 
 ## order backgrounds for plots
 plot_ord_bkg = []
-#plot_ord_bkg.append( fakes )
-#plot_ord_bkg += recom_mc_bkg
-plot_ord_bkg += recom_sig
+plot_ord_bkg.append( fakes )
+plot_ord_bkg += recom_mc_bkg
+#plot_ord_bkg += recom_sig
 
 #sys_list_ele = [BEAM, CHOICE, PDF, SCALE_Z, EG_RESOLUTION_ALL, EG_SCALE_ALLCORR, EG_SCALE_E4SCINTILLATOR, CF, TRIG, ID, ISO, RECO]
 sys_list_ele = [EG_RESOLUTION_ALL, EG_SCALE_ALLCORR, EG_SCALE_E4SCINTILLATOR, CF, TRIG, ID, ISO, RECO]

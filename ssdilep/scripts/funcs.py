@@ -588,7 +588,6 @@ def plot_hist(
     fout = ROOT.TFile.Open(plotsfile,'UPDATE')
     fout.WriteTObject(c)
     fout.Close()
-
 #____________________________________________________________
 def write_hist(
         backgrounds = None,
@@ -629,6 +628,9 @@ def write_hist(
     fname = outname
     fout = ROOT.TFile.Open(fname,'RECREATE')
     for s,h in hists.items():
+        # print s.name
+        # print "hist name: ", h.GetName()
+        # print h.GetSum()
         if hasattr(s,"nameSuffix"):
             s.name += s.nameSuffix
         hname = ""
@@ -651,13 +653,12 @@ def write_hist(
             for i in range(0,nbins+2):
                 binVal = 0
                 binErr = 0
-                if (nbins+2 > i > 0) and h.GetBinContent(i) < 0:
-                    print "fixing negative weight"
-                    binVal = 0.
-                    binErr = h.GetBinError(i)
-                else:
+                if h.GetBinContent(i) >= 0 :
                     binVal = h.GetBinContent(i)
                     binErr = h.GetBinError(i)
+                else:
+                    binVal = 0.
+                    binErr = 0.
                 hEquiDistant.SetBinContent(i,binVal)
                 hEquiDistant.SetBinError(i,binErr)
                 hNorm.SetBinContent(i,binVal)
@@ -705,7 +706,6 @@ def write_hist(
                 hdnNorm = None
 
                 if hsys[0] and hsys[1] and rebinToEq:
-                    print " I'm rebinning systematics"
                     nbins = h.GetNbinsX()
                     hupEquiDistant = ROOT.TH1F(hname_sys_up,hname_sys_up,nbins,0,nbins)
                     hdnEquiDistant = ROOT.TH1F(hname_sys_dn,hname_sys_dn,nbins,0,nbins)
@@ -720,18 +720,18 @@ def write_hist(
                         binErrU = 0
                         binValD = 0
                         binErrD = 0
-                        if (nbins+2 > i > 0) and hsys[0].GetBinContent(i) < 0:
-                            binValU = (hsys[0].GetBinContent(i-1)+hsys[0].GetBinContent(i+1))/2.
-                            binErrU = (hsys[0].GetBinError(i-1)+hsys[0].GetBinError(i+1))/2.
-                        else:
+                        if hsys[0].GetBinContent(i) >= 0:
                             binValU = hsys[0].GetBinContent(i)
                             binErrU = hsys[0].GetBinError(i)
-                        if (nbins+2 > i > 0) and hsys[1].GetBinContent(i) < 0:
-                            binValD = (hsys[1].GetBinContent(i-1)+hsys[1].GetBinContent(i+1))/2.
-                            binErrD = (hsys[1].GetBinError(i-1)+hsys[1].GetBinError(i+1))/2.
                         else:
+                            binValU = 0.
+                            binErrU = 0.
+                        if hsys[1].GetBinContent(i) >= 0:
                             binValD = hsys[1].GetBinContent(i)
                             binErrD = hsys[1].GetBinError(i)
+                        else:
+                            binValD = 0.
+                            binErrD = 0.
                         hupEquiDistant.SetBinContent(i,binValU)
                         hupEquiDistant.SetBinError(i,binErrU)
                         hdnEquiDistant.SetBinContent(i,binValD)
@@ -743,13 +743,26 @@ def write_hist(
                     hupNorm.Rebin(nbins)
                     hdnNorm.Rebin(nbins)
 
+                if rebinToEq:
+                    fout.WriteTObject(hupEquiDistant,hname_sys_up)
+                    fout.WriteTObject(hdnEquiDistant,hname_sys_dn)
+                    hupNormOut = ROOT.TH1F(hname_sys_upNorm,hname_sys_upNorm,1,0.5,1.5)
+                    if(hsys[0]):
+                        hupNormOut.SetBinContent(1,hupNorm.GetBinContent(1))
+                        hupNormOut.SetBinError(1,hupNorm.GetBinError(1))
+                    hdnNormOut = ROOT.TH1F(hname_sys_dnNorm,hname_sys_dnNorm,1,0.5,1.5)
+                    if(hsys[1]):
+                        hdnNormOut.SetBinContent(1,hdnNorm.GetBinContent(1))
+                        hdnNormOut.SetBinError(1,hdnNorm.GetBinError(1))
+                    fout.WriteTObject(hupNormOut,hname_sys_upNorm)
+                    fout.WriteTObject(hdnNormOut,hname_sys_dnNorm)
 
 
     ## create total background hists
     #h_total = histutils.add_hists([ hists[s] for s in backgrounds ])
     #fout.WriteTObject(h_total,'h_%s_nominal_smtot'%region)
     
-    fout.Close()      
+    fout.Close()
 
 #____________________________________________________________
 def generateLogBins(bins_N,bins_min,bins_max):

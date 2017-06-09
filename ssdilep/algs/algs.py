@@ -229,29 +229,109 @@ class CutAlg(pyframe.core.Algorithm):
         passed = passed and abs(m.trkz0sintheta)<0.5
       return passed
     
-    #__________________________________________________________________________
     def cut_DCHFilter(self):
-      lep_dict = { "Mm":-13, "Mp":13, "Em":-11, "Ep":11}
-      if "DCH" in self.samplename:
-        
-        pdgId_sampl = []
-        for s in self.samplename.split("_"):
-          if "HL" in s: pdgId_sampl += [lep_dict[s.replace("HL","")[-2:]],lep_dict[s.replace("HL","")[:2]]]
-          if "HR" in s: pdgId_sampl += [lep_dict[s.replace("HR","")[-2:]],lep_dict[s.replace("HR","")[:2]]]
-        
-        pdgId_branch = []
-        if "HL" in self.samplename:
-          for pdgId in self.chain.HLpp_Daughters: pdgId_branch += [pdgId]
-          for pdgId in self.chain.HLmm_Daughters: pdgId_branch += [pdgId]
-        if "HR" in self.samplename:
-          for pdgId in self.chain.HRpp_Daughters: pdgId_branch += [pdgId]
-          for pdgId in self.chain.HRmm_Daughters: pdgId_branch += [pdgId]
-        
-        pdgId_branch = filter(lambda pdgId: pdgId != 0, pdgId_branch) 
-        
-        if not collections.Counter(pdgId_branch) == collections.Counter(pdgId_sampl): return False
+      if ("mc" not in self.sampletype):
+        return True
+      elif self.chain.mcChannelNumber not in range(306538,306560):
+        return True
+      return False
 
+    def cut_DCHFiltereeee(self):
+      if ("mc" not in self.sampletype):
+        return True
+      elif self.chain.mcChannelNumber not in range(306538,306560):
+        return False
+      pdgId_branchHL = []
+      pdgId_branchHR = []
+      for pdgId in self.chain.HLpp_Daughters: pdgId_branchHL += [pdgId]
+      for pdgId in self.chain.HLmm_Daughters: pdgId_branchHL += [pdgId]
+      for pdgId in self.chain.HRpp_Daughters: pdgId_branchHR += [pdgId]
+      for pdgId in self.chain.HRmm_Daughters: pdgId_branchHR += [pdgId]
+      assert len(pdgId_branchHL)==4 or len(pdgId_branchHR)==4, "less than 4 leptons.. something wrong"
+      if sum( [ abs(n) for n in pdgId_branchHL ] ) == 44 or sum( [ abs(n) for n in pdgId_branchHR ] ) == 44:
+        return True
+      return False
+
+    def cut_DCHFiltermmmm(self):
+      if ("mc" not in self.sampletype):
+        return True
+      elif self.chain.mcChannelNumber not in range(306538,306560):
+        return False
+      pdgId_branchHL = []
+      pdgId_branchHR = []
+      for pdgId in self.chain.HLpp_Daughters: pdgId_branchHL += [pdgId]
+      for pdgId in self.chain.HLmm_Daughters: pdgId_branchHL += [pdgId]
+      for pdgId in self.chain.HRpp_Daughters: pdgId_branchHR += [pdgId]
+      for pdgId in self.chain.HRmm_Daughters: pdgId_branchHR += [pdgId]
+      assert len(pdgId_branchHL)==4 or len(pdgId_branchHR)==4, "less than 4 leptons.. something wrong"
+      if sum( [ abs(n) for n in pdgId_branchHL ] ) == 52 or sum( [ abs(n) for n in pdgId_branchHR ] ) == 52:
+        return True
+      return False
+
+    def cut_DCHFiltereemm(self):
+      if ("mc" not in self.sampletype):
+        return False
+      elif self.chain.mcChannelNumber not in range(306538,306560):
+        return True
+      if [abs(l) for l in self.chain.HLpp_Daughters]==[11,11] and [ abs(l) for l in self.chain.HLmm_Daughters]==[13,13] :
+        return True
+      elif [abs(l) for l in self.chain.HLpp_Daughters]==[13,13] and [abs(l) for l in self.chain.HLmm_Daughters]==[11,11] :
+        return True
+      elif [abs(l) for l in self.chain.HRpp_Daughters]==[11,11] and [abs(l) for l in self.chain.HRmm_Daughters]==[13,13] :
+        return True
+      elif [abs(l) for l in self.chain.HRpp_Daughters]==[13,13] and [abs(l) for l in self.chain.HRmm_Daughters]==[11,11] :
+        return True
+      return False
+
+    def cut_DCHFilteremem(self):
+      if ("mc" not in self.sampletype):
+        return False
+      elif self.chain.mcChannelNumber not in range(306538,306560):
+        return True
+      if len(self.chain.HLpp_Daughters) not in [0,1]:
+        if self.chain.HLpp_Daughters[0] == self.chain.HLpp_Daughters[1]:
+          return False
+      if len(self.chain.HLmm_Daughters) not in [0,1]:
+        if self.chain.HLmm_Daughters[0] == self.chain.HLmm_Daughters[1]:
+          return False
+      if len(self.chain.HRpp_Daughters) not in [0,1]:
+        if self.chain.HRpp_Daughters[0] == self.chain.HRpp_Daughters[1]:
+          return False
+      if len(self.chain.HRmm_Daughters) not in [0,1]:
+        if self.chain.HRmm_Daughters[0] == self.chain.HRmm_Daughters[1]:
+          return False
       return True
+
+    def cut_DCHFilteremmm(self):
+      if ("mc" not in self.sampletype):
+        return False
+      elif self.chain.mcChannelNumber not in range(306538,306560):
+        return True
+      if sum([abs(l) for l in self.chain.HLpp_Daughters])==24 and sum([abs(l) for l in self.chain.HLmm_Daughters])==26 :
+        return True
+      elif sum([abs(l) for l in self.chain.HLpp_Daughters])==26 and sum([abs(l) for l in self.chain.HLmm_Daughters])==24 :
+        return True
+      elif sum([abs(l) for l in self.chain.HRpp_Daughters])==24 and sum([abs(l) for l in self.chain.HRmm_Daughters])==26 :
+        return True
+      elif sum([abs(l) for l in self.chain.HRpp_Daughters])==26 and sum([abs(l) for l in self.chain.HRmm_Daughters])==24 :
+        return True
+      return False
+
+    def cut_DCHFiltereeem(self):
+      if ("mc" not in self.sampletype):
+        return False
+      elif self.chain.mcChannelNumber not in range(306538,306560):
+        return True
+      if sum([abs(l) for l in self.chain.HLpp_Daughters])==22 and sum([abs(l) for l in self.chain.HLmm_Daughters])==24 :
+        return True
+      elif sum([abs(l) for l in self.chain.HLpp_Daughters])==24 and sum([abs(l) for l in self.chain.HLmm_Daughters])==22 :
+        return True
+      elif sum([abs(l) for l in self.chain.HRpp_Daughters])==22 and sum([abs(l) for l in self.chain.HRmm_Daughters])==24 :
+        return True
+      elif sum([abs(l) for l in self.chain.HRpp_Daughters])==24 and sum([abs(l) for l in self.chain.HRmm_Daughters])==22 :
+        return True
+      return False
+
     #__________________________________________________________________________
     def cut_MuNoFilterTT(self):
       muons = self.store['muons']
@@ -1755,6 +1835,34 @@ class CutAlg(pyframe.core.Algorithm):
         for p in combinations(electrons,2):
           if p[0].trkcharge * p[1].trkcharge > 0.0: ss_pairs.append(p)
       if len(ss_pairs)==1 or len(ss_pairs)==3: return True
+      return False
+
+    #___________________________________________________________________________
+    def cut_FourTightLep(self):
+       electrons_tight = self.store['electrons_tight']
+       muons_tight = self.store['muons_tight']
+       tight = electrons_tight + muons_tight
+
+       if(len(tight)==4): return True
+       return False
+
+    #___________________________________________________________________________
+    def cut_AtLeastOneLooseLep(self):
+       electrons_tight = self.store['electrons_tight']
+       muons_tight = self.store['muons_tight']
+       tight = electrons_tight + muons_tight
+
+       if(not len(tight)==4): return True
+       return False
+    #___________________________________________________________________________
+
+    def cut_TwoSSLeptonPairs(self):
+      electrons = self.store['electrons_loose']
+      muons = self.store['muons']
+      leptons = electrons + muons
+      ss_pairs = []
+      for p in combinations(leptons,4):
+          if p[0].trkcharge * p[1].trkcharge * p[2].trkcharge * p[3].trkcharge > 0.0: return True
       return False
     #___________________________________________________________________________
 
@@ -4142,14 +4250,29 @@ class PlotAlg(pyframe.algs.CutFlowAlg,CutAlg):
               elif hasattr(self.chain,"njet") and "njet" in h.vexpr: exec( "var = self.chain.njet" ) 
               else: exec( "var = %s" % h.vexpr ) # so dirty !!!
               
-              if h.instance and var!=-999.: h.fill(var, weight)
-            
+              if h.instance and var!=-999.: 
+                  h.fill(var, weight)
+                  if ("mc" not in self.sampletype):
+                      flavour =self.store['ChannelFlavour']        
+                      print "Passed all SR2 cuts"
+                      print "RunNumber: ", self.chain.runNumber
+                      print "EventNumber: ", self.chain.eventNumber
+                      print "Channel Flavour: ", flavour
+
             elif h.get_name() == "Hist2D":
               varx = -999.
               vary = -999.
               exec( "varx,vary = %s" % h.vexpr ) # so dirty !!!
-              if h.instance and varx!=-999. and vary!=-999.: h.fill(varx,vary, weight)
-          
+              if h.instance and varx!=-999. and vary!=-999.: 
+                  h.fill(varx,vary, weight)
+                  if ("mc" not in self.sampletype):
+                      flavour =self.store['ChannelFlavour']        
+                      print "Passed all SR2 cuts"
+                      print "RunNumber: ", self.chain.runNumber
+                      print "EventNumber: ", self.chain.eventNumber
+                      print "Channel Flavour: ", flavour
+
+
     #__________________________________________________________________________
     def check_region(self,cutnames):
         cut_passed = True

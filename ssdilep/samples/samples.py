@@ -464,7 +464,7 @@ diboson_alt = Sample( name =   'diboson_alt',
                               ],
                 )
 
-diboson_sherpa221 = Sample( name =   'diboson_sherpa221',
+dibosonSherpa221 = Sample( name =   'dibosonSherpa221_FourLep',
                   tlatex = 'DB inclusive',
                   fill_color = ROOT.kOrange-3,
                   line_color =  ROOT.kOrange+5,
@@ -473,15 +473,8 @@ diboson_sherpa221 = Sample( name =   'diboson_sherpa221',
                                 Sherpa_221_NNPDF30NNLO_llll,
                                 Sherpa_221_NNPDF30NNLO_lllv,
                                 Sherpa_221_NNPDF30NNLO_llvv,
-                                #Sherpa_221_NNPDF30NNLO_lvvv,
-                                #Sherpa_221_NNPDF30NNLO_vvvv,
-                                #Sherpa_221_NNPDF30NNLO_WlvZqq,
-                                #Sherpa_221_NNPDF30NNLO_WplvWmqq,
-                                #Sherpa_221_NNPDF30NNLO_WpqqWmlv,
                                 Sherpa_221_NNPDF30NNLO_WqqZll,
-                                #Sherpa_221_NNPDF30NNLO_WqqZvv,
                                 Sherpa_221_NNPDF30NNLO_ZqqZll,
-                                #Sherpa_221_NNPDF30NNLO_ZqqZvv,
                                 Sherpa_CT10_ggllll,
                                 Sherpa_CT10_lllljj_EW6,
                                 Sherpa_CT10_lllvjj_EW6,
@@ -489,6 +482,27 @@ diboson_sherpa221 = Sample( name =   'diboson_sherpa221',
                                 Sherpa_CT10_llvvjj_ss_EW6,
                               ],
                 )
+dibosonSysSample = Sample( name =   'dibosonSysSample',
+                  tlatex = 'DB powheg',
+                  fill_color   = ROOT.kGreen-6,
+                  line_color   = ROOT.kGreen-2,
+                  marker_color = ROOT.kGreen-2,
+                  daughters = [
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4,
+                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4,
+                                Sherpa_221_NNPDF30NNLO_llvv,
+                                Sherpa_221_NNPDF30NNLO_WqqZll,
+                                Sherpa_221_NNPDF30NNLO_ZqqZll,
+                                Sherpa_CT10_ggllll,
+                                Sherpa_CT10_ggllvv,
+                                Sherpa_CT10_lllljj_EW6,
+                                Sherpa_CT10_lllvjj_EW6,
+                                Sherpa_CT10_llvvjj_ss_EW4,
+                                Sherpa_CT10_llvvjj_ss_EW6,
+                              ],
+                )
+
+
 diboson_sherpa221_lllv = Sample( name =   'diboson_sherpa_lllv',
                   tlatex = 'DB (lll#nu)',
                   fill_color = ROOT.kGreen-10,
@@ -537,26 +551,6 @@ diboson_sherpa221_lllvjj = Sample( name =   'diboson_sherpa_lllvjj',
                   marker_color =  ROOT.kBlue-2,
                   daughters = [
                                 Sherpa_CT10_lllvjj_EW6,  
-                              ],
-                )
-
-dibosonSysSample = Sample( name =   'dibosonSysSample',
-                  tlatex = 'DB powheg',
-                  fill_color   = ROOT.kGreen-6,
-                  line_color   = ROOT.kGreen-2,
-                  marker_color = ROOT.kGreen-2,
-                  daughters = [
-                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_ZZllll_mll4,
-                                PowhegPy8EG_CT10nloME_AZNLOCTEQ6L1_WZlvll_mll4,
-                                Sherpa_221_NNPDF30NNLO_llvv,
-                                Sherpa_221_NNPDF30NNLO_WqqZll,
-                                Sherpa_221_NNPDF30NNLO_ZqqZll,
-                                Sherpa_CT10_ggllll,
-                                Sherpa_CT10_ggllvv,
-                                Sherpa_CT10_lllljj_EW6,
-                                Sherpa_CT10_lllvjj_EW6,
-                                Sherpa_CT10_llvvjj_ss_EW4,
-                                Sherpa_CT10_llvvjj_ss_EW6,
                               ],
                 )
 
@@ -1839,7 +1833,8 @@ all_mc += ZmumuPowheg.daughters
 
 mc_bkg = []
 
-mc_bkg.append( diboson_sherpa221 )
+mc_bkg.append( dibosonSherpa221 )
+mc_bkg.append( dibosonSysSample )
 #mc_bkg.append( diboson_alt)
 #mc_bkg += all_DCH.daughters
 #mc_bkg += Pythia8EvtGen_A14NNPDF23LO_DCH300

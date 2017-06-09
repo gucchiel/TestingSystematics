@@ -275,6 +275,67 @@ class SR2ChannelFlavour(pyframe.core.Algorithm):# Class for channel categorizati
         return True
 
 #------------------------------------------------------------------------------
+class BuildLooseTightElectronsMuons(pyframe.core.Algorithm):# Building a loose container for electrons (cutting away not loose electrons from ntuples)
+    #__________________________________________________________________________
+    def __init__(self, 
+                 name="BuildLooseTightElectronsMuons", 
+                 key_electrons="electrons",
+                 key_muons="muons",
+                 ):
+        pyframe.core.Algorithm.__init__(self, name)
+        self.key_electrons  = key_electrons
+        self.key_muons  = key_muons
+    #__________________________________________________________________________
+    def initialize(self):
+        log.info('Building loose electron container for %s ...' % self.key_electrons)
+    #__________________________________________________________________________
+    def execute(self,weight):
+        pyframe.core.Algorithm.execute(self, weight)
+        #remove muons 
+        """
+        for muon in self.store[self.key_muons][:]:
+            if muon.tlv.Pt() < 30*GeV or muon.trkd0sig > 10.0 or (muon.trkd0sig > 3.0 and muon.isIsolated_FixedCutTightTrackOnly):
+                self.store[self.key_muons].remove(muon)
+        """
+        for muon in self.store[self.key_muons][:]:
+            if ("mc" in self.sampletype) and self.chain.mcChannelNumber in range(306538,306560): pass
+            elif ("mc" in self.sampletype) and not muon.isTrueIsoMuon(): continue
+            muon_is_tight = bool(muon.isIsolated_FixedCutTightTrackOnly and muon.trkd0sig<3.and muon.pt>30*GeV)            
+            muon_is_loose   = bool(not muon.isIsolated_FixedCutTightTrackOnly and muon.trkd0sig<10. and muon.pt>30*GeV)
+            if(not(muon_is_tight or muon_is_loose)): self.store[self.key_muons].remove(muon)
+
+
+        # tight muons
+        muons_tight = []
+        for mu in self.store[self.key_muons][:]:
+          if ("mc" in self.sampletype) and self.chain.mcChannelNumber in range(306538,306560): pass
+          elif ("mc" in self.sampletype) and not mu.isTrueIsoMuon(): continue  
+          if mu.isIsolated_FixedCutTightTrackOnly and mu.trkd0sig<=3.:
+            muons_tight += [mu]
+        self.store['muons_tight'] = muons_tight
+
+
+        # loose electrons (no iso // LooseLLH)
+        electrons_loose = []
+        for ele in self.store[self.key_electrons][:]:
+          if ("mc" in self.sampletype) and self.chain.mcChannelNumber in range(306538,306560): pass
+          elif ("mc" in self.sampletype) and not ele.isTrueIsoElectron(): continue
+          if ( ele.pt>30*GeV and ele.LHLoose and ele.trkd0sig<5.0 and abs(ele.trkz0sintheta)<0.5 ) :
+            electrons_loose += [ele]
+        self.store['electrons_loose'] = electrons_loose
+
+        # tight electrons (isoLoose // MediumLLH)
+        electrons_tight = []
+        for ele in self.store[self.key_electrons][:]:
+          if ("mc" in self.sampletype) and self.chain.mcChannelNumber in range(306538,306560): pass
+          elif ("mc" in self.sampletype) and not ele.isTrueIsoElectron(): continue
+          if ( ele.pt>30*GeV and ele.isIsolated_Loose and ele.LHMedium and ele.trkd0sig<5.0 and abs(ele.trkz0sintheta)<0.5 ) :
+            electrons_tight += [ele]
+        self.store['electrons_tight'] = electrons_tight
+
+
+        return True       
+#------------------------------------------------------------------------------
 class BuildLooseElectrons(pyframe.core.Algorithm):# Building a loose container for electrons (cutting away not loose electrons from ntuples)
     #__________________________________________________________________________
     def __init__(self, 
@@ -296,7 +357,8 @@ class BuildLooseElectrons(pyframe.core.Algorithm):# Building a loose container f
             if(ele.pt>30*GeV and ele.LHLoose and ele.trkd0sig<5.0 and abs(ele.trkz0sintheta)<0.5):
                electrons_loose += [ele]
         self.store['electrons_loose'] = electrons_loose
-        return True       
+        return True     
+
 #------------------------------------------------------------------------------
 class BuildLooseAndTightMuons(pyframe.core.Algorithm):# removing from muon container those not T not L muons
     #__________________________________________________________________________
